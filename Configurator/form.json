@@ -1,0 +1,67 @@
+{
+    "elements": [
+        {
+            "type": "ValidationTextBox",
+            "name": "MQTTBaseTopic",
+            "caption": "MQTT Base Topic"
+        }
+    ],
+    "actions": [
+        {
+            "type": "ExpansionPanel",
+            "caption": "Devices",
+            "expanded": true,
+            "items": [
+                {
+                    "type": "Configurator",
+                    "name": "DeviceConfigurator",
+                    "caption": "Devices",
+                    "rowCount": 35,
+                    "delete": true,
+                    "sort": {
+                        "column": "name",
+                        "direction": "ascending"
+                    },
+                    "columns": [
+                        {
+                            "caption": "Node ID",
+                            "name": "node_id",
+                            "width": "200px"
+                        },
+                                                {
+                            "caption": "Friendlyname",
+                            "name": "name",
+                            "width": "200px"
+                        },
+                        {
+                            "caption": "Vendor",
+                            "name": "vendor",
+                            "width": "100px"
+                        },
+                        {
+                            "caption": "Model ID",
+                            "name": "modelID",
+                            "width": "200px"
+                        },
+                        {
+                            "caption": "Description",
+                            "name": "description",
+                            "width": "auto"
+                        },
+                        {
+                            "caption": "Type",
+                            "name": "type",
+                            "width": "100px"
+                        },
+                        {
+                            "caption": "Power Source",
+                            "name": "power_source",
+                            "width": "150px"
+                        }
+                    ],
+                    "values": []
+                }
+            ]
+        }
+    ]
+}
