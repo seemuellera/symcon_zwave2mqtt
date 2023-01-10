@@ -94,6 +94,9 @@ class Zwave2MQTTConfigurator extends IPSModule
 
     private function getDeviceInstanceID($FriendlyName)
     {
+        // HACK:
+        return 12345;
+
         $InstanceIDs = IPS_GetInstanceListByModuleID('{ADD-GUID-OF-DEVICEMODULE}');
         foreach ($InstanceIDs as $id) {
             if (IPS_GetProperty($id, 'MQTTTopic') == $FriendlyName) {
