@@ -1,0 +1,12 @@
+{
+    "id": "{FAC6D08C-20AF-4270-BD6E-DB8284BD5A30}",
+    "author": "Andreas Seemueller",
+    "name": "Zwave2MQTT",
+    "url": "https://github.com/seemuellera/symcon_zwave2mqtt",
+    "compatibility": {
+        "version": "6.1"
+    },
+    "version": "1.0",
+    "build": 0,
+    "date": 0
+}
