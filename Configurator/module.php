@@ -88,7 +88,7 @@ class Zwave2MQTTConfigurator extends IPSModule
             "arg": []
         }';
 
-        $this->Command('zwave/driver/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes');
+        $this->Command('zwave/driver/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes', $param);
     }
 
 }
