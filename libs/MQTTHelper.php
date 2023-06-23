@@ -25,18 +25,4 @@ trait MQTTHelper
         $this->SendDataToParent($DataJSON);
     }
 
-    public function CommandExt(string $topic, string $value) //ohne MQTTTopic
-    {
-        $Data['DataID'] = '{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}';
-        $Data['PacketType'] = 3;
-        $Data['QualityOfService'] = 0;
-        $Data['Retain'] = false;
-        $Data['Topic'] = $this->ReadPropertyString('MQTTBaseTopic') . '/' . $topic;
-        $Data['Payload'] = $value;
-        $DataJSON = json_encode($Data, JSON_UNESCAPED_SLASHES);
-        $this->SendDebug(__FUNCTION__ . ' Topic', $Data['Topic'], 0);
-        $this->SendDebug(__FUNCTION__ . ' Payload', $Data['Payload'], 0);
-        $this->SendDataToParent($DataJSON);
-    }
-
 }
