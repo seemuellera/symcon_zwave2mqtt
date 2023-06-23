@@ -9,8 +9,6 @@ if (!function_exists('fnmatch')) {
     }
 }
 
-define('MQTT_GROUP_TOPIC', 'zwave');
-
 trait MQTTHelper
 {
     public function Command(string $topic, string $value)

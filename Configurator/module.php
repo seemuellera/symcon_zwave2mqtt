@@ -65,6 +65,11 @@ class Zwave2MQTTConfigurator extends IPSModule
         return json_encode($Form);
     }
 
+    protected function getDeviceInstanceID($gaga) {
+
+        return 12345;
+    }
+
     public function ReceiveData($JSONString)
     {
         $this->SendDebug('JSON', $JSONString, 0);
