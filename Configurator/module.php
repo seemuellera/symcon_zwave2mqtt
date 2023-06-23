@@ -12,7 +12,7 @@ class Zwave2MQTTConfigurator extends IPSModule
         //Never delete this line!
         parent::Create();
         $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
-        $this->RegisterPropertyString('MQTTBaseTopic', 'zwave2mqtt');
+        $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
 
         $this->SetBuffer('Devices', '{}');
     }
@@ -23,10 +23,9 @@ class Zwave2MQTTConfigurator extends IPSModule
         parent::ApplyChanges();
 
         //Setze Filter für ReceiveData
-        $topic = 'symcon/' . $this->ReadPropertyString('MQTTBaseTopic');
+        $topic = $this->ReadPropertyString('MQTTBaseTopic');
         $this->SetReceiveDataFilter('.*' . $topic . '.*');
         $this->getDevices();
-        $this->getGroups();
         $this->SetStatus(102);
     }
 
@@ -75,8 +74,9 @@ class Zwave2MQTTConfigurator extends IPSModule
             if (IPS_GetKernelDate() > 1670886000) {
                 $Buffer['Payload'] = utf8_decode($Buffer['Payload']);
             }
-            if (fnmatch('symcon/' . $this->ReadPropertyString('MQTTBaseTopic') . '/devices', $Buffer['Topic'])) {
+            if (fnmatch($this->ReadPropertyString('MQTTBaseTopic'), $Buffer['Topic'])) {
                 $Payload = json_decode($Buffer['Payload'], true);
+                print_r($Payload);
                 $this->SetBuffer('Devices', json_encode($Payload));
             }
         }
@@ -84,26 +84,11 @@ class Zwave2MQTTConfigurator extends IPSModule
 
     private function getDevices()
     {
-        $this->symconExtensionCommand('getDevices', '');
-    }
+        $param = '{
+            "arg": []
+        }';
 
-    private function getGroups()
-    {
-        $this->symconExtensionCommand('getGroups', '');
-    }
-
-    private function getDeviceInstanceID($FriendlyName)
-    {
-        // HACK:
-        return 12345;
-
-        $InstanceIDs = IPS_GetInstanceListByModuleID('{ADD-GUID-OF-DEVICEMODULE}');
-        foreach ($InstanceIDs as $id) {
-            if (IPS_GetProperty($id, 'MQTTTopic') == $FriendlyName) {
-                return $id;
-            }
-        }
-        return 0;
+        $this->Command('zwave/driver/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes');
     }
 
 }

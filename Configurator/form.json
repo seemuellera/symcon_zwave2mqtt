@@ -19,7 +19,7 @@
                     "rowCount": 35,
                     "delete": true,
                     "sort": {
-                        "column": "name",
+                        "column": "node_id",
                         "direction": "ascending"
                     },
                     "columns": [
