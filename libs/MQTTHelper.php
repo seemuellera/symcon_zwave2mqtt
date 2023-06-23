@@ -13,7 +13,7 @@ trait MQTTHelper
 {
     public function Command(string $topic, string $value)
     {
-        $Data['DataID'] = '{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}';
+        $Data['DataID'] = '{7F7632D9-FA40-4F38-8DEA-C83CD4325A32}';
         $Data['PacketType'] = 3;
         $Data['QualityOfService'] = 0;
         $Data['Retain'] = false;
