@@ -88,9 +88,7 @@ class Zwave2MQTTConfigurator extends IPSModule
 
     private function getDevices()
     {
-        $param = '{
-            "arg": []
-        }';
+        $param = '{ "arg": [] }';
 
         $this->Command('driver/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes', $param);
     }
