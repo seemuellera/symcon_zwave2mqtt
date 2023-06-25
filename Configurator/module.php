@@ -85,7 +85,7 @@ class Zwave2MQTTConfigurator extends IPSModule
 
             if(array_key_exists('Payload', $Buffer)) {
 
-                $this->SendDebug('Payload', 'Received Payload', 0);
+                $this->SendDebug('Payload', 'Received Payload with size ' . strlen($Buffer['Payload']), 0);
             }
             else{
                
