@@ -23,7 +23,7 @@ class Zwave2MQTTConfigurator extends IPSModule
         parent::ApplyChanges();
 
         //Setze Filter für ReceiveData
-        $topic = $this->ReadPropertyString('MQTTBaseTopic');
+        $topic = $this->ReadPropertyString('MQTTBaseTopic') . '/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes';
         $this->SetReceiveDataFilter('.*' . $topic . '.*');
         $this->getDevices();
         $this->SetStatus(102);
@@ -81,13 +81,17 @@ class Zwave2MQTTConfigurator extends IPSModule
             if (IPS_GetKernelDate() > 1670886000) {
                 $Buffer['Payload'] = utf8_decode($Buffer['Payload']);
             }
-            // if (fnmatch($this->ReadPropertyString('MQTTBaseTopic'). "/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes", $Buffer['Topic'])) {
-            if ( $this->ReadPropertyString('MQTTBaseTopic'). "/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes" == $Buffer['Topic']) {
-                $this->SendDebug('BUFFER', $Buffer['Payload'], 0);
-                $Payload = json_decode($Buffer['Payload'], true);
-                file_put_contents('/tmp/zwave_mqtt.txt', $Payload);
-                $this->SetBuffer('Devices', json_encode($Payload));
+                     
+            // $this->SendDebug('BUFFER', $Buffer['Payload'], 0);
+            $Payload = json_decode($Buffer['Payload'], true);
+
+            //Process the results
+            if ($Payload['success'] == true) {
+
+                $this->SendDebug('API', 'OK', 0);
             }
+
+            $this->SetBuffer('Devices', json_encode($Payload));
         }
     }
 
