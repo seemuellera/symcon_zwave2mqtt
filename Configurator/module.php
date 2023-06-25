@@ -72,7 +72,6 @@ class Zwave2MQTTConfigurator extends IPSModule
 
     public function ReceiveData($JSONString)
     {
-        $this->SendDebug('JSON', $JSONString, 0);
         $Buffer = json_decode($JSONString, true);
 
         if (array_key_exists('Topic', $Buffer)) {
@@ -80,6 +79,7 @@ class Zwave2MQTTConfigurator extends IPSModule
                 $Buffer['Payload'] = utf8_decode($Buffer['Payload']);
             }
             if (fnmatch($this->ReadPropertyString('MQTTBaseTopic'). "/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes", $Buffer['Topic'])) {
+                $this->SendDebug('JSON', $Buffer['Payload'], 0);
                 $Payload = json_decode($Buffer['Payload'], true);
                 file_put_contents('/tmp/zwave_mqtt.txt', $Payload);
                 $this->SetBuffer('Devices', json_encode($Payload));
