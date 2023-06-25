@@ -85,6 +85,8 @@ class Zwave2MQTTConfigurator extends IPSModule
             // $this->SendDebug('BUFFER', $Buffer['Payload'], 0);
             $Payload = json_decode($Buffer['Payload'], true);
 
+            print_r($Payload);
+
             //Process the results
             if ($Payload['success'] == true) {
 
@@ -99,7 +101,7 @@ class Zwave2MQTTConfigurator extends IPSModule
     {
         $param = '{ "arg": [] }';
 
-        $this->Command('_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes/set', $param);
+        $this->Command('_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes', $param);
     }
 
 }
