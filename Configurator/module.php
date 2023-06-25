@@ -73,20 +73,17 @@ class Zwave2MQTTConfigurator extends IPSModule
     public function ReceiveData($JSONString)
     {
         $Buffer = json_decode($JSONString, true);
-        $this->SendDebug('BUFFER', $Buffer, 0);
-
         if (array_key_exists('Topic', $Buffer)) {
 
-            $this->SendDebug('TOPIC', $Buffer['Topic'], 0);
+            if ($Buffer ['Topic'] == 'zwave/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes') {
+                $this->SendDebug('TOPIC', $Buffer['Topic'], 0);
+            }
 
             if (IPS_GetKernelDate() > 1670886000) {
                 $Buffer['Payload'] = utf8_decode($Buffer['Payload']);
             }
-                     
-            // $this->SendDebug('BUFFER', $Buffer['Payload'], 0);
+                                 
             $Payload = json_decode($Buffer['Payload'], true);
-
-            print_r($Payload);
 
             //Process the results
             if ($Payload['success'] == true) {
