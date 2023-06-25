@@ -83,8 +83,12 @@ class Zwave2MQTTConfigurator extends IPSModule
                 return;
             }
 
-            if(! array_key_exists('Payload', $Buffer)) {
+            if(array_key_exists('Payload', $Buffer)) {
 
+                $this->SendDebug('Payload', 'Received Payload', 0);
+            }
+            else{
+               
                 $this->SendDebug('Payload', 'No Payload found', 0);
                 return;
             }
