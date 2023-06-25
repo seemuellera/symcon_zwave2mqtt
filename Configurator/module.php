@@ -99,10 +99,23 @@ class Zwave2MQTTConfigurator extends IPSModule
                                  
             $Payload = json_decode($Buffer['Payload'], true);
 
-            //Process the results
+            if(array_key_exists('success', $Payload)) {
+
+                $this->SendDebug('Payload', 'success indicator found', 0);
+            }
+            else{
+               
+                $this->SendDebug('Payload', 'success indicator NOT found', 0);
+                return;
+            }
+            
             if ($Payload['success'] == true) {
 
                 $this->SendDebug('ZWAPI', 'OK', 0);
+            }
+            else {
+
+                $this->SendDebug('ZWAPI', 'NOT OK', 0);
             }
 
             $devices = $Payload['result'];
