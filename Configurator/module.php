@@ -75,6 +75,9 @@ class Zwave2MQTTConfigurator extends IPSModule
         $Buffer = json_decode($JSONString, true);
 
         if (array_key_exists('Topic', $Buffer)) {
+
+            $this->SendDebug('TOPIC', $Buffer['Topic'], 0);
+
             if (IPS_GetKernelDate() > 1670886000) {
                 $Buffer['Payload'] = utf8_decode($Buffer['Payload']);
             }
