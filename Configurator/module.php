@@ -73,6 +73,7 @@ class Zwave2MQTTConfigurator extends IPSModule
     public function ReceiveData($JSONString)
     {
         $Buffer = json_decode($JSONString, true);
+        $this->SendDebug('BUFFER', $Buffer, 0);
 
         if (array_key_exists('Topic', $Buffer)) {
 
