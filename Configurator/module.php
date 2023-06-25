@@ -128,6 +128,7 @@ class Zwave2MQTTConfigurator extends IPSModule
                 $currentDeviceDetails['friendly_name'] = 'Unknown Device';
                 $currentDeviceDetails['nodeId'] = 666;
                 $currentDeviceDetails['type'] = 'Unknown Type';
+                $currentDeviceDetails['vendor'] = 'Unknown Vendor';
                 $currentDeviceDetails['modelID'] = 'Unknown Model';
                 $currentDeviceDetails['description'] = 'Dummy Entry';
                 $currentDeviceDetails['powerSource'] = 'Unknown';
