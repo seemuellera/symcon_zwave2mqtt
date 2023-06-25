@@ -98,7 +98,16 @@ class Zwave2MQTTConfigurator extends IPSModule
             $devices = $Payload['result'];
             $this->SendDebug('RESULT', 'Number of devices found: ' . count($devices), 0);
 
-            $this->SetBuffer('Devices', json_encode($Payload));
+            // $this->SetBuffer('Devices', json_encode($Payload));
+            $dummyArray[0]['name'] = 'Unknown Device';
+            $dummyArray[0]['node_id'] = 1;
+            $dummyArray[0]['type'] = 'Controller';
+            $dummyArray[0]['modelID'] = 'Unknown Model';
+            $dummyArray[0]['description'] = 'Dummy Entry';
+            $dummyArray[0]['power_source'] = 'Unknown';
+            $dummyArray[0]['instanceID'] = '12345';
+            
+            $this->SetBuffer('Devices', json_encode($dummyArray));
         }
     }
 
