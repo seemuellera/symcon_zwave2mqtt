@@ -78,6 +78,10 @@ class Zwave2MQTTConfigurator extends IPSModule
             if ($Buffer ['Topic'] == 'zwave/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes') {
                 $this->SendDebug('TOPIC', $Buffer['Topic'], 0);
             }
+            else {
+
+                return;
+            }
 
             if (IPS_GetKernelDate() > 1670886000) {
                 $Buffer['Payload'] = utf8_decode($Buffer['Payload']);
@@ -88,8 +92,11 @@ class Zwave2MQTTConfigurator extends IPSModule
             //Process the results
             if ($Payload['success'] == true) {
 
-                $this->SendDebug('API', 'OK', 0);
+                $this->SendDebug('ZWAPI', 'OK', 0);
             }
+
+            $devices = $Payload['result'];
+            $this->SendDebug('RESULT', 'Number of devices found: ' . count($devices), 0);
 
             $this->SetBuffer('Devices', json_encode($Payload));
         }
