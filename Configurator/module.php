@@ -83,6 +83,12 @@ class Zwave2MQTTConfigurator extends IPSModule
                 return;
             }
 
+            if(! array_key_exists('Payload', $Buffer)) {
+
+                $this->SendDebug('Payload', 'No Payload found', 0);
+                return;
+            }
+
             if (IPS_GetKernelDate() > 1670886000) {
                 $Buffer['Payload'] = utf8_decode($Buffer['Payload']);
             }
