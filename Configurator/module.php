@@ -81,6 +81,7 @@ class Zwave2MQTTConfigurator extends IPSModule
             }
             if (fnmatch($this->ReadPropertyString('MQTTBaseTopic'). "/", $Buffer['Topic'])) {
                 $Payload = json_decode($Buffer['Payload'], true);
+                print_r($Payload);
                 $this->SetBuffer('Devices', json_encode($Payload));
             }
         }
