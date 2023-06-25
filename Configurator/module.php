@@ -81,8 +81,9 @@ class Zwave2MQTTConfigurator extends IPSModule
             if (IPS_GetKernelDate() > 1670886000) {
                 $Buffer['Payload'] = utf8_decode($Buffer['Payload']);
             }
-            if (fnmatch($this->ReadPropertyString('MQTTBaseTopic'). "/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes", $Buffer['Topic'])) {
-                $this->SendDebug('JSON', $Buffer['Payload'], 0);
+            // if (fnmatch($this->ReadPropertyString('MQTTBaseTopic'). "/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes", $Buffer['Topic'])) {
+            if ( $this->ReadPropertyString('MQTTBaseTopic'). "/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes" == $Buffer['Topic']) {
+                $this->SendDebug('BUFFER', $Buffer['Payload'], 0);
                 $Payload = json_decode($Buffer['Payload'], true);
                 file_put_contents('/tmp/zwave_mqtt.txt', $Payload);
                 $this->SetBuffer('Devices', json_encode($Payload));
