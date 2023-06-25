@@ -23,7 +23,7 @@ class Zwave2MQTTConfigurator extends IPSModule
         parent::ApplyChanges();
 
         //Setze Filter für ReceiveData
-        $topic = $this->ReadPropertyString('MQTTBaseTopic') . '/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes';
+        $topic = $this->ReadPropertyString('MQTTBaseTopic') . '\/_CLIENTS\/ZWAVE-GATEWAY-zwave-js-ui\/api\/';
         $this->SetReceiveDataFilter('.*' . $topic . '.*');
         $this->getDevices();
         $this->SetStatus(102);
