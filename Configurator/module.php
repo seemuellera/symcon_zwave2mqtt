@@ -132,7 +132,21 @@ class Zwave2MQTTConfigurator extends IPSModule
 
             foreach ($devices as $currentDevice) {
 
-                $currentDeviceDetails['friendly_name'] = 'nodeID_' . $currentDevice['id'];
+                if (array_key_exists('name', $currentDevice)) {
+
+                    if ($currentDevice['name']) {
+
+                        $currentDeviceDetails['friendly_name'] = $currentDevice['name'];
+                    }
+                    else {
+                        
+                        $currentDeviceDetails['friendly_name'] = 'nodeID_' . $currentDevice['id'];
+                    }
+                }
+                else {
+                
+                    $currentDeviceDetails['friendly_name'] = 'nodeID_' . $currentDevice['id'];
+                }
                 $currentDeviceDetails['nodeId'] = $currentDevice['id'];
                 $currentDeviceDetails['type'] = 'Unknown Type';
                 $currentDeviceDetails['vendor'] = $currentDevice['manufacturer'];
