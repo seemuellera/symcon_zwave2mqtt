@@ -104,6 +104,7 @@ class Zwave2MQTTConfigurator extends IPSModule
             }
                                  
             $Payload = json_decode($Buffer['Payload'], true);
+            $this->SendDebug('Payload', $Payload, 0);
 
             if(array_key_exists('success', $Payload)) {
 
