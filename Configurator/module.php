@@ -65,9 +65,15 @@ class Zwave2MQTTConfigurator extends IPSModule
         return json_encode($Form);
     }
 
-    protected function getDeviceInstanceID($gaga) {
-
-        return 12345;
+    private function getDeviceInstanceID($FriendlyName)
+    {
+        $InstanceIDs = IPS_GetInstanceListByModuleID('{3A12B59E-DBB3-43C1-96B5-A2F4408EF415}');
+        foreach ($InstanceIDs as $id) {
+            if (IPS_GetProperty($id, 'MQTTTopic') == $FriendlyName) {
+                return $id;
+            }
+        }
+        return 0;
     }
 
     public function ReceiveData($JSONString)
