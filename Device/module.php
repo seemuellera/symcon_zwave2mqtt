@@ -37,7 +37,7 @@ class Zwave2MQTTDevice extends IPSModule
         $this->SendDebug('Filter ', '.*(' . $Filter1 . '|' . $Filter2 . ').*', 0);
         $this->SetReceiveDataFilter('.*(' . $Filter1 . '|' . $Filter2 . ').*');
         if (($this->HasActiveParent()) && (IPS_GetKernelRunlevel() == KR_READY)) {
-            $this->getDeviceInfo();
+            //$this->getDeviceInfo();
         }
         $this->SetStatus(102);
     }
