@@ -53,7 +53,7 @@ class Zwave2MQTTConfigurator extends IPSModule
 
             $Value['create'] =
                 [
-                    'moduleID'      => '{E5BB36C6-A70B-EB23-3716-9151A09AC8A2}',
+                    'moduleID'      => '{3A12B59E-DBB3-43C1-96B5-A2F4408EF415}',
                     'configuration' => [
                         'MQTTTopic'    => $device['friendly_name']
                     ]
