@@ -588,7 +588,7 @@ trait Zwave2MQTTHelper
                     if (array_key_exists('value', $Payload)) {
                         //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
                         $this->RegisterVariableInteger('ZWAVE2M_LastSeen', $this->Translate('Last Seen'), '~UnixTimestamp');
-                        $this->SetValue('ZWAVE2M_LastSeen', ($Payload['value']));
+                        $this->SetValue('ZWAVE2M_LastSeen', ($Payload['value'] / 1000));
                     }
                 }
                 if (array_key_exists('do_not_disturb', $Payload)) {
