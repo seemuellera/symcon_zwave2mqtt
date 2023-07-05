@@ -81,7 +81,7 @@ class Zwave2MQTTConfigurator extends IPSModule
         $Buffer = json_decode($JSONString, true);
         if (array_key_exists('Topic', $Buffer)) {
 
-            if ($Buffer ['Topic'] == 'zwave/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes') {
+            if ($Buffer ['Topic'] == $this->ReadPropertyString('MQTTBaseTopic') . '/_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes') {
                 $this->SendDebug('TOPIC', $Buffer['Topic'], 0);
             }
             else {
