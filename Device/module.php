@@ -4,14 +4,14 @@ declare(strict_types=1);
 require_once __DIR__ . '/../libs/ColorHelper.php';
 require_once __DIR__ . '/../libs/MQTTHelper.php';
 require_once __DIR__ . '/../libs/VariableProfileHelper.php';
-require_once __DIR__ . '/../libs/Zigbee2MQTTHelper.php';
+require_once __DIR__ . '/../libs/Zwave2MQTTHelper.php';
 
 class Zwave2MQTTDevice extends IPSModule
 {
     use ColorHelper;
     use MQTTHelper;
     use VariableProfileHelper;
-    use Zigbee2MQTTHelper;
+    use Zwave2MQTTHelper;
 
     public function Create()
     {
