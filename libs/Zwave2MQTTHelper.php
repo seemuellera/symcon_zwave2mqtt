@@ -18,6 +18,7 @@ trait Zwave2MQTTHelper
                 }
                 $payload['value'] = $Value;
                 $topic = $baseTopic . '38/1/targetValue';
+                break;
             case 'ZWAVE2M_Pi_Heating_Demand':
                 $Payload['pi_heating_demand'] = $Value;
                 break;
