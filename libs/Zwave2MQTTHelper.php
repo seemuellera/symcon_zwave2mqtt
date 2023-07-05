@@ -582,10 +582,14 @@ trait Zwave2MQTTHelper
 
             $Payload = json_decode($Buffer['Payload'], true);
             if (is_array($Payload)) {
-                if (array_key_exists('last_seen', $Payload)) {
-                    //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
-                    $this->RegisterVariableInteger('ZWAVE2M_LastSeen', $this->Translate('Last Seen'), '~UnixTimestamp');
-                    $this->SetValue('ZWAVE2M_LastSeen', ($Payload['last_seen'] / 1000));
+
+                if (fnmatch('symcon/' . $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/lastActive', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
+                        $this->RegisterVariableInteger('ZWAVE2M_LastSeen', $this->Translate('Last Seen'), '~UnixTimestamp');
+                        $this->SetValue('ZWAVE2M_LastSeen', ($Payload['value']));
+                    }
                 }
                 if (array_key_exists('do_not_disturb', $Payload)) {
                     $this->SetValue('ZWAVE2M_DoNotDisturb', $Payload['do_not_disturb']);
