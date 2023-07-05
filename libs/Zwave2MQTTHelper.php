@@ -552,7 +552,7 @@ trait Zwave2MQTTHelper
         }
 
         $baseTopic = $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/';
-        foreach (DeviceTopic as $currentDeviceTopic) {
+        foreach ($deviceTopics as $currentDeviceTopic) {
 
             switch($currentDeviceTopic) {
 
