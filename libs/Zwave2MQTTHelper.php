@@ -544,7 +544,8 @@ trait Zwave2MQTTHelper
         $deviceTopics = Array();
         foreach ($allTopics as $currentTopic) {
 
-            if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/', $currentTopic)) {
+            $filterRegex = '/^' . $this->ReadPropertyString('MQTTBaseTopic') . '\/' . $this->ReadPropertyString('MQTTTopic') . '\/*/';
+            if (preg_match($filterRegex, $currentTopic) ) {
             
                 $deviceTopics[] = $currentTopic;
             }
