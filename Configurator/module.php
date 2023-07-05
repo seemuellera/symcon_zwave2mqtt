@@ -31,7 +31,7 @@ class Zwave2MQTTConfigurator extends IPSModule
 
     public function GetConfigurationForm()
     {
-        $this->getDevices();
+        //$this->getDevices();
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
 
         //Devices
