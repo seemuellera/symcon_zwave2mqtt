@@ -538,7 +538,7 @@ trait Zwave2MQTTHelper
         $mqttInstance = $parent->InstanceID;
         $allTopics = MQTT_GetRetainedMessageTopicList($mqttInstance);
         $allTopicsJson = json_encode($allTopics);
-        $this->SendDebug('Topic List', $allTopicsJson)
+        $this->SendDebug('Topic List', $allTopicsJson);
     }
 
     public function ReceiveData($JSONString)
