@@ -588,6 +588,10 @@ trait Zwave2MQTTHelper
                 
                 case $baseTopic . 'status':
                     $this->RegisterVariableBoolean('ZWAVE2M_DeviceStatus', $this->Translate('Device Health'), '~Alert.Reversed');
+                    $data = $this->fetchRetainedData($baseTopic . 'status');
+                    if (array_key_exists('value',$data)) {
+                        $this->SetValue('ZWAVE2M_DeviceStatus', $data['value']);
+                    }
                     break;
             }
             
