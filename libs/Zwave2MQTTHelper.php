@@ -8,7 +8,16 @@ trait Zwave2MQTTHelper
     {
         $variableID = $this->GetIDForIdent($Ident);
         $variableType = IPS_GetVariable($variableID)['VariableType'];
+
+        $baseTopic = $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/';
+
         switch ($Ident) {
+            case 'ZWAVE2M_Intensity':
+                if ($Value == 100) {
+                    $Value = 99;
+                }
+                $payload['value'] = $Value;
+                $topic = $baseTopic . '38/1/targetValue';
             case 'ZWAVE2M_Pi_Heating_Demand':
                 $Payload['pi_heating_demand'] = $Value;
                 break;
@@ -530,7 +539,7 @@ trait Zwave2MQTTHelper
         }
 
         $PayloadJSON = json_encode($Payload, JSON_UNESCAPED_SLASHES);
-        $this->Z2MSet($PayloadJSON);
+        $this->ZWAVE2M_Set($topic, $PayloadJSON);
     }
 
     private function fetchRetainedData($topic) {
@@ -595,6 +604,7 @@ trait Zwave2MQTTHelper
 
                 case $baseTopic . '38/1/currentValue':
                     $this->RegisterVariableInteger('ZWAVE2M_Intensity', $this->Translate('Intensity'), '~Intensity.100');
+                    $this->EnableAction('ZWAVE2M_Intensity');
                     $data = $this->fetchRetainedData($baseTopic . '38/1/currentValue');
                     if (array_key_exists('value',$data)) {
                         $this->SetValue('ZWAVE2M_Intensity', $data['value']);
@@ -1880,7 +1890,21 @@ trait Zwave2MQTTHelper
         }
     }
 
-    public function Z2MSet($payload)
+    public function Z2MSet($topic, $payload)
+    {
+        $Data['DataID'] = '{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}';
+        $Data['PacketType'] = 3;
+        $Data['QualityOfService'] = 0;
+        $Data['Retain'] = false;
+        $Data['Topic'] = $topic . '/set';
+        $Data['Payload'] = $payload;
+        $DataJSON = json_encode($Data, JSON_UNESCAPED_SLASHES);
+        $this->SendDebug(__FUNCTION__ . ' Topic', $Data['Topic'], 0);
+        $this->SendDebug(__FUNCTION__ . ' Payload', $Data['Payload'], 0);
+        $this->SendDataToParent($DataJSON);
+    }
+
+    public function ZWAVE2M_Set($payload)
     {
         $Data['DataID'] = '{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}';
         $Data['PacketType'] = 3;
