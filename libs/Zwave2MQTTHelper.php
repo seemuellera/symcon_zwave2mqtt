@@ -536,9 +536,10 @@ trait Zwave2MQTTHelper
     public function getDeviceInfo()
     {
         $mqttInstance = $parent->InstanceID;
+        $this->SendDebug('Parent Instance', $mqttInstance, 0);
         $allTopics = MQTT_GetRetainedMessageTopicList($mqttInstance);
         $allTopicsJson = json_encode($allTopics);
-        $this->SendDebug('Topic List', $allTopicsJson);
+        $this->SendDebug('Topic List', $allTopicsJson, 0);
     }
 
     public function ReceiveData($JSONString)
