@@ -19,6 +19,7 @@ trait Zwave2MQTTHelper
                 $Payload['value'] = $Value;
                 $topic = $baseTopic . '38/1/targetValue';
                 break;
+
             case 'ZWAVE2M_IntensityOnOff':
                 if ($Value) {
                     $Payload['value'] = true;
@@ -28,6 +29,11 @@ trait Zwave2MQTTHelper
                     $Payload['value'] = 0;
                     $topic = $baseTopic . '38/1/targetValue';
                 }
+                break;
+
+            case 'ZWAVE2M_Switch':
+                $Payload['value'] = $Value;
+                $topic = $baseTopic . '37/0/targetValue';
                 break;
             
             default:
@@ -115,6 +121,15 @@ trait Zwave2MQTTHelper
                         }
                     }
                     break;
+
+                case $baseTopic . '37/0/currentValue':
+                    $this->RegisterVariableBoolean('ZWAVE2M_Switch', $this->Translate('Status'), '~Switch');
+                    $this->EnableAction('ZWAVE2M_Switch');
+                    $data = $this->fetchRetainedData($baseTopic . '37/0/currentValue');
+                    if (array_key_exists('value',$data)) {
+                        $this->SetValue('ZWAVE2M_Switch', $data['value']);
+                    }
+                    break;
             }
             
         }
@@ -160,6 +175,12 @@ trait Zwave2MQTTHelper
 
                             $this->SetValue('ZWAVE2M_IntensityOnOff', true);
                         }
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/37/0/currentValue', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        $this->SetValue('ZWAVE2M_Switch', ($Payload['value']));
                     }
                 }
             }
