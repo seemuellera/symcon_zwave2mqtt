@@ -36,7 +36,7 @@ class Zwave2MQTTDevice extends IPSModule
         
         if (($this->HasActiveParent()) && (IPS_GetKernelRunlevel() == KR_READY)) {
             
-            //$this->getDeviceInfo();
+            $this->getDeviceInfo();
         }
         $this->SetStatus(102);
     }
