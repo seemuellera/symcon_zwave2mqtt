@@ -551,8 +551,22 @@ trait Zwave2MQTTHelper
             }
         }
 
-        $deviceTopicsJson = json_encode($deviceTopics);
-        $this->SendDebug("Device Topics", $deviceTopicsJson, 0);
+        $baseTopic = $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/';
+        foreach (DeviceTopic as $currentDeviceTopic) {
+
+            switch($currentDeviceTopic) {
+
+                case $baseTopic . 'lastActive':
+                    $this->RegisterVariableInteger('ZWAVE2M_LastActive', $this->Translate('Last Seen'), '~UnixTimestamp');
+                    break;
+
+                
+                case $baseTopic . 'status':
+                    $this->RegisterVariableBoolean('ZWAVE2M_DeviceStatus', $this->Translate('Device Health'), '~Alert.Reversed');
+                    break;
+            }
+            
+        }
     }
 
     public function ReceiveData($JSONString)
@@ -566,17 +580,6 @@ trait Zwave2MQTTHelper
 
             $this->SendDebug('MQTT Topic', $Buffer['Topic'], 0);
             $this->SendDebug('MQTT Payload', $Buffer['Payload'], 0);
-
-            if (array_key_exists('Topic', $Buffer)) {
-                if (fnmatch('*/availability', $Buffer['Topic'])) {
-                    $this->RegisterVariableBoolean('ZWAVE2M_Status', $this->Translate('Status'), 'Z2M.DeviceStatus');
-                    if ($Buffer['Payload'] == 'online') {
-                        $this->SetValue('ZWAVE2M_Status', true);
-                    } else {
-                        $this->SetValue('ZWAVE2M_Status', false);
-                    }
-                }
-            }
 
             $Payload = json_decode($Buffer['Payload'], true);
             if (fnmatch('symcon/' . $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/deviceInfo', $Buffer['Topic'])) {
@@ -599,7 +602,6 @@ trait Zwave2MQTTHelper
                 
                     if (array_key_exists('value', $Payload)) {
                         //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
-                        $this->RegisterVariableInteger('ZWAVE2M_LastActive', $this->Translate('Last Seen'), '~UnixTimestamp');
                         $this->SetValue('ZWAVE2M_LastActive', ($Payload['value'] / 1000));
                     }
                 }
