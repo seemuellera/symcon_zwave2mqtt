@@ -583,7 +583,7 @@ trait Zwave2MQTTHelper
             $Payload = json_decode($Buffer['Payload'], true);
             if (is_array($Payload)) {
 
-                if (fnmatch('symcon/' . $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/lastActive', $Buffer['Topic'])) {
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/lastActive', $Buffer['Topic'])) {
                 
                     if (array_key_exists('value', $Payload)) {
                         //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
