@@ -535,7 +535,9 @@ trait Zwave2MQTTHelper
 
     public function getDeviceInfo()
     {
-        $mqttInstance = $parent->InstanceID;
+
+        $allMqttServers = IPS_GetInstanceListByModuleID('{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}');
+        $mqttInstance = $allMqttServers[0];
         $this->SendDebug('Parent Instance', $mqttInstance, 0);
         $allTopics = MQTT_GetRetainedMessageTopicList($mqttInstance);
         $allTopicsJson = json_encode($allTopics);
