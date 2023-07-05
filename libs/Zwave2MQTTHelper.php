@@ -595,7 +595,7 @@ trait Zwave2MQTTHelper
 
                 case $baseTopic . '38/1/currentValue':
                     $this->RegisterVariableInteger('ZWAVE2M_Intensity', $this->Translate('Intensity'), '~Intensity.100');
-                    $data = $this->fetchRetainedData($baseTopic . 'status');
+                    $data = $this->fetchRetainedData($baseTopic . '38/1/currentValue');
                     if (array_key_exists('value',$data)) {
                         $this->SetValue('ZWAVE2M_Intensity', $data['value']);
                     }
