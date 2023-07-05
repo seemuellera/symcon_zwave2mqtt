@@ -19,6 +19,16 @@ trait Zwave2MQTTHelper
                 $Payload['value'] = $Value;
                 $topic = $baseTopic . '38/1/targetValue';
                 break;
+            case 'ZWAVE2M_IntensityOnOff':
+                if ($Value) {
+                    $Payload['value'] = true;
+                    $topic = $baseTopic . '38/1/restorePrevious';
+                }
+                else {
+                    $Payload['value'] = 0;
+                    $topic = $baseTopic . '38/1/targetValue';
+                }
+                break;
             case 'ZWAVE2M_Pi_Heating_Demand':
                 $Payload['pi_heating_demand'] = $Value;
                 break;
@@ -606,9 +616,17 @@ trait Zwave2MQTTHelper
                 case $baseTopic . '38/1/currentValue':
                     $this->RegisterVariableInteger('ZWAVE2M_Intensity', $this->Translate('Intensity'), '~Intensity.100');
                     $this->EnableAction('ZWAVE2M_Intensity');
+                    $this->RegisterVariableBoolean('ZWAVE2M_IntensityOnOff', $this->Translate('Status'), '~Switch');
+                    $this->EnableAction('ZWAVE2M_IntensityOnOff');
                     $data = $this->fetchRetainedData($baseTopic . '38/1/currentValue');
                     if (array_key_exists('value',$data)) {
                         $this->SetValue('ZWAVE2M_Intensity', $data['value']);
+                        if ($data['value'] == 0) {
+                            $this->SetValue('ZWAVE2M_IntensityOnOff', false);
+                        }
+                        else {
+                            $this->SetValue('ZWAVE2M_IntensityOnOff', true);
+                        }
                     }
                     break;
             }
@@ -643,22 +661,27 @@ trait Zwave2MQTTHelper
                 if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/lastActive', $Buffer['Topic'])) {
                 
                     if (array_key_exists('value', $Payload)) {
-                        //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
                         $this->SetValue('ZWAVE2M_LastActive', ($Payload['value'] / 1000));
                     }
                 }
                 if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/status', $Buffer['Topic'])) {
                 
                     if (array_key_exists('value', $Payload)) {
-                        //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
                         $this->SetValue('ZWAVE2M_DeviceStatus', ($Payload['value']));
                     }
                 }
                 if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/38/1/currentValue', $Buffer['Topic'])) {
                 
                     if (array_key_exists('value', $Payload)) {
-                        //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
                         $this->SetValue('ZWAVE2M_Intensity', ($Payload['value']));
+                        if ($Payload['value'] == 0) {
+                        
+                            $this->SetValue('ZWAVE2M_IntensityOnOff', false);
+                        }
+                        else {
+
+                            $this->SetValue('ZWAVE2M_IntensityOnOff', true);
+                        }
                     }
                 }
                 if (array_key_exists('do_not_disturb', $Payload)) {
