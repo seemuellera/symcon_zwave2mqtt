@@ -585,12 +585,19 @@ trait Zwave2MQTTHelper
                     }
                     break;
 
-                
                 case $baseTopic . 'status':
                     $this->RegisterVariableBoolean('ZWAVE2M_DeviceStatus', $this->Translate('Device Health'), '~Alert.Reversed');
                     $data = $this->fetchRetainedData($baseTopic . 'status');
                     if (array_key_exists('value',$data)) {
                         $this->SetValue('ZWAVE2M_DeviceStatus', $data['value']);
+                    }
+                    break;
+
+                case $baseTopic . '38/1/currentValue':
+                    $this->RegisterVariableInteger('ZWAVE2M_Intensity', $this->Translate('Intensity'), '~Intensity.100');
+                    $data = $this->fetchRetainedData($baseTopic . 'status');
+                    if (array_key_exists('value',$data)) {
+                        $this->SetValue('ZWAVE2M_Intensity', $data['value']);
                     }
                     break;
             }
