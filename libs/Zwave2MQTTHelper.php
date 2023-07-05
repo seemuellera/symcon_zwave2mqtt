@@ -546,7 +546,7 @@ trait Zwave2MQTTHelper
 
             if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/', $currentTopic)) {
             
-                $deviceTopics += $currentTopic;
+                $deviceTopics[] = $currentTopic;
             }
         }
 
