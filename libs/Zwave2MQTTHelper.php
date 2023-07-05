@@ -16,7 +16,7 @@ trait Zwave2MQTTHelper
                 if ($Value == 100) {
                     $Value = 99;
                 }
-                $payload['value'] = $Value;
+                $Payload['value'] = $Value;
                 $topic = $baseTopic . '38/1/targetValue';
                 break;
             case 'ZWAVE2M_Pi_Heating_Demand':
