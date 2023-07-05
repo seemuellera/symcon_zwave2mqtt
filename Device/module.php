@@ -21,6 +21,9 @@ class Zwave2MQTTDevice extends IPSModule
         $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
         $this->RegisterPropertyString('MQTTTopic', '');
         $this->createVariableProfiles();
+
+        $this->MaintainVariable("lastSeen","Last Seen",1,"~UnixTimestamp",2,true);
+        $this->MaintainVariable("IsAlive","Is Alive",0,"~Alert.Reversed",1,true);
     }
 
     public function ApplyChanges()
@@ -35,6 +38,8 @@ class Zwave2MQTTDevice extends IPSModule
         $this->SetReceiveDataFilter('.*' . $Filter . '.*');
         
         if (($this->HasActiveParent()) && (IPS_GetKernelRunlevel() == KR_READY)) {
+
+            $this->SendDebug('TOPIC', $Buffer['Topic'], 0);            
             //$this->getDeviceInfo();
         }
         $this->SetStatus(102);
