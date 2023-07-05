@@ -535,12 +535,10 @@ trait Zwave2MQTTHelper
 
     public function getDeviceInfo()
     {
-        $this->symconExtensionCommand('getDevice', $this->ReadPropertyString('MQTTTopic'));
-    }
-
-    public function getGroupInfo()
-    {
-        $this->symconExtensionCommand('getGroup', $this->ReadPropertyString('MQTTTopic'));
+        $mqttInstance = $parent->InstanceID;
+        $allTopics = MQTT_GetRetainedMessageTopicList($mqttInstance);
+        $allTopicsJson = json_encode($allTopics);
+        $this->SendDebug('Topic List', $allTopicsJson)
     }
 
     public function ReceiveData($JSONString)
@@ -587,8 +585,8 @@ trait Zwave2MQTTHelper
                 
                     if (array_key_exists('value', $Payload)) {
                         //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
-                        $this->RegisterVariableInteger('ZWAVE2M_LastSeen', $this->Translate('Last Seen'), '~UnixTimestamp');
-                        $this->SetValue('ZWAVE2M_LastSeen', ($Payload['value'] / 1000));
+                        $this->RegisterVariableInteger('ZWAVE2M_LastActive', $this->Translate('Last Seen'), '~UnixTimestamp');
+                        $this->SetValue('ZWAVE2M_LastActive', ($Payload['value'] / 1000));
                     }
                 }
                 if (array_key_exists('do_not_disturb', $Payload)) {
