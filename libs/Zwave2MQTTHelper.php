@@ -1904,13 +1904,13 @@ trait Zwave2MQTTHelper
         $this->SendDataToParent($DataJSON);
     }
 
-    public function ZWAVE2M_Set($payload)
+    public function ZWAVE2M_Set($topic, $payload)
     {
         $Data['DataID'] = '{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}';
         $Data['PacketType'] = 3;
         $Data['QualityOfService'] = 0;
         $Data['Retain'] = false;
-        $Data['Topic'] = $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/set';
+        $Data['Topic'] = $topic . '/set';
         $Data['Payload'] = $payload;
         $DataJSON = json_encode($Data, JSON_UNESCAPED_SLASHES);
         $this->SendDebug(__FUNCTION__ . ' Topic', $Data['Topic'], 0);
