@@ -636,11 +636,6 @@ trait Zwave2MQTTHelper
                     }
                 }
             }
-            if (fnmatch('symcon/' . $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/groupInfo', $Buffer['Topic'])) {
-                if (is_array($Payload)) {
-                    $this->mapExposesToVariables($Payload);
-                }
-            }
 
             $Payload = json_decode($Buffer['Payload'], true);
             if (is_array($Payload)) {
@@ -650,6 +645,20 @@ trait Zwave2MQTTHelper
                     if (array_key_exists('value', $Payload)) {
                         //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
                         $this->SetValue('ZWAVE2M_LastActive', ($Payload['value'] / 1000));
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/status', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
+                        $this->SetValue('ZWAVE2M_DeviceStatus', ($Payload['value']));
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/38/1/currentValue', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        //Last Seen ist nicht in den Exposes enthalten, deswegen hier.
+                        $this->SetValue('ZWAVE2M_Intensity', ($Payload['value']));
                     }
                 }
                 if (array_key_exists('do_not_disturb', $Payload)) {
