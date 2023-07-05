@@ -55,7 +55,8 @@ class Zwave2MQTTConfigurator extends IPSModule
                 [
                     'moduleID'      => '{27D3347F-8CC4-469B-866B-BE276BE6DA89}',
                     'configuration' => [
-                        'MQTTTopic'    => $device['friendly_name']
+                        'MQTTTopic'    => $device['friendly_name'],
+                        'MQTTBaseTopic' => $this->ReadPropertyString('MQTTBaseTopic')
                     ]
                 ];
             array_push($ValuesDevices, $Value);
