@@ -538,10 +538,20 @@ trait Zwave2MQTTHelper
 
         $allMqttServers = IPS_GetInstanceListByModuleID('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
         $mqttInstance = $allMqttServers[0];
-        $this->SendDebug('Parent Instance', $mqttInstance, 0);
+        // $this->SendDebug('Parent Instance', $mqttInstance, 0);
         $allTopics = MQTT_GetRetainedMessageTopicList($mqttInstance);
-        $allTopicsJson = json_encode($allTopics);
-        $this->SendDebug('Topic List', $allTopicsJson, 0);
+        
+        $deviceTopics = Array();
+        foreach ($allTopics as $currentTopic) {
+
+            if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/', $currentTopic)) {
+            
+                $deviceTopics += $currentTopic;
+            }
+        }
+
+        $deviceTopicsJson = json_encode($deviceTopics);
+        $this->SendDebug("Device Topics", $deviceTopicsJson, 0);
     }
 
     public function ReceiveData($JSONString)
