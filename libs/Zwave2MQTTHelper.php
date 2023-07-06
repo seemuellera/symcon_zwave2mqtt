@@ -137,7 +137,7 @@ trait Zwave2MQTTHelper
                     break;
 
                 case $baseTopic . '51/0/hexColor':
-                    $this->RegisterVariableBoolean('ZWAVE2M_Color', $this->Translate('Color RGB'), '~HexColor');
+                    $this->RegisterVariableInteger('ZWAVE2M_Color', $this->Translate('Color RGB'), '~HexColor');
                     $this->EnableAction('ZWAVE2M_Color');
                     $data = $this->fetchRetainedData($baseTopic . '51/0/hexColor');
                     if (array_key_exists('value',$data)) {
