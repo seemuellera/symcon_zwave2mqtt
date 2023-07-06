@@ -171,6 +171,7 @@ class Zwave2MQTTConfigurator extends IPSModule
             }
 
             $this->WriteAttributeString('Devices', json_encode($deviceDetails));
+            $this->LogMessage('Fetching devices from zwave-js-ui is complete', KL_MESSAGE);
         }
     }
 
