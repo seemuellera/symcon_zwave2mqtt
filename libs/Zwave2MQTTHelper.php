@@ -192,6 +192,16 @@ trait Zwave2MQTTHelper
                         }
                     }
                     break;
+
+                case $baseTopic . '91/0/scene/001':
+                    $this->RegisterVariableInteger('ZWAVE2M_SceneID1', $this->Translate('Scene ID 1'));
+                    // no retained value has to be retrieved as the scene IDs only exist during the key presses
+                    break;
+
+                case $baseTopic . '91/0/scene/002':
+                    $this->RegisterVariableInteger('ZWAVE2M_SceneID2', $this->Translate('Scene ID 2'));
+                    // no retained value has to be retrieved as the scene IDs only exist during the key presses
+                    break;
             }
             
         }
@@ -271,6 +281,18 @@ trait Zwave2MQTTHelper
                         if ($Payload['value'] == 2) {
                             $this->SetValue('ZWAVE2M_LockLocal', true);    
                         }
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/91/0/scene/001', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        $this->SetValue('ZWAVE2M_SceneID1', $Payload['value']);
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/91/0/scene/002', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        $this->SetValue('ZWAVE2M_SceneID2', $Payload['value']);
                     }
                 }
             }
