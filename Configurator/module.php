@@ -13,6 +13,7 @@ class Zwave2MQTTConfigurator extends IPSModule
         parent::Create();
         $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
         $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
+        $this->RegisterAttriubteString('Devices','{]');
 
         $this->SetBuffer('Devices', '{}');
     }
@@ -25,17 +26,15 @@ class Zwave2MQTTConfigurator extends IPSModule
         //Setze Filter für ReceiveData
         $topic = $this->ReadPropertyString('MQTTBaseTopic');
         $this->SetReceiveDataFilter('.*' . $topic . '.*');
-        $this->getDevices();
         $this->SetStatus(102);
     }
 
     public function GetConfigurationForm()
     {
-        //$this->getDevices();
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
 
         //Devices
-        $Devices = json_decode($this->GetBuffer('Devices'), true);
+        $Devices = json_decode($this->ReadAttributeString('Devices'), true);
         $this->SendDebug('Buffer Devices', json_encode($Devices), 0);
         $ValuesDevices = [];
 
@@ -170,11 +169,11 @@ class Zwave2MQTTConfigurator extends IPSModule
                 array_push($deviceDetails, $currentDeviceDetails);
             }
 
-            $this->SetBuffer('Devices', json_encode($deviceDetails));
+            $this->WriteAttributeString('Devices', json_encode($deviceDetails));
         }
     }
 
-    protected function getDevices()
+    public function fetchDevices()
     {
         $param = '{ "arg": [] }';
 

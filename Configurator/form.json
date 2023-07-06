@@ -16,7 +16,7 @@
                     "type": "Configurator",
                     "name": "DeviceConfigurator",
                     "caption": "Devices",
-                    "rowCount": 35,
+                    "rowCount": 20,
                     "delete": true,
                     "sort": {
                         "column": "node_id",
@@ -62,6 +62,11 @@
                     "values": []
                 }
             ]
+        },
+        {
+            "type": "Button",
+            "label": "Get Device Infos",
+            "onClick": "fetchDevices($id);"
         }
     ]
 }
