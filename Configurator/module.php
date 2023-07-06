@@ -112,13 +112,18 @@ class Zwave2MQTTConfigurator extends IPSModule
                 $currentNodeDetails['modelID'] = $currentDeviceDescription['productLabel'];
                 $currentNodeDetails['description'] = $currentDeviceDescription['productDescription'];
                 $currentNodeDetails['powerSource'] = 'Unknown';
-                if ($currentDeviceDescription['nodeType'] == 1) {
+                if (array_key_exists('nodeType', $currentDeviceDescription)) {
+                    if ($currentDeviceDescription['nodeType'] == 1) {
 
-                    $currentNodeDetails['powerSource'] = 'Mains';
+                        $currentNodeDetails['powerSource'] = 'Mains';
+                    }
+                    if ($currentDeviceDescription['nodeType'] == 2) {
+
+                        $currentNodeDetails['powerSource'] = 'Battery';
+                    }
                 }
-                if ($currentDeviceDescription['nodeType'] == 2) {
-
-                    $currentNodeDetails['powerSource'] = 'Battery';
+                else {
+                    $currentNodeDetails['powerSource'] = 'Unknown';
                 }
                 
                 $allDeviceDesriptions[] = $currentNodeDetails;
