@@ -174,13 +174,13 @@ trait Zwave2MQTTHelper
                 if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/status', $Buffer['Topic'])) {
                 
                     if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_DeviceStatus', ($Payload['value']));
+                        $this->SetValue('ZWAVE2M_DeviceStatus', $Payload['value']);
                     }
                 }
                 if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/38/1/currentValue', $Buffer['Topic'])) {
                 
                     if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_Intensity', ($Payload['value']));
+                        $this->SetValue('ZWAVE2M_Intensity', $Payload['value']);
                         if ($Payload['value'] == 0) {
                         
                             $this->SetValue('ZWAVE2M_IntensityOnOff', false);
@@ -194,13 +194,13 @@ trait Zwave2MQTTHelper
                 if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/37/0/currentValue', $Buffer['Topic'])) {
                 
                     if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_Switch', ($Payload['value']));
+                        $this->SetValue('ZWAVE2M_Switch', $Payload['value']);
                     }
                 }
                 if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/51/0/hexColor', $Buffer['Topic'])) {
                 
                     if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_Color', ($Payload['value']));
+                        $this->SetValue('ZWAVE2M_Color', $this->HexToInt($Payload['value']));
                     }
                 }
             }

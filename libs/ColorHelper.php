@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 trait ColorHelper
 {
-    protected function IntToHex($color) {
+    protected function IntToHex($colorInt) {
 
-        $colorDecRed = (($color >> 16) & 0xFF);
-        $colorDecGreen = (($color >> 8) & 0xFF);
-        $colorDecBlue = ($color & 0xFF);
+        $colorDecRed = (($colorInt >> 16) & 0xFF);
+        $colorDecGreen = (($colorInt >> 8) & 0xFF);
+        $colorDecBlue = ($colorInt & 0xFF);
     
         $colorHexRed = dechex($colorDecRed);
         $colorHexGreen = dechex($colorDecGreen);
@@ -17,6 +17,12 @@ trait ColorHelper
         $colorHex = sprintf("%02s%02s%02s", $colorHexRed, $colorHexGreen, $colorHexBlue);
 
         return $colorHex;
+    }
+
+    protected function HexToInt($colorHex) {
+
+        $colorInt = hexdec($colorHex);
+        return $colorInt;
     }
 
     protected function HexToRGB($value)
