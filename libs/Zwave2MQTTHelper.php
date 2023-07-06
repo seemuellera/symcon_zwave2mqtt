@@ -41,7 +41,7 @@ trait Zwave2MQTTHelper
                 $topic = $baseTopic . '51/0/hexColor';
                 break;
 
-            case 'ZWAVE2M_LockRf':
+            case 'ZWAVE2M_LockRF':
                 $topic = $baseTopic . '117/0/rf';
                 if ($Value) {
                     $Payload['value'] = 1;    
