@@ -32,7 +32,6 @@ class Zwave2MQTTConfigurator extends IPSModule
         $ValuesDevices = [];
 
         foreach ($Devices as $device) {
-            $instanceID = $this->getDeviceInstanceID($device['friendly_name']);
             $Value['name'] = $device['friendly_name'];
             $Value['node_id'] = $device['nodeId'];
             $Value['type'] = $device['type'];
@@ -41,7 +40,7 @@ class Zwave2MQTTConfigurator extends IPSModule
             $Value['description'] = $device['description'];
             $Value['power_source'] = (array_key_exists('powerSource', $device) == true ? $this->Translate($device['powerSource']) : $this->Translate('Unknown'));
 
-            $Value['instanceID'] = $instanceID;
+            $Value['instanceID'] = $this->getDeviceInstanceID($device['friendly_name']);
 
             $Value['create'] =
                 [
@@ -113,11 +112,11 @@ class Zwave2MQTTConfigurator extends IPSModule
                 $currentNodeDetails['modelID'] = $currentDeviceDescription['productLabel'];
                 $currentNodeDetails['description'] = $currentDeviceDescription['productDescription'];
                 $currentNodeDetails['powerSource'] = 'Unknown';
-                if ($currentDeviceDescription['productType'] == 1) {
+                if ($currentDeviceDescription['nodeType'] == 1) {
 
                     $currentNodeDetails['powerSource'] = 'Mains';
                 }
-                if ($currentDeviceDescription['productType'] == 2) {
+                if ($currentDeviceDescription['nodeType'] == 2) {
 
                     $currentNodeDetails['powerSource'] = 'Battery';
                 }
