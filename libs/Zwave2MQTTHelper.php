@@ -37,7 +37,7 @@ trait Zwave2MQTTHelper
                 break;
 
             case 'ZWAVE2M_Color':
-                $Payload['value'] = $Value;
+                $Payload['value'] = $this->IntToHex($Value);
                 $topic = $baseTopic . '51/0/hexColor';
                 break;
             

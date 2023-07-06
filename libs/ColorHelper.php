@@ -4,6 +4,21 @@ declare(strict_types=1);
 
 trait ColorHelper
 {
+    protected function IntToHex($color) {
+
+        $colorDecRed = (($color >> 16) & 0xFF);
+        $colorDecGreen = (($color >> 8) & 0xFF);
+        $colorDecBlue = ($color & 0xFF);
+    
+        $colorHexRed = dechex($colorDecRed);
+        $colorHexGreen = dechex($colorDecGreen);
+        $colorHexBlue = dechex($colorDecBlue);
+        
+        $colorHex = sprintf("%02s%02s%02s", $colorHexRed, $colorHexGreen, $colorHexBlue);
+
+        return $colorHex;
+    }
+
     protected function HexToRGB($value)
     {
         $RGB = [];
