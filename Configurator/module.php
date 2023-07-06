@@ -13,7 +13,7 @@ class Zwave2MQTTConfigurator extends IPSModule
         parent::Create();
         $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
         $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
-        $this->RegisterAttriubteString('Devices','{]');
+        $this->RegisterAttributeString('Devices','{]');
 
         $this->SetBuffer('Devices', '{}');
     }
