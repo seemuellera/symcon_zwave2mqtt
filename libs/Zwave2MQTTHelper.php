@@ -35,6 +35,11 @@ trait Zwave2MQTTHelper
                 $Payload['value'] = $Value;
                 $topic = $baseTopic . '37/0/targetValue';
                 break;
+
+            case 'ZWAVE2M_Color':
+                $Payload['value'] = $Value;
+                $topic = $baseTopic . '51/0/hexColor';
+                break;
             
             default:
                 $this->SendDebug('Request Action', 'No Action defined: ' . $Ident, 0);
@@ -130,6 +135,15 @@ trait Zwave2MQTTHelper
                         $this->SetValue('ZWAVE2M_Switch', $data['value']);
                     }
                     break;
+
+                case $baseTopic . '51/0/hexColor':
+                    $this->RegisterVariableBoolean('ZWAVE2M_Color', $this->Translate('Color RGB'), '~HexColor');
+                    $this->EnableAction('ZWAVE2M_Color');
+                    $data = $this->fetchRetainedData($baseTopic . '51/0/hexColor');
+                    if (array_key_exists('value',$data)) {
+                        $this->SetValue('ZWAVE2M_Color', $data['value']);
+                    }
+                    break;
             }
             
         }
@@ -181,6 +195,12 @@ trait Zwave2MQTTHelper
                 
                     if (array_key_exists('value', $Payload)) {
                         $this->SetValue('ZWAVE2M_Switch', ($Payload['value']));
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/51/0/hexColor', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        $this->SetValue('ZWAVE2M_Color', ($Payload['value']));
                     }
                 }
             }
