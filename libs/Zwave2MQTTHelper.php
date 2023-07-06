@@ -255,10 +255,10 @@ trait Zwave2MQTTHelper
                 
                     if (array_key_exists('value', $Payload)) {
                         if ($Payload['value'] == 0) {
-                            $this->SetValue('ZWAVE2M_LockRf', false);    
+                            $this->SetValue('ZWAVE2M_LockRF', false);    
                         }
                         if ($Payload['value'] == 1) {
-                            $this->SetValue('ZWAVE2M_LockRf', true);    
+                            $this->SetValue('ZWAVE2M_LockRF', true);    
                         }
                     }
                 }
