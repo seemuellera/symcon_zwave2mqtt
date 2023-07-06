@@ -40,6 +40,26 @@ trait Zwave2MQTTHelper
                 $Payload['value'] = $this->IntToHex($Value);
                 $topic = $baseTopic . '51/0/hexColor';
                 break;
+
+            case 'ZWAVE2M_LockRf':
+                $topic = $baseTopic . '117/0/rf';
+                if ($Value) {
+                    $Payload['value'] = 1;    
+                }
+                else {
+                    $Payload['value'] = 0;
+                }
+                break;
+
+            case 'ZWAVE2M_LockLocal':
+                $topic = $baseTopic . '117/0/local';
+                if ($Value) {
+                    $Payload['value'] = 2;    
+                }
+                else {
+                    $Payload['value'] = 0;
+                }
+                break;
             
             default:
                 $this->SendDebug('Request Action', 'No Action defined: ' . $Ident, 0);
@@ -144,6 +164,34 @@ trait Zwave2MQTTHelper
                         $this->SetValue('ZWAVE2M_Color', $data['value']);
                     }
                     break;
+
+                case $baseTopic . '117/0/rf':
+                    $this->RegisterVariableBoolean('ZWAVE2M_LockRF', $this->Translate('Lock Remote Operations'), '~Lock');
+                    $this->EnableAction('ZWAVE2M_LockRF');
+                    $data = $this->fetchRetainedData($baseTopic . '117/0/rf');
+                    if (array_key_exists('value',$data)) {
+                        if ($data['value'] == 0) {
+                            $this->SetValue('ZWAVE2M_LockRF', false);
+                        }
+                        else {
+                            $this->SetValue('ZWAVE2M_LockRF', true);
+                        }
+                    }
+                    break;
+
+                case $baseTopic . '117/0/local':
+                    $this->RegisterVariableBoolean('ZWAVE2M_LockLocal', $this->Translate('Lock Local Operations'), '~Lock');
+                    $this->EnableAction('ZWAVE2M_LockLocal');
+                    $data = $this->fetchRetainedData($baseTopic . '117/0/local');
+                    if (array_key_exists('value',$data)) {
+                        if ($data['value'] == 0) {
+                            $this->SetValue('ZWAVE2M_LockLocal', false);
+                        }
+                        else {
+                            $this->SetValue('ZWAVE2M_LockLocal', true);
+                        }
+                    }
+                    break;
             }
             
         }
@@ -201,6 +249,28 @@ trait Zwave2MQTTHelper
                 
                     if (array_key_exists('value', $Payload)) {
                         $this->SetValue('ZWAVE2M_Color', $this->HexToInt($Payload['value']));
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/117/0/rf', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        if ($Payload['value'] == 0) {
+                            $this->SetValue('ZWAVE2M_LockRf', false);    
+                        }
+                        if ($Payload['value'] == 1) {
+                            $this->SetValue('ZWAVE2M_LockRf', true);    
+                        }
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/117/0/local', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        if ($Payload['value'] == 0) {
+                            $this->SetValue('ZWAVE2M_LockLocal', false);    
+                        }
+                        if ($Payload['value'] == 2) {
+                            $this->SetValue('ZWAVE2M_LockLocal', true);    
+                        }
                     }
                 }
             }
