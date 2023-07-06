@@ -115,7 +115,7 @@ trait Zwave2MQTTHelper
             switch($currentDeviceTopic) {
 
                 case $baseTopic . 'lastActive':
-                    $this->RegisterVariableInteger('ZWAVE2M_LastActive', $this->Translate('Last Seen'), '~UnixTimestamp');
+                    $this->RegisterVariableInteger('ZWAVE2M_LastActive', $this->Translate('Last Activity'), '~UnixTimestamp');
                     $data = $this->fetchRetainedData($baseTopic . 'lastActive');
                     if (array_key_exists('value',$data)) {
                         $this->SetValue('ZWAVE2M_LastActive', $data['value']);
