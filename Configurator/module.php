@@ -26,6 +26,7 @@ class Zwave2MQTTConfigurator extends IPSModule
         //Setze Filter für ReceiveData
         $topic = $this->ReadPropertyString('MQTTBaseTopic');
         $this->SetReceiveDataFilter('.*' . $topic . '.*');
+        $this->fetchDevices();
         $this->SetStatus(102);
     }
 
