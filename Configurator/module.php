@@ -74,6 +74,7 @@ class Zwave2MQTTConfigurator extends IPSModule
     {
         $InstanceIDs = IPS_GetInstanceListByModuleID('{27D3347F-8CC4-469B-866B-BE276BE6DA89}');
         foreach ($InstanceIDs as $id) {
+            if (IPS_)
             if (IPS_GetProperty($id, 'MQTTTopic') == $FriendlyName) {
                 return $id;
             }
