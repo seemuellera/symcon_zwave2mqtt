@@ -26,7 +26,6 @@ class Zwave2MQTTConfigurator extends IPSModule
         //Setze Filter für ReceiveData
         $topic = $this->ReadPropertyString('MQTTBaseTopic');
         $this->SetReceiveDataFilter('.*' . $topic . '.*');
-        $this->fetchDevices();
         $this->SetStatus(102);
     }
 
@@ -74,7 +73,7 @@ class Zwave2MQTTConfigurator extends IPSModule
     {
         $InstanceIDs = IPS_GetInstanceListByModuleID('{27D3347F-8CC4-469B-866B-BE276BE6DA89}');
         foreach ($InstanceIDs as $id) {
-            
+
             if (IPS_GetProperty($id, 'MQTTTopic') == $FriendlyName) {
                 return $id;
             }
@@ -176,11 +175,59 @@ class Zwave2MQTTConfigurator extends IPSModule
         }
     }
 
-    public function fetchDevices()
-    {
-        $param = '{ "arg": [] }';
+    public function getDeviceInfo() {
 
-        $this->Command('_CLIENTS/ZWAVE-GATEWAY-zwave-js-ui/api/getNodes/set', $param);
+        $allMqttServers = IPS_GetInstanceListByModuleID('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
+        $mqttInstance = $allMqttServers[0];
+        // $this->SendDebug('Parent Instance', $mqttInstance, 0);
+        $allTopics = MQTT_GetRetainedMessageTopicList($mqttInstance);
+
+        $regexDescriptions = '/^' . $this->ReadPropertyString('MQTTBaseTopic') . '\/.+\/nodeinfo/';
+
+        $allDeviceDesriptions = Array();
+        foreach($allTopics as $currentTopic) {
+
+            if (preg_match($regexDescriptions, $currentTopic)) {
+
+                $currentDeviceDescription = $this->fetchRetainedData($currentTopic);
+
+                $currentNodeDetails = Array();
+
+                if (array_key_exists('name', $currentDeviceDescription)) {
+
+                    if ($currentDeviceDescription['name']) {
+
+                        $currentNodeDetails['friendly_name'] = $currentDeviceDescription['name'];
+                    }
+                    else {
+
+                        $currentNodeDetails['friendly_name'] = 'nodeID_' . $currentDeviceDescription['id'];
+                    }
+                }
+                else {
+                
+                    $currentNodeDetails['friendly_name'] = 'nodeID_' . $currentDeviceDescription['id'];
+                }
+                $currentNodeDetails['nodeId'] = $currentDeviceDescription['id'];
+                $currentNodeDetails['type'] = 'Unknown Type';
+                $currentNodeDetails['vendor'] = $currentDeviceDescription['manufacturer'];
+                $currentNodeDetails['modelID'] = $currentDeviceDescription['productLabel'];
+                $currentNodeDetails['description'] = $currentDeviceDescription['productDescription'];
+                $currentNodeDetails['powerSource'] = 'Unknown';
+                if ($currentDeviceDescription['productType'] == 1) {
+
+                    $currentNodeDetails['powerSource'] = 'Mains';
+                }
+                if ($currentDeviceDescription['productType'] == 2) {
+
+                    $currentNodeDetails['powerSource'] = 'Battery';
+                }
+                
+                $allDeviceDesriptions[] = $currentNodeDetails;
+            }
+        }
+
+        return $allDeviceDesriptions;
     }
 
 }

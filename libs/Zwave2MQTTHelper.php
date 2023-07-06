@@ -69,27 +69,6 @@ trait Zwave2MQTTHelper
         $PayloadJSON = json_encode($Payload, JSON_UNESCAPED_SLASHES);
         $this->ZWAVE2M_Set($topic, $PayloadJSON);
     }
-
-    private function fetchRetainedData($topic) {
-
-        $allMqttServers = IPS_GetInstanceListByModuleID('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
-        $mqttInstance = $allMqttServers[0];
-        $retainedData = MQTT_GetRetainedMessage($mqttInstance, $topic);
-
-        if (array_key_exists('Payload', $retainedData)) {
-
-            if (IPS_GetKernelDate() > 1670886000) {
-                $retainedData['Payload'] = utf8_decode($retainedData['Payload']);
-            }
-
-            $Payload = json_decode($retainedData['Payload'], true);
-            return $Payload;
-        }
-        else {
-
-            return false;
-        }
-    }
     
     public function getDeviceInfo()
     {
