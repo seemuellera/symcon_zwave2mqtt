@@ -190,6 +190,23 @@ trait Zwave2MQTTHelper
                     $this->RegisterVariableInteger('ZWAVE2M_SceneID2', $this->Translate('Scene ID 2'));
                     // no retained value has to be retrieved as the scene IDs only exist during the key presses
                     break;
+
+                case $baseTopic . '48/0/Any':
+                    $this->SendDebug('DEVICE INFO', "found support for Binary Sensor v1",0);
+                    $this->RegisterVariableBoolean('ZWAVE2M_BinarySensor', $this->Translate('Binary Sensor'));
+                    // no retained value has to be retrieved as the scene IDs only exist during the key presses
+                    break;
+
+                case $baseTopic . '49/0/Illuminance':
+                    $this->SendDebug('DEVICE INFO', "found support for Multilevel Sensor v8 Illuminance",0);
+                    $this->RegisterVariableInteger('ZWAVE2M_Illuminance', $this->Translate('Illuminance'),"~Illumination");
+                    // no retained value has to be retrieved as the scene IDs only exist during the key presses
+                    break;
+                case $baseTopic . '49/0/Air_temperature':
+                    $this->SendDebug('DEVICE INFO', "found support for Multilevel Sensor v8 Air Temperature",0);
+                    $this->RegisterVariableFloat('ZWAVE2M_AirTemperature', $this->Translate('Air Temperature'),"~Temperature");
+                    // no retained value has to be retrieved as the scene IDs only exist during the key presses
+                    break;
             }
             
         }
@@ -281,6 +298,24 @@ trait Zwave2MQTTHelper
                 
                     if (array_key_exists('value', $Payload)) {
                         $this->SetValue('ZWAVE2M_SceneID2', $Payload['value']);
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/48/0/Any', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        $this->SetValue('ZWAVE2M_BinarySensor', $Payload['value']);
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/49/0/Illuminance', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        $this->SetValue('ZWAVE2M_Illuminance', $Payload['value']);
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/49/0/Air_temperature', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        $this->SetValue('ZWAVE2M_AirTemperature', $Payload['value']);
                     }
                 }
             }
