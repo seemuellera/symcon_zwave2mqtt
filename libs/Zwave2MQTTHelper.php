@@ -208,7 +208,7 @@ trait Zwave2MQTTHelper
                 case $baseTopic . '49/0/Air_temperature':
                     $this->SendDebug('DEVICE INFO', "found support for Multilevel Sensor v8 Air Temperature",0);
                     $this->RegisterVariableFloat('ZWAVE2M_AirTemperature', $this->Translate('Air Temperature'),"~Temperature");
-                    $data = $this->fetchRetainedData($baseTopic . '49/0/Air_Temperature');
+                    $data = $this->fetchRetainedData($baseTopic . '49/0/Air_temperature');
                     if (array_key_exists('value',$data)) {
                         $this->SetValue('Z2M_AirTemperature', $data['value']);
                     }
