@@ -33,14 +33,6 @@ trait MQTTHelper
 
         if (array_key_exists('Payload', $retainedData)) {
 
-            if (1 == 2) {
-            //if (IPS_GetKernelDate() > 1670886000) {
-                $retainedData['Payload'] = utf8_decode($retainedData['Payload']);
-            }
-
-            $this->LogMessage("FETCHER: " . $retainedData['Payload'], KL_ERROR);
-
-
             $Payload = json_decode($retainedData['Payload'], true);
             return $Payload;
         }
