@@ -229,6 +229,22 @@ trait Zwave2MQTTHelper
                         $this->SetValue('ZWAVE2M_CoverSensor', $data['value']);
                     }
                     break;
+                case $baseTopic . '128/0/level':
+                    $this->SendDebug('DEVICE INFO', "found support for Battery v2 level",0);
+                    $this->RegisterVariableInteger('ZWAVE2M_BatteryLevel', $this->Translate('Battery Level'),"~Battery.100");
+                    $data = $this->fetchRetainedData($baseTopic . '128/0/level');
+                    if (array_key_exists('value',$data)) {
+                        $this->SetValue('ZWAVE2M_BatteryLevel', $data['value']);
+                    }
+                    break;
+                case $baseTopic . '128/0/isLow':
+                    $this->SendDebug('DEVICE INFO', "found support for Battery v2 level",0);
+                    $this->RegisterVariableBoolean('ZWAVE2M_BatteryLow', $this->Translate('Battery Low'),"~Alert");
+                    $data = $this->fetchRetainedData($baseTopic . '128/0/isLow');
+                    if (array_key_exists('value',$data)) {
+                        $this->SetValue('ZWAVE2M_BatteryLow', $data['value']);
+                    }
+                    break;
             }
             
         }
@@ -350,6 +366,18 @@ trait Zwave2MQTTHelper
                 
                     if (array_key_exists('value', $Payload)) {
                         $this->SetValue('ZWAVE2M_CoverSensor', $Payload['value']);
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/128/0/level', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        $this->SetValue('ZWAVE2M_BatteryLevel', $Payload['value']);
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/128/0/isLow', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        $this->SetValue('ZWAVE2M_BatteryLow', $Payload['value']);
                     }
                 }
             }
