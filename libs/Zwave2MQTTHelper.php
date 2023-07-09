@@ -94,6 +94,7 @@ trait Zwave2MQTTHelper
             switch($currentDeviceTopic) {
 
                 case $baseTopic . 'lastActive':
+                    $this->SendDebug('DEVICE INFO', "found support for lastActive",0);
                     $this->RegisterVariableInteger('ZWAVE2M_LastActive', $this->Translate('Last Activity'), '~UnixTimestamp');
                     $data = $this->fetchRetainedData($baseTopic . 'lastActive');
                     if (array_key_exists('value',$data)) {
@@ -102,6 +103,7 @@ trait Zwave2MQTTHelper
                     break;
 
                 case $baseTopic . 'status':
+                    $this->SendDebug('DEVICE INFO', "found support for device status",0);
                     $this->RegisterVariableBoolean('ZWAVE2M_DeviceStatus', $this->Translate('Device Health'), '~Alert.Reversed');
                     $data = $this->fetchRetainedData($baseTopic . 'status');
                     if (array_key_exists('value',$data)) {
@@ -110,6 +112,7 @@ trait Zwave2MQTTHelper
                     break;
 
                 case $baseTopic . '38/1/currentValue':
+                    $this->SendDebug('DEVICE INFO', "found support for Multivelvel Switch v4",0);
                     $this->RegisterVariableInteger('ZWAVE2M_Intensity', $this->Translate('Intensity'), '~Intensity.100');
                     $this->EnableAction('ZWAVE2M_Intensity');
                     $this->RegisterVariableBoolean('ZWAVE2M_IntensityOnOff', $this->Translate('Status'), '~Switch');
@@ -127,6 +130,7 @@ trait Zwave2MQTTHelper
                     break;
 
                 case $baseTopic . '37/0/currentValue':
+                    $this->SendDebug('DEVICE INFO', "found support for Binary Switch v1",0);
                     $this->RegisterVariableBoolean('ZWAVE2M_Switch', $this->Translate('Status'), '~Switch');
                     $this->EnableAction('ZWAVE2M_Switch');
                     $data = $this->fetchRetainedData($baseTopic . '37/0/currentValue');
@@ -136,6 +140,7 @@ trait Zwave2MQTTHelper
                     break;
 
                 case $baseTopic . '51/0/hexColor':
+                    $this->SendDebug('DEVICE INFO', "found support for Color Switch v1",0);
                     $this->RegisterVariableInteger('ZWAVE2M_Color', $this->Translate('Color RGB'), '~HexColor');
                     $this->EnableAction('ZWAVE2M_Color');
                     $data = $this->fetchRetainedData($baseTopic . '51/0/hexColor');
@@ -145,6 +150,7 @@ trait Zwave2MQTTHelper
                     break;
 
                 case $baseTopic . '117/0/rf':
+                    $this->SendDebug('DEVICE INFO', "found support for Protection v2",0);
                     $this->RegisterVariableBoolean('ZWAVE2M_LockRF', $this->Translate('Lock Remote Operations'), '~Lock');
                     $this->EnableAction('ZWAVE2M_LockRF');
                     $data = $this->fetchRetainedData($baseTopic . '117/0/rf');
@@ -159,6 +165,7 @@ trait Zwave2MQTTHelper
                     break;
 
                 case $baseTopic . '117/0/local':
+                    $this->SendDebug('DEVICE INFO', "found support for Protecton v2",0);
                     $this->RegisterVariableBoolean('ZWAVE2M_LockLocal', $this->Translate('Lock Local Operations'), '~Lock');
                     $this->EnableAction('ZWAVE2M_LockLocal');
                     $data = $this->fetchRetainedData($baseTopic . '117/0/local');
@@ -173,11 +180,13 @@ trait Zwave2MQTTHelper
                     break;
 
                 case $baseTopic . '91/0/scene/001':
+                    $this->SendDebug('DEVICE INFO', "found support for Central Scene v2",0);
                     $this->RegisterVariableInteger('ZWAVE2M_SceneID1', $this->Translate('Scene ID 1'));
                     // no retained value has to be retrieved as the scene IDs only exist during the key presses
                     break;
 
                 case $baseTopic . '91/0/scene/002':
+                    $this->SendDebug('DEVICE INFO', "found support for Central Scene v2",0);
                     $this->RegisterVariableInteger('ZWAVE2M_SceneID2', $this->Translate('Scene ID 2'));
                     // no retained value has to be retrieved as the scene IDs only exist during the key presses
                     break;
