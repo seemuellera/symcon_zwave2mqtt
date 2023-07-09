@@ -31,13 +31,13 @@ trait MQTTHelper
         $mqttInstance = $allMqttServers[0];
         $retainedData = MQTT_GetRetainedMessage($mqttInstance, $topic);
 
-        $this->LogMessage(json_encode($retainedData),KL_ERROR);
-
         if (array_key_exists('Payload', $retainedData)) {
 
             if (IPS_GetKernelDate() > 1670886000) {
                 $retainedData['Payload'] = utf8_decode($retainedData['Payload']);
             }
+
+            $this->LogMessage("FETCHER", $retainedData['Payload'], 0);
 
             $Payload = json_decode($retainedData['Payload'], true);
             return $Payload;
