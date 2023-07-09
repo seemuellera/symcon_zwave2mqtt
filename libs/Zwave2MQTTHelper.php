@@ -200,12 +200,44 @@ trait Zwave2MQTTHelper
                 case $baseTopic . '49/0/Illuminance':
                     $this->SendDebug('DEVICE INFO', "found support for Multilevel Sensor v8 Illuminance",0);
                     $this->RegisterVariableInteger('ZWAVE2M_Illuminance', $this->Translate('Illuminance'),"~Illumination");
-                    // no retained value has to be retrieved as the scene IDs only exist during the key presses
+                    $data = $this->fetchRetainedData($baseTopic . '49/0/Illuminance');
+                    if (array_key_exists('value',$data)) {
+                        $this->SetValue('Z2M_Illuminance', $data['value']);
+                    }
                     break;
                 case $baseTopic . '49/0/Air_temperature':
                     $this->SendDebug('DEVICE INFO', "found support for Multilevel Sensor v8 Air Temperature",0);
                     $this->RegisterVariableFloat('ZWAVE2M_AirTemperature', $this->Translate('Air Temperature'),"~Temperature");
-                    // no retained value has to be retrieved as the scene IDs only exist during the key presses
+                    $data = $this->fetchRetainedData($baseTopic . '49/0/Air_Temperature');
+                    if (array_key_exists('value',$data)) {
+                        $this->SetValue('Z2M_AirTemperature', $data['value']);
+                    }
+                    break;
+                case $baseTopic . '113/0/Home_Security/Motion_sensor_status':
+                    $this->SendDebug('DEVICE INFO', "found support for Notificaton v5 Motion sensor",0);
+                    $this->RegisterVariableBoolean('ZWAVE2M_MotionSensor', $this->Translate('Motion Sensor'),"~Motion");
+                    break;
+                    $data = $this->fetchRetainedData($baseTopic . '113/0/Home_Security/Motion_sensor_status');
+                    if (array_key_exists('value',$data)) {
+                        if ($data['value'] == 0) {
+                            $this->SetValue('ZWAVE2M_MotionSensor', false);
+                        }
+                        else {
+                            $this->SetValue('ZWAVE2M_MotionSensor', true);
+                        }
+                    }
+                case $baseTopic . '113/0/Home_Security/Cover_status':
+                    $this->SendDebug('DEVICE INFO', "found support for Notificaton v5 Cover sensor",0);
+                    $this->RegisterVariableBoolean('ZWAVE2M_CoverSensor', $this->Translate('Cover Sensor'),"~Alert");
+                    $data = $this->fetchRetainedData($baseTopic . '113/0/Home_Security/Cover_status');
+                    if (array_key_exists('value',$data)) {
+                        if ($data['value'] == 0) {
+                            $this->SetValue('ZWAVE2M_CoverSensor', false);
+                        }
+                        else {
+                            $this->SetValue('ZWAVE2M_CoverSensor', true);
+                        }
+                    }
                     break;
             }
             
@@ -316,6 +348,28 @@ trait Zwave2MQTTHelper
                 
                     if (array_key_exists('value', $Payload)) {
                         $this->SetValue('ZWAVE2M_AirTemperature', $Payload['value']);
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/113/0/Home_Security/Motion_sensor_status', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        if ($Payload['Value'] == 0) {
+                            $this->SetValue('ZWAVE2M_MotionSensor', false);
+                        }
+                        else {
+                            $this->SetValue('ZWAVE2M_MotionSensor', true);
+                        }
+                    }
+                }
+                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/113/0/Home_Security/Cover_status', $Buffer['Topic'])) {
+                
+                    if (array_key_exists('value', $Payload)) {
+                        if ($Payload['Value'] == 0) {
+                            $this->SetValue('ZWAVE2M_CoverSensor', false);
+                        }
+                        else {
+                            $this->SetValue('ZWAVE2M_CoverSensor', true);
+                        }
                     }
                 }
             }
