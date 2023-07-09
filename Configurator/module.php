@@ -148,6 +148,7 @@ class Zwave2MQTTConfigurator extends IPSModule
                 }
                 else {
                     $this->LogMessage('Unable to fetch node details for topic ' . $currentTopic, KL_WARNING);
+                    $this->SendDebug('NODE DETAILS INCOMPLETE', json_encode($currentNodeDetails),0);
                     continue;
                 }
             }
