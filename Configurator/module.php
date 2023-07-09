@@ -97,7 +97,7 @@ class Zwave2MQTTConfigurator extends IPSModule
 
                 $currentDeviceDescription = $this->fetchRetainedData($currentTopic);
 
-                $this->SendDebug('NODE INFOS', json_encode($currentDeviceDescription), 0);
+                // $this->SendDebug('NODE INFOS', json_encode($currentDeviceDescription), 0);
 
                 if (! $currentDeviceDescription) {
 
@@ -142,7 +142,14 @@ class Zwave2MQTTConfigurator extends IPSModule
                     $currentNodeDetails['powerSource'] = 'Unknown';
                 }
                 
-                $allDeviceDesriptions[] = $currentNodeDetails;
+                if (is_array($currentNodeDetails)) {
+                
+                    $allDeviceDesriptions[] = $currentNodeDetails;
+                }
+                else {
+                    $this->LogMessage('Unable to fetch node details for topic ' . $currentTopic);
+                    continue;
+                }
             }
         }
 
