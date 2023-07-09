@@ -31,33 +31,34 @@ class Zwave2MQTTConfigurator extends IPSModule
         $this->SendDebug('Devices', json_encode($Devices), 0);
         $ValuesDevices = [];
 
-        foreach ($Devices as $device) {
-            $Value['name'] = $device['friendly_name'];
-            $Value['node_id'] = $device['nodeId'];
-            $Value['type'] = $device['type'];
-            $Value['vendor'] = $device['vendor'];
-            $Value['modelID'] = (array_key_exists('modelID', $device) == true ? $device['modelID'] : $this->Translate('Unknown'));
-            $Value['description'] = $device['description'];
-            $Value['power_source'] = (array_key_exists('powerSource', $device) == true ? $this->Translate($device['powerSource']) : $this->Translate('Unknown'));
-
-            $Value['instanceID'] = $this->getDeviceInstanceID($device['friendly_name']);
-
-            $Value['create'] =
-                [
-                    'moduleID'      => '{27D3347F-8CC4-469B-866B-BE276BE6DA89}',
-                    'configuration' => [
-                        'MQTTTopic'    => $device['friendly_name'],
-                        'MQTTBaseTopic' => $this->ReadPropertyString('MQTTBaseTopic')
-                    ],
-                    'location' => [
-                        'Technik',
-                        'Z-Wave'
-                    ]
-                ];
-            array_push($ValuesDevices, $Value);
-        }
-        if (count($ValuesDevices > 0)) {
+        if (count($Devices) > 0) {
         
+            foreach ($Devices as $device) {
+                $Value['name'] = $device['friendly_name'];
+                $Value['node_id'] = $device['nodeId'];
+                $Value['type'] = $device['type'];
+                $Value['vendor'] = $device['vendor'];
+                $Value['modelID'] = (array_key_exists('modelID', $device) == true ? $device['modelID'] : $this->Translate('Unknown'));
+                $Value['description'] = $device['description'];
+                $Value['power_source'] = (array_key_exists('powerSource', $device) == true ? $this->Translate($device['powerSource']) : $this->Translate('Unknown'));
+
+                $Value['instanceID'] = $this->getDeviceInstanceID($device['friendly_name']);
+
+                $Value['create'] =
+                    [
+                        'moduleID'      => '{27D3347F-8CC4-469B-866B-BE276BE6DA89}',
+                        'configuration' => [
+                            'MQTTTopic'    => $device['friendly_name'],
+                            'MQTTBaseTopic' => $this->ReadPropertyString('MQTTBaseTopic')
+                        ],
+                        'location' => [
+                            'Technik',
+                            'Z-Wave'
+                        ]
+                    ];
+                array_push($ValuesDevices, $Value);
+            }
+
             $Form['actions'][0]['items'][0]['values'] = $ValuesDevices;
         }
         
