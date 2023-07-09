@@ -191,9 +191,9 @@ trait Zwave2MQTTHelper
         if (!empty($this->ReadPropertyString('MQTTTopic'))) {
             $Buffer = json_decode($JSONString, true);
 
-            if (IPS_GetKernelDate() > 1670886000) {
+            /*if (IPS_GetKernelDate() > 1670886000) {
                 $Buffer['Payload'] = utf8_decode($Buffer['Payload']);
-            }
+            }*/
 
             $this->SendDebug('MQTT Topic', $Buffer['Topic'], 0);
             $this->SendDebug('MQTT Payload', $Buffer['Payload'], 0);
