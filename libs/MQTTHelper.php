@@ -29,9 +29,9 @@ trait MQTTHelper
 
         $allMqttServers = IPS_GetInstanceListByModuleID('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
         $mqttInstance = $allMqttServers[0];
-        $retainedData = MQTT_GetRetainedMessage($mqttInstance, utf8_encode($topic));
+        $retainedData = MQTT_GetRetainedMessage($mqttInstance, $topic);
 
-        $this->SendDebug('FETCH',json_encode($retainedData),0);
+        $this->LogMessage(json_encode($retainedData),KL_ERROR);
 
         if (array_key_exists('Payload', $retainedData)) {
 
