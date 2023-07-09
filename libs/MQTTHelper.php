@@ -37,7 +37,7 @@ trait MQTTHelper
                 $retainedData['Payload'] = utf8_decode($retainedData['Payload']);
             }
 
-            $this->LogMessage("FETCHER", $retainedData['Payload'], 0);
+            $this->LogMessage("FETCHER: " . $retainedData['Payload'], KL_ERROR);
 
             $Payload = json_decode($retainedData['Payload'], true);
             return $Payload;
