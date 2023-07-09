@@ -56,8 +56,11 @@ class Zwave2MQTTConfigurator extends IPSModule
                 ];
             array_push($ValuesDevices, $Value);
         }
-        $Form['actions'][0]['items'][0]['values'] = $ValuesDevices;
-
+        if (count($ValuesDevices > 0)) {
+        
+            $Form['actions'][0]['items'][0]['values'] = $ValuesDevices;
+        }
+        
         return json_encode($Form);
     }
 
