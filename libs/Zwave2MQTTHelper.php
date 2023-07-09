@@ -215,28 +215,18 @@ trait Zwave2MQTTHelper
                     break;
                 case $baseTopic . '113/0/Home_Security/Motion_sensor_status':
                     $this->SendDebug('DEVICE INFO', "found support for Notificaton v5 Motion sensor",0);
-                    $this->RegisterVariableBoolean('ZWAVE2M_MotionSensor', $this->Translate('Motion Sensor'),"~Motion");
+                    $this->RegisterVariableInteger('ZWAVE2M_MotionSensor', $this->Translate('Motion Sensor'),"~ZWaveNotification07");
                     break;
                     $data = $this->fetchRetainedData($baseTopic . '113/0/Home_Security/Motion_sensor_status');
                     if (array_key_exists('value',$data)) {
-                        if ($data['value'] == 0) {
-                            $this->SetValue('ZWAVE2M_MotionSensor', false);
-                        }
-                        else {
-                            $this->SetValue('ZWAVE2M_MotionSensor', true);
-                        }
+                        $this->SetValue('ZWAVE2M_MotionSensor', $data['value']);
                     }
                 case $baseTopic . '113/0/Home_Security/Cover_status':
                     $this->SendDebug('DEVICE INFO', "found support for Notificaton v5 Cover sensor",0);
-                    $this->RegisterVariableBoolean('ZWAVE2M_CoverSensor', $this->Translate('Cover Sensor'),"~Alert");
+                    $this->RegisterVariableBoolean('ZWAVE2M_CoverSensor', $this->Translate('Cover Sensor'),"~ZWaveNotificaton07");
                     $data = $this->fetchRetainedData($baseTopic . '113/0/Home_Security/Cover_status');
                     if (array_key_exists('value',$data)) {
-                        if ($data['value'] == 0) {
-                            $this->SetValue('ZWAVE2M_CoverSensor', false);
-                        }
-                        else {
-                            $this->SetValue('ZWAVE2M_CoverSensor', true);
-                        }
+                        $this->SetValue('ZWAVE2M_CoverSensor', $data['value']);
                     }
                     break;
             }
