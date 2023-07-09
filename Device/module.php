@@ -21,15 +21,15 @@ class Zwave2MQTTDevice extends IPSModule
         $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
         $this->RegisterPropertyString('MQTTTopic', '');
         
-        $this->zwaveVariables = Array(
+        $this->zwaveConfig = Array(
 			Array(  
                 "ident" => "ZWAVE2M_LastActive", 	    
                 "caption" => "Last Active", 
                 "description" => "timestamp of last communication",			
                 "type" => "Integer", 	
-                "profile" => "UnixTimestamp",				
+                "profile" => "~UnixTimestamp",				
                 "topic" => 'lastActive', 		
-                "extractor" => "copyValue", 	
+                "extractor" => "divideBy1000", 	
                 "writeable" => false
             ),
 			Array(  
@@ -49,7 +49,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~Intensity.100", 			
                 "topic" => '38/1/currentValue', 			
-                "extractor" => "DimIntensity", 	
+                "extractor" => "dimIntensity", 	
                 "writeable" => true
             ),
             Array(  
@@ -59,7 +59,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Boolean", 	
                 "profile" => "~Switch", 			
                 "topic" => '38/1/currentValueDummy', 			
-                "extractor" => "DimIntensityOnOff", 	
+                "extractor" => "dimIntensityOnOff", 	
                 "writeable" => true
             ),
             Array(  
@@ -211,5 +211,75 @@ class Zwave2MQTTDevice extends IPSModule
             $this->getDeviceInfo();
         }
         $this->SetStatus(102);
+    }
+
+    protected function getConfigTopics() {
+
+        $this->SendDebug('CONFIG', 'There are ' . count($this->zwaveConfig). ' config items defined', 0);
+
+        $configTopics = Array();
+        foreach ($this->zwaveConfig as $currentConfigItem) {
+            
+            if (in_array('topic', $currentConfigItem)) {
+
+                $configTopics[] = $currentConfigItem['topic'];
+            }
+        }
+
+        return $configTopics;
+    }
+
+    protected function getConfigExtractor($ident) {
+
+        foreach ($this->zwaveConfig as $currentConfigItem) {
+            
+            if (in_array('ident', $currentConfigItem)) {
+
+                if ($currentConfigItem['ident'] == $ident) {
+
+                    if (in_array('extractor', $currentConfigItem)) {
+
+                        return $currentConfigItem['extractor'];
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    protected function getConfigIdentForTopic($topic) {
+
+        foreach ($this->zwaveConfig as $currentConfigItem) {
+            
+            if (in_array('topic', $currentConfigItem)) {
+
+                if ($currentConfigItem['topic'] == $topic) {
+
+                    if (in_array('ident', $currentConfigItem)) {
+
+                        return $currentConfigItem['ident'];
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    protected function getConfigItemForTopic($topic) {
+
+        foreach ($this->zwaveConfig as $currentConfigItem) {
+            
+            if (in_array('topic', $currentConfigItem)) {
+
+                if ($currentConfigItem['topic'] == $topic) {
+
+                    return $currentConfigItem;
+                }
+            }
+        }
+
+        return false;
     }
 }

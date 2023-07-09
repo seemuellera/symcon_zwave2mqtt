@@ -255,10 +255,6 @@ trait Zwave2MQTTHelper
         if (!empty($this->ReadPropertyString('MQTTTopic'))) {
             $Buffer = json_decode($JSONString, true);
 
-            /*if (IPS_GetKernelDate() > 1670886000) {
-                $Buffer['Payload'] = utf8_decode($Buffer['Payload']);
-            }*/
-
             $this->SendDebug('MQTT Topic', $Buffer['Topic'], 0);
             $this->SendDebug('MQTT Payload', $Buffer['Payload'], 0);
 
@@ -266,118 +262,44 @@ trait Zwave2MQTTHelper
 
             if (is_array($Payload)) {
 
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/lastActive', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_LastActive', ($Payload['value'] / 1000));
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/status', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_DeviceStatus', $Payload['value']);
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/38/1/currentValue', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_Intensity', $Payload['value']);
-                        if ($Payload['value'] == 0) {
-                        
-                            $this->SetValue('ZWAVE2M_IntensityOnOff', false);
-                        }
-                        else {
+                $allConfiguredTopics = $this->getConfigTopics();
 
-                            $this->SetValue('ZWAVE2M_IntensityOnOff', true);
+                if (in_array($Buffer['Topic'], $allConfiguredTopics, $true)) {
+
+                    $config = $this->getConfigItemForTopic($Buffer['Topic']);
+
+                    if ($config) {
+
+                        switch ($config['extractor']) {
+
+                            case 'copyValue':
+                                $this->extractorCopyValue('get', $config['ident'], $Payload);
+                                break;
+                            case 'divideBy1000':
+                                $this->extractorDivideBy1000('get', $config['ident'], $Payload);
+                                break;
+                            case 'intToBoolean':
+                                $this->extractorIntToBoolean('get', $config['ident'], $Payload);
+                                break;
+                            case 'rgbColor':
+                                $this->extractorIntToBoolean('get', $config['ident'], $Payload);
+                                break;
+                            case 'rgbColor':
+                                $this->extractorIntToBoolean('get', $config['ident'], $Payload);
+                                break;
+                            case 'dimIntensity':
+                                $configDummy = $this->getConfigItemForTopic($Buffer['Topic'] . 'Dummy');
+                                $this->extractorDimIntensity('get', $config['ident'], $configDummy['ident'], $Payload);
+                                break;
+
+                            default:
+                                $this->LogMessage('Receive Data: No handler defined for extractor' . $config['extractor'], KL_ERROR);
+                                return;
                         }
                     }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/37/0/currentValue', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_Switch', $Payload['value']);
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/51/0/hexColor', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_Color', $this->HexToInt($Payload['value']));
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/117/0/rf', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        if ($Payload['value'] == 0) {
-                            $this->SetValue('ZWAVE2M_LockRF', false);    
-                        }
-                        if ($Payload['value'] == 1) {
-                            $this->SetValue('ZWAVE2M_LockRF', true);    
-                        }
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/117/0/local', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        if ($Payload['value'] == 0) {
-                            $this->SetValue('ZWAVE2M_LockLocal', false);    
-                        }
-                        if ($Payload['value'] == 2) {
-                            $this->SetValue('ZWAVE2M_LockLocal', true);    
-                        }
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/91/0/scene/001', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_SceneID1', $Payload['value']);
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/91/0/scene/002', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_SceneID2', $Payload['value']);
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/48/0/Any', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_BinarySensor', $Payload['value']);
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/49/0/Illuminance', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_Illuminance', $Payload['value']);
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/49/0/Air_temperature', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_AirTemperature', $Payload['value']);
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/113/0/Home_Security/Motion_sensor_status', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_MotionSensor', $Payload['value']);
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/113/0/Home_Security/Cover_status', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_CoverSensor', $Payload['value']);
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/128/0/level', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_BatteryLevel', $Payload['value']);
-                    }
-                }
-                if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/128/0/isLow', $Buffer['Topic'])) {
-                
-                    if (array_key_exists('value', $Payload)) {
-                        $this->SetValue('ZWAVE2M_BatteryLow', $Payload['value']);
+                    else {
+                        $this->LogMessage('Receive Data: Unable to get config item for topic ' . $Buffer['Topic'], KL_ERROR);
+                        return;
                     }
                 }
             }
@@ -417,6 +339,91 @@ trait Zwave2MQTTHelper
             default:
                 $this->SendDebug('setColor', 'Invalid Mode ' . $mode, 0);
                 break;
+        }
+    }
+
+    protected function extractorCopyValue($mode, $ident, $payload) {
+
+        if ($mode == 'get') {
+
+            if (array_key_exists('value', $payload)) {
+                
+                $this->SetValue($ident, $payload['value']);
+            }
+            else {
+
+                $this->LogMessage('Extrator CopyValue: No value found in payload for ident ' . $ident, KL_ERROR);
+            }
+        }
+    }
+
+    protected function extractorDivideBy1000($mode, $ident, $payload) {
+
+        if ($mode == 'get') {
+
+            if (array_key_exists('value', $payload)) {
+                
+                $this->SetValue($ident, ($payload['value']/1000));
+            }
+            else {
+
+                $this->LogMessage('Extrator DivideBy1000: No value found in payload for ident ' . $ident, KL_ERROR);
+            }
+        }
+    }
+
+    protected function extractorIntToBoolean($mode, $ident, $payload) {
+
+        if ($mode == 'get') {
+            
+            if (array_key_exists('value', $payload)) {
+                if ($payload['value'] == 0) {
+                    $this->SetValue($ident, false);    
+                }
+                if ($payload['value'] == 1) {
+                    $this->SetValue($ident, true);  
+                }
+            } 
+            else {
+                $this->LogMessage('Extrator IntToBoolean: No value found in payload for ident ' . $ident, KL_ERROR);
+            }
+        }
+    }
+
+    protected function extractorRgbColor($mode, $ident, $payload) {
+
+        if ($mode == 'get') {
+            
+            if (array_key_exists('value', $payload)) {
+                
+                $this->SetValue($ident, $this->HexToInt($payload['value']));
+            } 
+            else {
+                $this->LogMessage('Extrator IntToBoolean: No value found in payload for ident ' . $ident, KL_ERROR);
+            }
+        }
+    }
+
+    protected function extractorDimIntensity($mode, $identIntensity, $identSwitch, $payload) {
+
+        if ($mode == 'get') {
+            
+            if (array_key_exists('value', $payload)) {
+                
+                $this->SetValue($identIntensity, ($payload['value']+1));
+
+                if ($payload['value'] == 0) {
+
+                    $this->SetValue($identSwitch, false);
+                }
+                else {
+
+                    $this->SetValue($identSwitch, true);
+                }
+            } 
+            else {
+                $this->LogMessage('Extrator IntToBoolean: No value found in payload for ident ' . $ident, KL_ERROR);
+            }
         }
     }
 
