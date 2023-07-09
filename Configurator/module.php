@@ -97,7 +97,7 @@ class Zwave2MQTTConfigurator extends IPSModule
 
                 $currentNodeDetails = Array();
 
-                if (array_key_exists('name', $)) {
+                if (array_key_exists('name', $currentDeviceDescription)) {
 
                     if ($currentDeviceDescription['name']) {
 
