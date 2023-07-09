@@ -86,7 +86,7 @@ class Zwave2MQTTConfigurator extends IPSModule
 
         $regexDescriptions = '/^' . $this->ReadPropertyString('MQTTBaseTopic') . '\/.+\/nodeinfo/';
 
-        $this->SendDebug('RETAINED MESSAGE TOPICS', json_encode($allTopics));
+        $this->SendDebug('RETAINED MESSAGE TOPICS', json_encode($allTopics),0);
 
         $allDeviceDesriptions = Array();
         foreach($allTopics as $currentTopic) {
