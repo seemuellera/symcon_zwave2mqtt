@@ -102,10 +102,9 @@ class Zwave2MQTTConfigurator extends IPSModule
                 if (! $currentDeviceDescription) {
 
                     $this->LogMessage('Unable to fetch details for node ' . $currentTopic, KL_ERROR);
-                    return;
+                    $this->LogMessage(json_encode ($currentDeviceDescription), KL_ERROR);
+                    continue;
                 }
-
-                $currentNodeDetails = Array();
 
                 if (array_key_exists('name', $currentDeviceDescription)) {
 
