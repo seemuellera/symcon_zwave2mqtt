@@ -343,23 +343,13 @@ trait Zwave2MQTTHelper
                 if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/113/0/Home_Security/Motion_sensor_status', $Buffer['Topic'])) {
                 
                     if (array_key_exists('value', $Payload)) {
-                        if ($Payload['Value'] == 0) {
-                            $this->SetValue('ZWAVE2M_MotionSensor', false);
-                        }
-                        else {
-                            $this->SetValue('ZWAVE2M_MotionSensor', true);
-                        }
+                        $this->SetValue('ZWAVE2M_MotionSensor', $Payload['value']);
                     }
                 }
                 if (fnmatch($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/113/0/Home_Security/Cover_status', $Buffer['Topic'])) {
                 
                     if (array_key_exists('value', $Payload)) {
-                        if ($Payload['Value'] == 0) {
-                            $this->SetValue('ZWAVE2M_CoverSensor', false);
-                        }
-                        else {
-                            $this->SetValue('ZWAVE2M_CoverSensor', true);
-                        }
+                        $this->SetValue('ZWAVE2M_CoverSensor', $Payload['value']);
                     }
                 }
             }
