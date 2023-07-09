@@ -154,6 +154,7 @@ class Zwave2MQTTConfigurator extends IPSModule
             }
         }
 
+        $this->SendDebug("RESULT", json_encode($allDeviceDesriptions),0 );
         return $allDeviceDesriptions;
     }
 
