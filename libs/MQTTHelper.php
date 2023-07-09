@@ -31,7 +31,7 @@ trait MQTTHelper
         $mqttInstance = $allMqttServers[0];
         $retainedData = MQTT_GetRetainedMessage($mqttInstance, $topic);
 
-        // $this->SendDebug('FETCH',json_encode($retainedData),0);
+        $this->SendDebug('FETCH',json_encode($retainedData),0);
 
         if (array_key_exists('Payload', $retainedData)) {
 
