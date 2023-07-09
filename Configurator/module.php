@@ -31,7 +31,7 @@ class Zwave2MQTTConfigurator extends IPSModule
         $this->SendDebug('Devices', json_encode($Devices), 0);
         $ValuesDevices = [];
 
-        if (count($Devices) > 0) {
+        if (is_array($Devices)) {
         
             foreach ($Devices as $device) {
                 $Value['name'] = $device['friendly_name'];
