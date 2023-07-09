@@ -97,7 +97,7 @@ class Zwave2MQTTConfigurator extends IPSModule
 
                 $currentDeviceDescription = $this->fetchRetainedData($currentTopic);
 
-                $this->SendDebug('NODE INFOS', $currentDeviceDescription, 0);
+                $this->SendDebug('NODE INFOS', json_encode($currentDeviceDescription), 0);
 
                 if (! $currentDeviceDescription) {
 
