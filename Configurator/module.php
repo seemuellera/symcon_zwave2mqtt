@@ -81,17 +81,19 @@ class Zwave2MQTTConfigurator extends IPSModule
 
         $allMqttServers = IPS_GetInstanceListByModuleID('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
         $mqttInstance = $allMqttServers[0];
-        // $this->SendDebug('Parent Instance', $mqttInstance, 0);
+        
         $allTopics = MQTT_GetRetainedMessageTopicList($mqttInstance);
 
         $regexDescriptions = '/^' . $this->ReadPropertyString('MQTTBaseTopic') . '\/.+\/nodeinfo/';
 
-        $this->SendDebug('RETAINED MESSAGE TOPICS', json_encode($allTopics),0);
+        $this->SendDebug('RETAINED MESSAGE TOPICS', "Found " . count($allTopics) . " retained messages topics",0);
 
         $allDeviceDesriptions = Array();
         foreach($allTopics as $currentTopic) {
 
             if (preg_match($regexDescriptions, $currentTopic)) {
+
+                $this->SendDebug('NODE INFOS','Processing topic ' . $currentTopic,0);
 
                 $currentDeviceDescription = $this->fetchRetainedData($currentTopic);
 
