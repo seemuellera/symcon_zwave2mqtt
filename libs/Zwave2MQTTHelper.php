@@ -223,7 +223,7 @@ trait Zwave2MQTTHelper
                     }
                 case $baseTopic . '113/0/Home_Security/Cover_status':
                     $this->SendDebug('DEVICE INFO', "found support for Notificaton v5 Cover sensor",0);
-                    $this->RegisterVariableInteger('ZWAVE2M_CoverSensor', $this->Translate('Cover Sensor'),"~ZWaveNotificaton07");
+                    $this->RegisterVariableInteger('ZWAVE2M_CoverSensor', $this->Translate('Cover Sensor'),"~ZWaveNotification07");
                     $data = $this->fetchRetainedData($baseTopic . '113/0/Home_Security/Cover_status');
                     if (array_key_exists('value',$data)) {
                         $this->SetValue('ZWAVE2M_CoverSensor', $data['value']);
