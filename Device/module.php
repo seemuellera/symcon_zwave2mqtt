@@ -215,8 +215,6 @@ class Zwave2MQTTDevice extends IPSModule
 
     protected function getConfigTopics() {
 
-        $this->SendDebug('CONFIG', 'There are ' . count($this->zwaveConfig). ' config items defined', 0);
-
         $configTopics = Array();
         foreach ($this->zwaveConfig as $currentConfigItem) {
             
