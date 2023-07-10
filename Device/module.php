@@ -20,12 +20,20 @@ class Zwave2MQTTDevice extends IPSModule
         $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
         $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
         $this->RegisterPropertyString('MQTTTopic', '');
+
+        /* Sort orders: 
+          01 - 09: Actions
+          10 - 29: Alerts & Status
+          30 - 49: Config
+
+        */
         
         $this->zwaveConfig = Array(
 			Array(  
                 "ident" => "ZWAVE2M_LastActive", 	    
                 "caption" => "Last Active", 
-                "description" => "timestamp of last communication",			
+                "description" => "timestamp of last communication",
+                "sortOrder" => 11,
                 "type" => "Integer", 	
                 "profile" => "~UnixTimestamp",				
                 "topic" => 'lastActive', 		
@@ -35,7 +43,8 @@ class Zwave2MQTTDevice extends IPSModule
 			Array(  
                 "ident" => "ZWAVE2M_DeviceStatus", 	
                 "caption" => "Device Health",
-                "description" => "device marked healthy by controller", 				
+                "description" => "device marked healthy by controller",
+                "sortOrder" => 10,
                 "type" => "Boolean", 	
                 "profile" => "~Alert.Reversed", 			
                 "topic" => 'status', 			
@@ -45,7 +54,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(  
                 "ident" => "ZWAVE2M_Intensity", 	
                 "caption" => "Intensity",
-                "description" => "Multivelvel Switch v4", 				
+                "description" => "Multivelvel Switch v4",
+                "sortOrder" => 1, 				
                 "type" => "Integer", 	
                 "profile" => "~Intensity.100", 			
                 "topic" => '38/1/currentValue', 			
@@ -55,7 +65,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(  
                 "ident" => "ZWAVE2M_IntensityOnOff", 	
                 "caption" => "Status",
-                "description" => "Multivelvel Switch v4 Dummy Switch", 				
+                "description" => "Multivelvel Switch v4 Dummy Switch",
+                "sortOrder" => 2, 				
                 "type" => "Boolean", 	
                 "profile" => "~Switch", 			
                 "topic" => '38/1/currentValueDummy', 			
@@ -65,7 +76,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(  
                 "ident" => "ZWAVE2M_Switch", 	
                 "caption" => "Status",
-                "description" => "Binary Switch v1", 				
+                "description" => "Binary Switch v1",
+                "sortOrder" => 3, 				
                 "type" => "Boolean", 	
                 "profile" => "~Switch", 			
                 "topic" => '37/0/currentValue', 			
@@ -75,7 +87,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(  
                 "ident" => "ZWAVE2M_Color", 	
                 "caption" => "Color RGB",
-                "description" => "Color Switch v1", 				
+                "description" => "Color Switch v1",
+                "sortOrder" => 4, 				
                 "type" => "Integer", 	
                 "profile" => "~HexColor", 			
                 "topic" => '51/0/hexColor', 			
@@ -85,7 +98,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(  
                 "ident" => "ZWAVE2M_LockRF", 	
                 "caption" => "Lock Remote Operations",
-                "description" => "Protection v2 remote lock", 				
+                "description" => "Protection v2 remote lock",
+                "sortOrder" => 30, 				
                 "type" => "Boolean", 	
                 "profile" => "~Lock", 			
                 "topic" => '117/0/rf', 			
@@ -95,7 +109,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(  
                 "ident" => "ZWAVE2M_LockLocal", 	
                 "caption" => "Lock Local Operations",
-                "description" => "Protection v2 local lock", 				
+                "description" => "Protection v2 local lock", 
+                "sortOrder" => 31,				
                 "type" => "Boolean", 	
                 "profile" => "~Lock", 			
                 "topic" => '117/0/local', 			
@@ -105,7 +120,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(  
                 "ident" => "ZWAVE2M_SceneID1", 	
                 "caption" => "Scene ID 1",
-                "description" => "Central Scene v2 ch 1", 				
+                "description" => "Central Scene v2 ch 1",
+                "sortOrder" => 12, 				
                 "type" => "Integer", 	
                 "profile" => "", 			
                 "topic" => '91/0/scene/001', 			
@@ -115,7 +131,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(
                 "ident" => "ZWAVE2M_SceneID2", 	
                 "caption" => "Scene ID 2",
-                "description" => "Central Scene v2 ch 2", 				
+                "description" => "Central Scene v2 ch 2",
+                "sortOrder" => 13, 				
                 "type" => "Integer", 	
                 "profile" => "", 			
                 "topic" => '91/0/scene/002', 			
@@ -125,7 +142,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(
                 "ident" => "ZWAVE2M_BinarySensor", 	
                 "caption" => "Binary Sensor",
-                "description" => "Binary Sensor v1", 				
+                "description" => "Binary Sensor v1",
+                "sortOrder" => 14, 				
                 "type" => "Boolean", 	
                 "profile" => "", 			
                 "topic" => '48/0/Any', 			
@@ -135,7 +153,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(
                 "ident" => "ZWAVE2M_Illuminance", 	
                 "caption" => "Illumination",
-                "description" => "Multilevel Sensor v8 Illuminance", 				
+                "description" => "Multilevel Sensor v8 Illuminance",
+                "sortOrder" => 16, 				
                 "type" => "Integer", 	
                 "profile" => "~Illumination",
                 "topic" => '49/0/Illuminance', 			
@@ -145,7 +164,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(
                 "ident" => "ZWAVE2M_AirTemperature", 	
                 "caption" => "Air Temperature",
-                "description" => "Multilevel Sensor v8 Air Temperature", 				
+                "description" => "Multilevel Sensor v8 Air Temperature",
+                "sortOrder" => 15, 				
                 "type" => "Float", 	
                 "profile" => "~Temperature",
                 "topic" => '49/0/Air_temperature', 			
@@ -155,7 +175,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(
                 "ident" => "ZWAVE2M_MotionSensor", 	
                 "caption" => "Motion Sensor",
-                "description" => "Notificaton v5 Motion sensor", 				
+                "description" => "Notificaton v5 Motion sensor",
+                "sortOrder" => 16, 				
                 "type" => "Integer", 	
                 "profile" => "~ZWaveNotification07",
                 "topic" => '113/0/Home_Security/Motion_sensor_status', 			
@@ -165,7 +186,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(
                 "ident" => "ZWAVE2M_CoverSensor", 	
                 "caption" => "Cover Sensor",
-                "description" => "Notificaton v5 Cover sensor", 				
+                "description" => "Notificaton v5 Cover sensor",
+                "sortOrder" => 17, 				
                 "type" => "Integer", 	
                 "profile" => "~ZWaveNotification07",
                 "topic" => '113/0/Home_Security/Cover_status', 			
@@ -175,7 +197,8 @@ class Zwave2MQTTDevice extends IPSModule
             Array(
                 "ident" => "ZWAVE2M_BatteryLevel", 	
                 "caption" => "Battery Level",
-                "description" => "Battery v2 level", 				
+                "description" => "Battery v2 level",
+                "sortOrder" => 28, 				
                 "type" => "Integer", 	
                 "profile" => "~Battery.100",
                 "topic" => '128/0/level', 			
@@ -185,10 +208,77 @@ class Zwave2MQTTDevice extends IPSModule
             Array(
                 "ident" => "ZWAVE2M_BatteryLow", 	
                 "caption" => "Battery Low",
-                "description" => "Battery v2 low alert", 				
+                "description" => "Battery v2 low alert",
+                "sortOrder" => 29, 				
                 "type" => "Boolean", 	
                 "profile" => "~Alert",
                 "topic" => '128/0/isLow', 			
+                "extractor" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_WakeupInterval", 	
+                "caption" => "Wakeup Interval",
+                "description" => "Battery device wakeup interval",
+                "sortOrder" => 49, 				
+                "type" => "Integer", 	
+                "profile" => "",
+                "topic" => '132/0/wakeUpInterval', 			
+                "extractor" => "copyValue", 	
+                "writeable" => true
+            ),
+            Array(
+                "ident" => "ZWAVE2M_AlertOverHeat", 	
+                "caption" => "Overheat Alert",
+                "description" => "Notification v5 heat alert",
+                "sortOrder" => 18, 				
+                "type" => "Integer", 	
+                "profile" => "~ZWaveNotification04",
+                "topic" => '113/1/Heat_Alarm/Heat_sensor_status', 			
+                "extractor" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_AlertOverCurrent", 	
+                "caption" => "Over-current Alert",
+                "description" => "Notification v5 over-current alert", 		
+                "sortOrder" => 19,		
+                "type" => "Integer", 	
+                "profile" => "~ZWaveNotification08",
+                "topic" => '113/1/Power_Management/Over-current_status', 			
+                "extractor" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_AlertLoad", 	
+                "caption" => "Load Alert",
+                "description" => "Notification v5 load alert", 
+                "sortOrder" => 20,
+                "type" => "Integer", 	
+                "profile" => "~ZWaveNotification08",
+                "topic" => '113/1/Power_Management/Load_error_status', 			
+                "extractor" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_AlertOverLoad", 	
+                "caption" => "Over-load Alert",
+                "description" => "Notification v5 over-load alert",
+                "sortOrder" => 21,
+                "type" => "Integer", 	
+                "profile" => "~ZWaveNotification08",
+                "topic" => '113/1/Power_Management/Over-Load_status', 			
+                "extractor" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_AlertHardwareStatus", 	
+                "caption" => "Hardware Status Alert",
+                "description" => "Notification v5 hardware status alert",
+                "sortOrder" => 22, 				
+                "type" => "Integer", 	
+                "profile" => "~ZWaveNotification09",
+                "topic" => '113/1/System/Hardware_status', 			
                 "extractor" => "copyValue", 	
                 "writeable" => false
             )
