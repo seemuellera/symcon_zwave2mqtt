@@ -118,6 +118,17 @@ class Zwave2MQTTDevice extends IPSModule
                 "writeable" => true
             ),
             Array(  
+                "ident" => "ZWAVE2M_SceneID", 	
+                "caption" => "Scene ID",
+                "description" => "Scene Activation v0",
+                "sortOrder" => 12, 				
+                "type" => "Integer", 	
+                "profile" => "", 			
+                "topic" => '43/0/sceneId', 			
+                "extractor" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(  
                 "ident" => "ZWAVE2M_SceneID1", 	
                 "caption" => "Scene ID 1",
                 "description" => "Central Scene v2 ch 1",
