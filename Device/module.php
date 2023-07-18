@@ -355,6 +355,22 @@ class Zwave2MQTTDevice extends IPSModule
         return false;
     }
 
+    protected function getConfigForIdent($ident) {
+
+        foreach ($this->zwaveConfig as $currentConfigItem) {
+            
+            if (in_array('ident', $currentConfigItem)) {
+
+                if ($currentConfigItem['ident'] == $ident) {
+
+                    return $currentConfigItem;
+                }
+            }
+        }
+
+        return false;
+    }
+
     protected function getConfigIdentForTopic($topic) {
 
         foreach ($this->zwaveConfig as $currentConfigItem) {
@@ -477,7 +493,7 @@ class Zwave2MQTTDevice extends IPSModule
             }
             else {
 
-                $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
+                // $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
             }
         }
     }
