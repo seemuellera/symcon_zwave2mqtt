@@ -118,7 +118,6 @@ trait Zwave2MQTTHelper
                         break;
                     default:
                         $this->LogMessage('Unknown data type defined. Skipping variable', KL_ERROR);
-                        continue;
                 }
 
                 // set item active if needed
