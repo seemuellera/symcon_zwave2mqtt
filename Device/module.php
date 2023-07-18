@@ -27,6 +27,11 @@ class Zwave2MQTTDevice extends IPSModule
           30 - 49: Config
 
         */
+    }
+
+    public function __construct($InstanceID) {
+		// Diese Zeile nicht löschen
+		parent::__construct($InstanceID);
         
         $this->zwaveConfig = Array(
 			Array(  
@@ -313,7 +318,7 @@ class Zwave2MQTTDevice extends IPSModule
             $this->getDeviceInfo();
         }
         */
-        
+
         $this->SetStatus(102);
     }
 
