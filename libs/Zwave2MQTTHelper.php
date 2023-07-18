@@ -78,6 +78,9 @@ trait Zwave2MQTTHelper
         // $this->SendDebug('Parent Instance', $mqttInstance, 0);
         $allTopics = MQTT_GetRetainedMessageTopicList($mqttInstance);
         
+        $baseTopic = $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/';
+        $this->SendDebug('DEVICE INFO', 'Base Topic: ' . $baseTopic, 0);
+
         $deviceTopics = Array();
         foreach ($allTopics as $currentTopic) {
 
@@ -87,166 +90,76 @@ trait Zwave2MQTTHelper
                 $deviceTopics[] = $currentTopic;
             }
         }
-
-        $baseTopic = $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/';
+        $this->SendDebug('DEVICE INFO', 'Number of retained topics: ' . count($deviceTopics), 0);
+        
         foreach ($deviceTopics as $currentDeviceTopic) {
 
-            switch($currentDeviceTopic) {
+            $subTopic = str_replace($baseTopic, "", $currentDeviceTopic);
+            $topicConfiguration = $this->getConfigItemForTopic($subTopic);
 
-                case $baseTopic . 'lastActive':
-                    $this->SendDebug('DEVICE INFO', "found support for lastActive",0);
-                    $this->RegisterVariableInteger('ZWAVE2M_LastActive', $this->Translate('Last Activity'), '~UnixTimestamp');
-                    $data = $this->fetchRetainedData($baseTopic . 'lastActive');
-                    if (array_key_exists('value',$data)) {
-                        $this->SetValue('ZWAVE2M_LastActive', $data['value']);
-                    }
-                    break;
+            if ($topicConfiguration) {
 
-                case $baseTopic . 'status':
-                    $this->SendDebug('DEVICE INFO', "found support for device status",0);
-                    $this->RegisterVariableBoolean('ZWAVE2M_DeviceStatus', $this->Translate('Device Health'), '~Alert.Reversed');
-                    $data = $this->fetchRetainedData($baseTopic . 'status');
-                    if (array_key_exists('value',$data)) {
-                        $this->SetValue('ZWAVE2M_DeviceStatus', $data['value']);
-                    }
-                    break;
+                $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " indicates support for " . $topicConfiguration['description'], 0);
 
-                case $baseTopic . '38/1/currentValue':
-                    $this->SendDebug('DEVICE INFO', "found support for Multivelvel Switch v4",0);
-                    $this->RegisterVariableInteger('ZWAVE2M_Intensity', $this->Translate('Intensity'), '~Intensity.100');
-                    $this->EnableAction('ZWAVE2M_Intensity');
-                    $this->RegisterVariableBoolean('ZWAVE2M_IntensityOnOff', $this->Translate('Status'), '~Switch');
-                    $this->EnableAction('ZWAVE2M_IntensityOnOff');
-                    $data = $this->fetchRetainedData($baseTopic . '38/1/currentValue');
-                    if (array_key_exists('value',$data)) {
-                        $this->SetValue('ZWAVE2M_Intensity', $data['value']);
-                        if ($data['value'] == 0) {
-                            $this->SetValue('ZWAVE2M_IntensityOnOff', false);
-                        }
-                        else {
-                            $this->SetValue('ZWAVE2M_IntensityOnOff', true);
-                        }
-                    }
-                    break;
+                // Configuration has been found. Proceeding with registering the variables
+                switch ($topicConfiguration['type']) {
 
-                case $baseTopic . '37/0/currentValue':
-                    $this->SendDebug('DEVICE INFO', "found support for Binary Switch v1",0);
-                    $this->RegisterVariableBoolean('ZWAVE2M_Switch', $this->Translate('Status'), '~Switch');
-                    $this->EnableAction('ZWAVE2M_Switch');
-                    $data = $this->fetchRetainedData($baseTopic . '37/0/currentValue');
-                    if (array_key_exists('value',$data)) {
-                        $this->SetValue('ZWAVE2M_Switch', $data['value']);
-                    }
-                    break;
+                    case "Boolean":
+                        $this->RegisterVariableBoolean($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
+                        break;
+                    case "Integer":
+                        $this->RegisterVariableInteger($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
+                        break;
+                    case "Float":
+                        $this->RegisterVariableFloat($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
+                        break;
+                    case "String":
+                        $this->RegisterVariableString($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
+                        break;
+                    default:
+                        $this->LogMessage('Unknown data type defined. Skipping variable', KL_ERROR);
+                        continue;
+                }
 
-                case $baseTopic . '51/0/hexColor':
-                    $this->SendDebug('DEVICE INFO', "found support for Color Switch v1",0);
-                    $this->RegisterVariableInteger('ZWAVE2M_Color', $this->Translate('Color RGB'), '~HexColor');
-                    $this->EnableAction('ZWAVE2M_Color');
-                    $data = $this->fetchRetainedData($baseTopic . '51/0/hexColor');
-                    if (array_key_exists('value',$data)) {
-                        $this->SetValue('ZWAVE2M_Color', $data['value']);
-                    }
-                    break;
+                // set item active if needed
+                if ($topicConfiguration['writable']) {
 
-                case $baseTopic . '117/0/rf':
-                    $this->SendDebug('DEVICE INFO', "found support for Protection v2",0);
-                    $this->RegisterVariableBoolean('ZWAVE2M_LockRF', $this->Translate('Lock Remote Operations'), '~Lock');
-                    $this->EnableAction('ZWAVE2M_LockRF');
-                    $data = $this->fetchRetainedData($baseTopic . '117/0/rf');
-                    if (array_key_exists('value',$data)) {
-                        if ($data['value'] == 0) {
-                            $this->SetValue('ZWAVE2M_LockRF', false);
-                        }
-                        else {
-                            $this->SetValue('ZWAVE2M_LockRF', true);
-                        }
-                    }
-                    break;
+                    $this->EnableAction($topicConfiguration['ident']);
+                }
 
-                case $baseTopic . '117/0/local':
-                    $this->SendDebug('DEVICE INFO', "found support for Protecton v2",0);
-                    $this->RegisterVariableBoolean('ZWAVE2M_LockLocal', $this->Translate('Lock Local Operations'), '~Lock');
-                    $this->EnableAction('ZWAVE2M_LockLocal');
-                    $data = $this->fetchRetainedData($baseTopic . '117/0/local');
-                    if (array_key_exists('value',$data)) {
-                        if ($data['value'] == 0) {
-                            $this->SetValue('ZWAVE2M_LockLocal', false);
-                        }
-                        else {
-                            $this->SetValue('ZWAVE2M_LockLocal', true);
-                        }
-                    }
-                    break;
+                // read the retained data
+                $data = $this->fetchRetainedData($currentDeviceTopic);
+                if ($data) {
 
-                case $baseTopic . '91/0/scene/001':
-                    $this->SendDebug('DEVICE INFO', "found support for Central Scene v2",0);
-                    $this->RegisterVariableInteger('ZWAVE2M_SceneID1', $this->Translate('Scene ID 1'));
-                    // no retained value has to be retrieved as the scene IDs only exist during the key presses
-                    break;
+                    switch ($topicConfiguration['extractor']) {
 
-                case $baseTopic . '91/0/scene/002':
-                    $this->SendDebug('DEVICE INFO', "found support for Central Scene v2",0);
-                    $this->RegisterVariableInteger('ZWAVE2M_SceneID2', $this->Translate('Scene ID 2'));
-                    // no retained value has to be retrieved as the scene IDs only exist during the key presses
-                    break;
+                        case 'copyValue':
+                            $this->extractorCopyValue('get', $topicConfiguration['ident'], $data);
+                            break;
+                        case 'divideBy1000':
+                            $this->extractorDivideBy1000('get', $topicConfiguration['ident'], $data);
+                            break;
+                        case 'intToBoolean':
+                            $this->extractorIntToBoolean('get', $topicConfiguration['ident'], $data);
+                            break;
+                        case 'rgbColor':
+                            $this->extractorRgbColor('get', $topicConfiguration['ident'], $data);
+                            break;
+                        case 'dimIntensity':
+                            $configDummy = $this->getConfigItemForTopic($topicConfiguration['topic'] . 'Dummy');
+                            $this->extractorDimIntensity('get', $topicConfiguration['ident'], $configDummy['ident'], $data);
+                            break;    
 
-                case $baseTopic . '48/0/Any':
-                    $this->SendDebug('DEVICE INFO', "found support for Binary Sensor v1",0);
-                    $this->RegisterVariableBoolean('ZWAVE2M_BinarySensor', $this->Translate('Binary Sensor'));
-                    // no retained value has to be retrieved as the scene IDs only exist during the key presses
-                    break;
-
-                case $baseTopic . '49/0/Illuminance':
-                    $this->SendDebug('DEVICE INFO', "found support for Multilevel Sensor v8 Illuminance",0);
-                    $this->RegisterVariableInteger('ZWAVE2M_Illuminance', $this->Translate('Illuminance'),"~Illumination");
-                    $data = $this->fetchRetainedData($baseTopic . '49/0/Illuminance');
-                    if (array_key_exists('value',$data)) {
-                        $this->SetValue('Z2M_Illuminance', $data['value']);
+                        default:
+                            $this->LogMessage('Receive Data: No handler defined for extractor' . $topicConfiguration['extractor'], KL_ERROR);
+                            return;
                     }
-                    break;
-                case $baseTopic . '49/0/Air_temperature':
-                    $this->SendDebug('DEVICE INFO', "found support for Multilevel Sensor v8 Air Temperature",0);
-                    $this->RegisterVariableFloat('ZWAVE2M_AirTemperature', $this->Translate('Air Temperature'),"~Temperature");
-                    $data = $this->fetchRetainedData($baseTopic . '49/0/Air_temperature');
-                    if (array_key_exists('value',$data)) {
-                        $this->SetValue('Z2M_AirTemperature', $data['value']);
-                    }
-                    break;
-                case $baseTopic . '113/0/Home_Security/Motion_sensor_status':
-                    $this->SendDebug('DEVICE INFO', "found support for Notificaton v5 Motion sensor",0);
-                    $this->RegisterVariableInteger('ZWAVE2M_MotionSensor', $this->Translate('Motion Sensor'),"~ZWaveNotification07");
-                    break;
-                    $data = $this->fetchRetainedData($baseTopic . '113/0/Home_Security/Motion_sensor_status');
-                    if (array_key_exists('value',$data)) {
-                        $this->SetValue('ZWAVE2M_MotionSensor', $data['value']);
-                    }
-                case $baseTopic . '113/0/Home_Security/Cover_status':
-                    $this->SendDebug('DEVICE INFO', "found support for Notificaton v5 Cover sensor",0);
-                    $this->RegisterVariableInteger('ZWAVE2M_CoverSensor', $this->Translate('Cover Sensor'),"~ZWaveNotification07");
-                    $data = $this->fetchRetainedData($baseTopic . '113/0/Home_Security/Cover_status');
-                    if (array_key_exists('value',$data)) {
-                        $this->SetValue('ZWAVE2M_CoverSensor', $data['value']);
-                    }
-                    break;
-                case $baseTopic . '128/0/level':
-                    $this->SendDebug('DEVICE INFO', "found support for Battery v2 level",0);
-                    $this->RegisterVariableInteger('ZWAVE2M_BatteryLevel', $this->Translate('Battery Level'),"~Battery.100");
-                    $data = $this->fetchRetainedData($baseTopic . '128/0/level');
-                    if (array_key_exists('value',$data)) {
-                        $this->SetValue('ZWAVE2M_BatteryLevel', $data['value']);
-                    }
-                    break;
-                case $baseTopic . '128/0/isLow':
-                    $this->SendDebug('DEVICE INFO', "found support for Battery v2 level",0);
-                    $this->RegisterVariableBoolean('ZWAVE2M_BatteryLow', $this->Translate('Battery Low'),"~Alert");
-                    $data = $this->fetchRetainedData($baseTopic . '128/0/isLow');
-                    if (array_key_exists('value',$data)) {
-                        $this->SetValue('ZWAVE2M_BatteryLow', $data['value']);
-                    }
-                    break;
+                }
             }
-            
+            else {
+
+                $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " has no configuration", 0);
+            }
         }
     }
 
@@ -282,10 +195,7 @@ trait Zwave2MQTTHelper
                                 $this->extractorIntToBoolean('get', $config['ident'], $Payload);
                                 break;
                             case 'rgbColor':
-                                $this->extractorIntToBoolean('get', $config['ident'], $Payload);
-                                break;
-                            case 'rgbColor':
-                                $this->extractorIntToBoolean('get', $config['ident'], $Payload);
+                                $this->extractorRgbColor('get', $config['ident'], $Payload);
                                 break;
                             case 'dimIntensity':
                                 $configDummy = $this->getConfigItemForTopic($Buffer['Topic'] . 'Dummy');
