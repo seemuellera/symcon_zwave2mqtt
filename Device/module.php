@@ -13,22 +13,6 @@ class Zwave2MQTTDevice extends IPSModule
     use VariableProfileHelper;
     use Zwave2MQTTHelper;
 
-    public function Create()
-    {
-        //Never delete this line!
-        parent::Create();
-        $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
-        $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
-        $this->RegisterPropertyString('MQTTTopic', '');
-
-        /* Sort orders: 
-          01 - 09: Actions
-          10 - 29: Alerts & Status
-          30 - 49: Config
-
-        */
-    }
-
     public function __construct($InstanceID) {
 		// Diese Zeile nicht löschen
 		parent::__construct($InstanceID);
@@ -301,6 +285,22 @@ class Zwave2MQTTDevice extends IPSModule
 		);
     }
 
+    public function Create()
+    {
+        //Never delete this line!
+        parent::Create();
+        $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
+        $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
+        $this->RegisterPropertyString('MQTTTopic', '');
+
+        /* Sort orders: 
+          01 - 09: Actions
+          10 - 29: Alerts & Status
+          30 - 49: Config
+
+        */
+    }
+
     public function ApplyChanges()
     {
         //Never delete this line!
@@ -477,7 +477,7 @@ class Zwave2MQTTDevice extends IPSModule
             }
             else {
 
-                $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " has no configuration", 0);
+                $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
             }
         }
     }
