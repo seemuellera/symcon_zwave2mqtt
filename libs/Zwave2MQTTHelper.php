@@ -43,64 +43,6 @@ trait Zwave2MQTTHelper
 
             $this->LogError("Receiving data for unconfigure ident: " . $ident, KL_ERROR);
         }
-
-        switch ($Ident) {
-            case 'ZWAVE2M_Intensity':
-                if ($Value == 100) {
-                    $Value = 99;
-                }
-                $Payload['value'] = $Value;
-                $topic = $baseTopic . '38/1/targetValue';
-                break;
-
-            case 'ZWAVE2M_IntensityOnOff':
-                if ($Value) {
-                    $Payload['value'] = true;
-                    $topic = $baseTopic . '38/1/restorePrevious';
-                }
-                else {
-                    $Payload['value'] = 0;
-                    $topic = $baseTopic . '38/1/targetValue';
-                }
-                break;
-
-            case 'ZWAVE2M_Switch':
-                $Payload['value'] = $Value;
-                $topic = $baseTopic . '37/0/targetValue';
-                break;
-
-            case 'ZWAVE2M_Color':
-                $Payload['value'] = $this->IntToHex($Value);
-                $topic = $baseTopic . '51/0/hexColor';
-                break;
-
-            case 'ZWAVE2M_LockRF':
-                $topic = $baseTopic . '117/0/rf';
-                if ($Value) {
-                    $Payload['value'] = 1;    
-                }
-                else {
-                    $Payload['value'] = 0;
-                }
-                break;
-
-            case 'ZWAVE2M_LockLocal':
-                $topic = $baseTopic . '117/0/local';
-                if ($Value) {
-                    $Payload['value'] = 2;    
-                }
-                else {
-                    $Payload['value'] = 0;
-                }
-                break;
-            
-            default:
-                $this->SendDebug('Request Action', 'No Action defined: ' . $Ident, 0);
-                return false;
-        }
-
-        $PayloadJSON = json_encode($Payload, JSON_UNESCAPED_SLASHES);
-        $this->ZWAVE2M_Set($topic, $PayloadJSON);
     }
 
     public function ReceiveData($JSONString)
