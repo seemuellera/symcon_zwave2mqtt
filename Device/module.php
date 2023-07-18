@@ -441,7 +441,7 @@ class Zwave2MQTTDevice extends IPSModule
                 }
 
                 // set item active if needed
-                if ($topicConfiguration['writable']) {
+                if ($topicConfiguration['writeable']) {
 
                     $this->EnableAction($topicConfiguration['ident']);
                 }
