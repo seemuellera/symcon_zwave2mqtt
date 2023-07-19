@@ -412,13 +412,10 @@ class Zwave2MQTTDevice extends IPSModule
 
         foreach ($this->zwaveConfig as $currentConfigItem) {
 
-            if (in_array('topic', $currentConfigItem)) {
+            if ($currentConfigItem['topic'] == $topic) {
 
-                if ($currentConfigItem['topic'] == $topic) {
-
-                    $this->SendDebug('Config resolver', "Config found for topic " . $topic, 0);
-                    return $currentConfigItem;
-                }
+                $this->SendDebug('Config resolver', "Config found for topic " . $topic, 0);
+                return $currentConfigItem;
             }
         }
 
