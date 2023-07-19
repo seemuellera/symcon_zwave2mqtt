@@ -46,8 +46,8 @@ trait Zwave2MQTTHelper
 
                     if ($config) {
 
-                        $this->SendDebug('Set Value','Ident: ' . $config['ident'] . ' / ' . $config['transformation'] . ' / ' . $Payload['value'], 0);
-                        $this->SetVariableContentFromPayload($config['ident'], $config['transformation'], $Payload['value']);
+                        //$this->SendDebug('Set Value','Ident: ' . $config['ident'] . ' / ' . $config['transformation'] . ' / ' . $Payload['value'], 0);
+                        $this->SetVariableContent($config['ident'], $config['transformation'], $Payload['value']);
 
                     }
                     else {
