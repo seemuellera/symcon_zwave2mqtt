@@ -421,14 +421,8 @@ class Zwave2MQTTDevice extends IPSModule
                 if ($currentConfigItem['topic'] == $topic) {
 
                     $this->SendDebug('Config resolver', "Config found for topic " . $topic, 0);
-
-                    $this->LogMessage('Unable to find key topic in ' . json_encode($currentConfigItem), KL_ERROR);
                     return $currentConfigItem;
                 }
-            }
-            else {
-                //$this->LogMessage('Unable to find key topic in ' . json_encode($currentConfigItem), KL_ERROR);
-                return false;
             }
         }
 
@@ -460,15 +454,11 @@ class Zwave2MQTTDevice extends IPSModule
         foreach ($deviceTopics as $currentDeviceTopic) {
 
             $subTopic = str_replace($baseTopic, "", $currentDeviceTopic);
+            $this->SendDebug('Device Info', 'Processing Topic ' . $subTopic,0);
             $topicConfiguration = $this->getConfigItemForTopic($subTopic);
 
             if ($topicConfiguration) {
 
-                if ($subTopic == 'lastActive') {
-
-                    $this->SendDebug('lastactive',json_encode($topicConfiguration),0);
-                }
-                
                 $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " indicates support for " . $topicConfiguration['description'], 0);
 
                 // Configuration has been found. Proceeding with registering the variables
@@ -516,7 +506,7 @@ class Zwave2MQTTDevice extends IPSModule
             }
             else {
 
-                // $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
+                $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
             }
         }
     }
