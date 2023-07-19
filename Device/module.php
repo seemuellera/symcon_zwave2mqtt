@@ -525,7 +525,7 @@ class Zwave2MQTTDevice extends IPSModule
                         continue;
                     }
 
-                    $this->SetVariableContentFromPayload($topicConfiguration['ident'], $topicConfiguration['transformation'], $data['value']);
+                    $this->SetVariableContent($topicConfiguration['ident'], $topicConfiguration['transformation'], $data['value']);
                 }
 
                 $this->LogMessage('Unable to fetch retained data for topic ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
