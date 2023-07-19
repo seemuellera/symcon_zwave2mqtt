@@ -26,7 +26,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~UnixTimestamp",				
                 "topic" => 'lastActive', 		
-                "extractor" => "divideBy1000", 	
+                "transformation" => "divideBy1000", 	
                 "writeable" => false
             ),
 			Array(  
@@ -37,29 +37,51 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Boolean", 	
                 "profile" => "~Alert.Reversed", 			
                 "topic" => 'status', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(  
-                "ident" => "ZWAVE2M_Intensity", 	
-                "caption" => "Intensity",
+                "ident" => "ZWAVE2M_Intensity_Channel1", 	
+                "caption" => "Intensity (Channel 1)",
                 "description" => "Multivelvel Switch v4",
                 "sortOrder" => 1, 				
                 "type" => "Integer", 	
                 "profile" => "~Intensity.100", 			
                 "topic" => '38/1/currentValue', 			
-                "extractor" => "dimIntensity", 	
+                "transformation" => "dimIntensity", 	
                 "writeable" => true
             ),
             Array(  
-                "ident" => "ZWAVE2M_IntensityOnOff", 	
-                "caption" => "Status",
+                "ident" => "ZWAVE2M_Intensity_Channel2", 	
+                "caption" => "Intensity (Channel 2)",
+                "description" => "Multivelvel Switch v4",
+                "sortOrder" => 1, 				
+                "type" => "Integer", 	
+                "profile" => "~Intensity.100", 			
+                "topic" => '38/2/currentValue', 			
+                "transformation" => "dimIntensity", 	
+                "writeable" => true
+            ),
+            Array(  
+                "ident" => "ZWAVE2M_IntensityOnOff_Channel1", 	
+                "caption" => "Status (Channel 1)",
                 "description" => "Multivelvel Switch v4 Dummy Switch",
                 "sortOrder" => 2, 				
                 "type" => "Boolean", 	
                 "profile" => "~Switch", 			
                 "topic" => '38/1/currentValueDummy', 			
-                "extractor" => "dimIntensityOnOff", 	
+                "transformation" => "dimIntensityOnOff", 	
+                "writeable" => true
+            ),
+            Array(  
+                "ident" => "ZWAVE2M_IntensityOnOff_Channel2", 	
+                "caption" => "Status (Channel 2)",
+                "description" => "Multivelvel Switch v4 Dummy Switch",
+                "sortOrder" => 2, 				
+                "type" => "Boolean", 	
+                "profile" => "~Switch", 			
+                "topic" => '38/2/currentValueDummy', 			
+                "transformation" => "dimIntensityOnOff", 	
                 "writeable" => true
             ),
             Array(  
@@ -70,7 +92,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Boolean", 	
                 "profile" => "~Switch", 			
                 "topic" => '37/0/currentValue', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => true
             ),
             Array(  
@@ -81,7 +103,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~HexColor", 			
                 "topic" => '51/0/hexColor', 			
-                "extractor" => "rgbColor", 	
+                "transformation" => "rgbColor", 	
                 "writeable" => true
             ),
             Array(  
@@ -92,7 +114,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Boolean", 	
                 "profile" => "~Lock", 			
                 "topic" => '117/0/rf', 			
-                "extractor" => "intToBoolean", 	
+                "transformation" => "intToBoolean", 	
                 "writeable" => true
             ),
             Array(  
@@ -103,7 +125,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Boolean", 	
                 "profile" => "~Lock", 			
                 "topic" => '117/0/local', 			
-                "extractor" => "intToBoolean", 	
+                "transformation" => "intToBoolean", 	
                 "writeable" => true
             ),
             Array(  
@@ -114,7 +136,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "", 			
                 "topic" => '43/0/sceneId', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(  
@@ -125,7 +147,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "", 			
                 "topic" => '91/0/scene/001', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -136,7 +158,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "", 			
                 "topic" => '91/0/scene/002', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -147,7 +169,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Boolean", 	
                 "profile" => "", 			
                 "topic" => '48/0/Any', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -158,7 +180,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~Illumination",
                 "topic" => '49/0/Illuminance', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -169,7 +191,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Float", 	
                 "profile" => "~Temperature",
                 "topic" => '49/0/Air_temperature', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -180,7 +202,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~ZWaveNotification07",
                 "topic" => '113/0/Home_Security/Motion_sensor_status', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -191,7 +213,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~ZWaveNotification07",
                 "topic" => '113/0/Home_Security/Cover_status', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -202,7 +224,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~Battery.100",
                 "topic" => '128/0/level', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -213,7 +235,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Boolean", 	
                 "profile" => "~Alert",
                 "topic" => '128/0/isLow', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -224,7 +246,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "",
                 "topic" => '132/0/wakeUpInterval', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => true
             ),
             Array(
@@ -235,7 +257,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~ZWaveNotification04",
                 "topic" => '113/1/Heat_Alarm/Heat_sensor_status', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -246,7 +268,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~ZWaveNotification08",
                 "topic" => '113/1/Power_Management/Over-current_status', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -257,7 +279,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~ZWaveNotification08",
                 "topic" => '113/1/Power_Management/Load_error_status', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -268,7 +290,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~ZWaveNotification08",
                 "topic" => '113/1/Power_Management/Over-Load_status', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             ),
             Array(
@@ -279,7 +301,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~ZWaveNotification09",
                 "topic" => '113/1/System/Hardware_status', 			
-                "extractor" => "copyValue", 	
+                "transformation" => "copyValue", 	
                 "writeable" => false
             )
 		);
@@ -466,29 +488,32 @@ class Zwave2MQTTDevice extends IPSModule
                 $data = $this->fetchRetainedData($currentDeviceTopic);
                 if ($data) {
 
-                    switch ($topicConfiguration['extractor']) {
+                    if (! is_array($data)) {
 
-                        case 'copyValue':
-                            $this->extractorCopyValue('get', $topicConfiguration['ident'], $data);
-                            break;
-                        case 'divideBy1000':
-                            $this->extractorDivideBy1000('get', $topicConfiguration['ident'], $data);
-                            break;
-                        case 'intToBoolean':
-                            $this->extractorIntToBoolean('get', $topicConfiguration['ident'], $data);
-                            break;
-                        case 'rgbColor':
-                            $this->extractorRgbColor('get', $topicConfiguration['ident'], $data);
-                            break;
-                        case 'dimIntensity':
-                            $configDummy = $this->getConfigItemForTopic($topicConfiguration['topic'] . 'Dummy');
-                            $this->extractorDimIntensity('get', $topicConfiguration['ident'], $configDummy['ident'], $data);
-                            break;    
-
-                        default:
-                            $this->LogMessage('Receive Data: No handler defined for extractor' . $topicConfiguration['extractor'], KL_ERROR);
-                            return;
+                        $this->LogMessage('Unable to fetch retained data for topic ' . $currentDeviceTopic);
+                        continue;
                     }
+                    if (! array_key_exists('Payload', $data)) {
+
+                        $this->LogMessage('Unable to fetch retained data for topic ' . $currentDeviceTopic);
+                        continue;
+                    }
+
+                    $payload = json_decode($data['Payload'], true);
+
+                    if (! is_array($payload)) {
+
+                        $this->LogMessage('Unable to convert payload data for topic ' . $currentDeviceTopic);
+                        continue;
+                    }
+
+                    if (! array_key_exists('value', $payload)) {
+
+                        $this->LogMessage('Unable to convert payload data for topic ' . $currentDeviceTopic);
+                        continue;
+                    }
+
+                    $this->SetVariableContentFromPayload($topicConfiguration['ident'], $topicConfiguration['transformation'], $payload['value']);
                 }
             }
             else {

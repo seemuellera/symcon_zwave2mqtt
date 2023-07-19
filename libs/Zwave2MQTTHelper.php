@@ -15,29 +15,7 @@ trait Zwave2MQTTHelper
 
         if ($topicConfiguration) {
 
-            switch ($topicConfiguration['extractor']) {
-
-                case 'copyValue':
-                    $this->extractorCopyValue('set', $topicConfiguration['topic'], $Value);
-                    break;
-                case 'divideBy1000':
-                    $this->extractorDivideBy1000('set', $topicConfiguration['topic'], $Value);
-                    break;
-                case 'intToBoolean':
-                    $this->extractorIntToBoolean('set', $topicConfiguration['topic'], $Value);
-                    break;
-                case 'rgbColor':
-                    $this->extractorRgbColor('set', $topicConfiguration['topic'], $Value);
-                    break;
-                case 'dimIntensity':
-                    $configDummy = $this->getConfigItemForTopic($topicConfiguration['topic'] . 'Dummy');
-                    $this->extractorDimIntensity('set', $Ident, $configDummy['ident'], $Value);
-                    break;    
-
-                default:
-                    $this->LogMessage('Receive Data: No handler defined for extractor' . $topicConfiguration['extractor'], KL_ERROR);
-                    return;
-            }
+            $this->SetMqttValue($topicConfiguration['topic'], $topicConfiguration['transformation'], $Value);
         }
         else {
 
@@ -65,29 +43,8 @@ trait Zwave2MQTTHelper
 
                     if ($config) {
 
-                        switch ($config['extractor']) {
+                        $this->SetVariableContentFromPayload($config['ident'], $config['transformation'], $Payload['value']);
 
-                            case 'copyValue':
-                                $this->extractorCopyValue('get', $config['ident'], $Payload);
-                                break;
-                            case 'divideBy1000':
-                                $this->extractorDivideBy1000('get', $config['ident'], $Payload);
-                                break;
-                            case 'intToBoolean':
-                                $this->extractorIntToBoolean('get', $config['ident'], $Payload);
-                                break;
-                            case 'rgbColor':
-                                $this->extractorRgbColor('get', $config['ident'], $Payload);
-                                break;
-                            case 'dimIntensity':
-                                $configDummy = $this->getConfigItemForTopic($Buffer['Topic'] . 'Dummy');
-                                $this->extractorDimIntensity('get', $config['ident'], $configDummy['ident'], $Payload);
-                                break;
-
-                            default:
-                                $this->LogMessage('Receive Data: No handler defined for extractor' . $config['extractor'], KL_ERROR);
-                                return;
-                        }
                     }
                     else {
                         $this->LogMessage('Receive Data: Unable to get config item for topic ' . $Buffer['Topic'], KL_ERROR);
@@ -98,117 +55,73 @@ trait Zwave2MQTTHelper
         }
     }
 
-    protected function extractorCopyValue($mode, $ident, $payload) {
+    protected function SetVariableContent($ident, $transformation, $value) {
 
-        if ($mode == 'get') {
-
-            if (array_key_exists('value', $payload)) {
-                
-                $this->SetValue($ident, $payload['value']);
-            }
-            else {
-
-                $this->LogMessage('Extrator CopyValue: No value found in payload for ident ' . $ident, KL_ERROR);
-            }
-        }
-        if ($mode == 'set') {
-
-            $payloadArray['value'] = $payload;
-            $payloadJSON = json_encode($payloadArray, JSON_UNESCAPED_SLASHES);
-            $this->ZWAVE2M_Set($ident, $PayloadJSON);
-        }
-    }
-
-    protected function extractorDivideBy1000($mode, $ident, $payload) {
-
-        if ($mode == 'get') {
-
-            if (array_key_exists('value', $payload)) {
-                
-                $this->SetValue($ident, ($payload['value']/1000));
-            }
-            else {
-
-                $this->LogMessage('Extrator DivideBy1000: No value found in payload for ident ' . $ident, KL_ERROR);
-            }
-        }
-        if ($mode == 'set') {
-
-            $payloadArray['value'] = $payload * 1000;
-            $payloadJSON = json_encode($payloadArray, JSON_UNESCAPED_SLASHES);
-            $this->ZWAVE2M_Set($ident, $PayloadJSON);
-        }
-    }
-
-    protected function extractorIntToBoolean($mode, $ident, $payload) {
-
-        if ($mode == 'get') {
+        switch($transformation) {
             
-            if (array_key_exists('value', $payload)) {
-                if ($payload['value'] == 0) {
+            case "copyValue":
+                $this->SetValue($ident, $value);
+                break;
+
+            case "divideBy1000":
+                $this->SetValue($ident, ($value/1000));
+                break;
+
+            case "intToBoolean":
+                if ($value == 0) {
                     $this->SetValue($ident, false);    
                 }
-                if ($payload['value'] == 1) {
+                if ($value > 0) {
                     $this->SetValue($ident, true);  
                 }
-            } 
-            else {
-                $this->LogMessage('Extrator IntToBoolean: No value found in payload for ident ' . $ident, KL_ERROR);
-            }
-        }
-        if ($mode == 'set') {
-
-            if ($payload) {
-                $payloadArray['value'] = 1;    
-            }
-            else {
-                $payloadArray['value'] = 0;
-            }
-            $payloadJSON = json_encode($payloadArray, JSON_UNESCAPED_SLASHES);
-            $this->ZWAVE2M_Set($ident, $PayloadJSON);
-        }
-    }
-
-    protected function extractorRgbColor($mode, $ident, $payload) {
-
-        if ($mode == 'get') {
+                break;
             
-            if (array_key_exists('value', $payload)) {
-                
-                $this->SetValue($ident, $this->HexToInt($payload['value']));
-            } 
-            else {
-                $this->LogMessage('Extrator IntToBoolean: No value found in payload for ident ' . $ident, KL_ERROR);
-            }
-        }
-        if ($mode == 'set') {
+            case "rgbColor":
+                $this->SetValue($ident, $this->HexToInt($value));
+                break;
 
-            $payloadArray['value'] = $this->IntToHex($payload);
-            $payloadJSON = json_encode($payloadArray, JSON_UNESCAPED_SLASHES);
-            $this->ZWAVE2M_Set($ident, $PayloadJSON);
-        }
-    }
-
-    protected function extractorDimIntensity($mode, $identIntensity, $identSwitch, $payload) {
-
-        if ($mode == 'get') {
-            
-            if (array_key_exists('value', $payload)) {
-                
-                $this->SetValue($identIntensity, ($payload['value']+1));
-
-                if ($payload['value'] == 0) {
-
-                    $this->SetValue($identSwitch, false);
+            case "dimIntensity":
+                if ($value >= 99) {
+                    $this->SetValue($ident, 100);
                 }
                 else {
-
-                    $this->SetValue($identSwitch, true);
+                    $this->SetValue($ident, $value);
                 }
-            } 
-            else {
-                $this->LogMessage('Extrator IntToBoolean: No value found in payload for ident ' . $ident, KL_ERROR);
-            }
+        }
+    }
+
+    protected function SetMqttValue($topic, $transformation, $value) {
+
+        switch($transformation) {
+            
+            case "copyValue":
+                $this->Z2MSet($topic, Array('value' => $value));
+                break;
+
+            case "divideBy1000":
+                $this->Z2MSet($topic, Array('value' => ($value * 1000)));
+                break;
+
+            case "intToBoolean":
+                if ($value) {
+                    $this->Z2MSet($topic, Array('value' => 1));    
+                }
+                else {
+                    $this->Z2MSet($topic, Array('value' => 0));  
+                }
+                break;
+            
+            case "rgbColor":
+                $this->Z2MSet($topic, Array('value' => $this->IntToHex($value)));
+                break;
+
+            case "dimIntensity":
+                if ($value >= 100) {
+                    $this->Z2MSet($topic, Array('value' => 99));  
+                }
+                else {
+                    $this->Z2MSet($topic, Array('value' => $value));  
+                }
         }
     }
 
@@ -249,28 +162,4 @@ trait Zwave2MQTTHelper
             $this->SendDebug('Error :: No Expose for Value', 'Ident: ' . $Ident, 0);
         }
     }
-
-    private function setColor(int $color, string $mode, string $Z2MMode = 'color')
-    {
-        switch ($mode) {
-            case 'cie':
-                $RGB = $this->HexToRGB($color);
-                $cie = $this->RGBToCIE($RGB[0], $RGB[1], $RGB[2]);
-                if ($Z2MMode = 'color') {
-                    $Payload['color'] = $cie;
-                } elseif ($Z2MMode == 'color_rgb') {
-                    $Payload['color_rgb'] = $cie;
-                } else {
-                    return;
-                }
-
-                $PayloadJSON = json_encode($Payload, JSON_UNESCAPED_SLASHES);
-                $this->Z2MSet($PayloadJSON);
-                break;
-            default:
-                $this->SendDebug('setColor', 'Invalid Mode ' . $mode, 0);
-                break;
-        }
-    }
-
 }
