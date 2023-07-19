@@ -39,6 +39,7 @@ trait Zwave2MQTTHelper
 
                 if (in_array($Buffer['Topic'], $allConfiguredTopics)) {
 
+                    $this->SendDebug('Read data',$Buffer['Topic'],0);
                     $config = $this->getConfigItemForTopic($Buffer['Topic']);
 
                     if ($config) {
