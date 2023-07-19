@@ -451,10 +451,13 @@ class Zwave2MQTTDevice extends IPSModule
         }
         $this->SendDebug('DEVICE INFO', 'Number of retained topics: ' . count($deviceTopics), 0);
         
+        $i=0;
         foreach ($deviceTopics as $currentDeviceTopic) {
 
+            $i++;
+
             $subTopic = str_replace($baseTopic, "", $currentDeviceTopic);
-            $this->SendDebug('Device Info', 'Processing Topic ' . $subTopic,0);
+            $this->SendDebug('Device Info', 'Processing Topic ' . $i . ' / ' . $subTopic,0);
             $topicConfiguration = $this->getConfigItemForTopic($subTopic);
 
             if ($topicConfiguration) {
