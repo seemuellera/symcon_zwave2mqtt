@@ -421,6 +421,11 @@ class Zwave2MQTTDevice extends IPSModule
 
         foreach ($this->zwaveConfig as $currentConfigItem) {
 
+            if ($topic == 'lastActive') {
+        
+                $this->SendDebug('FOUND',json_encode($currentConfigItem),0);
+            }
+
             if (in_array('topic', $currentConfigItem)) {
 
                 if ($currentConfigItem['topic'] == $topic) {
