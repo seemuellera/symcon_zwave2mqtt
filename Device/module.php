@@ -415,8 +415,10 @@ class Zwave2MQTTDevice extends IPSModule
     protected function getConfigItemForTopic($topic) {
 
         foreach ($this->zwaveConfig as $currentConfigItem) {
-            
+
             if (in_array('topic', $currentConfigItem)) {
+
+                $this->SendDebug('Config resolver', $currenConfigItem('topic'), 0);
 
                 if ($currentConfigItem['topic'] == $topic) {
 
