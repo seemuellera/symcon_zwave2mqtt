@@ -414,17 +414,7 @@ class Zwave2MQTTDevice extends IPSModule
 
     protected function getConfigItemForTopic($topic) {
 
-        if ($topic == 'lastActive') {
-        
-            $this->SendDebug('FOUND','lastActive',0);
-        }
-
         foreach ($this->zwaveConfig as $currentConfigItem) {
-
-            if ($topic == 'lastActive') {
-        
-                $this->SendDebug('FOUND',json_encode($currentConfigItem),0);
-            }
 
             if (in_array('topic', $currentConfigItem)) {
 
@@ -436,12 +426,7 @@ class Zwave2MQTTDevice extends IPSModule
                 }
             }
             else {
-            
-                if ($topic == 'lastActive') {
-        
-                    $this->SendDebug('FOUNDC',"But config is no array",0);
-                }
-    
+                $this->LogMessage('Unable to find key topic in ' . json_encode($currentConfigItem), KL_ERROR);
             }
         }
 
