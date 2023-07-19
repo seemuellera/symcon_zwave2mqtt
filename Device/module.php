@@ -459,6 +459,11 @@ class Zwave2MQTTDevice extends IPSModule
 
             if ($topicConfiguration) {
 
+                if ($subTopic == 'lastActive') {
+
+                    $this->SendDebug('lastactive',json_encode($topicConfiguration),0);
+                }
+                
                 $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " indicates support for " . $topicConfiguration['description'], 0);
 
                 // Configuration has been found. Proceeding with registering the variables
