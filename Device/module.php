@@ -69,7 +69,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "sortOrder" => 2, 				
                 "type" => "Boolean", 	
                 "profile" => "~Switch", 			
-                "topic" => '38/1/currentValueDummy', 			
+                "topic" => '38/1/restorePrevious', 			
                 "transformation" => "dimIntensityOnOff", 	
                 "writeable" => true
             ),
@@ -80,7 +80,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "sortOrder" => 2, 				
                 "type" => "Boolean", 	
                 "profile" => "~Switch", 			
-                "topic" => '38/2/currentValueDummy', 			
+                "topic" => '38/2/restorePrevious', 			
                 "transformation" => "dimIntensityOnOff", 	
                 "writeable" => true
             ),
@@ -319,10 +319,32 @@ class Zwave2MQTTDevice extends IPSModule
                 "ident" => "ZWAVE2M_ElectricConsumption", 	
                 "caption" => "Electric Consumption",
                 "description" => "Meter v3 electric consumption measurement",
-                "sortOrder" => 23, 				
+                "sortOrder" => 24, 				
                 "type" => "Float", 	
                 "profile" => "~Electricity",
                 "topic" => '50/1/value/65537', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_Power", 	
+                "caption" => "Power",
+                "description" => "Multilevel Sensor v2 Power measurement",
+                "sortOrder" => 23, 				
+                "type" => "Float", 	
+                "profile" => "~Watt",
+                "topic" => '49/0/Power', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_ElectricConsumption", 	
+                "caption" => "Electric Consumption",
+                "description" => "Meter v2 electric consumption measurement",
+                "sortOrder" => 24, 				
+                "type" => "Float", 	
+                "profile" => "~Electricity",
+                "topic" => '50/0/value/65537', 			
                 "transformation" => "copyValue", 	
                 "writeable" => false
             )

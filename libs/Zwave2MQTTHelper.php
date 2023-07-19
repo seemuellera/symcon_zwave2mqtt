@@ -96,7 +96,7 @@ trait Zwave2MQTTHelper
                     $this->SetValue($ident, $value);
                 }
                 break;
-            
+
             case "protectionRemote":
                 if ($value == 0) {
                     $this->SetValue($ident, false);    
