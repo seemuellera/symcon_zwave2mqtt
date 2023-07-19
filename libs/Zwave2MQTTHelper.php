@@ -36,11 +36,11 @@ trait Zwave2MQTTHelper
             if (is_array($Payload)) {
 
                 $allConfiguredTopics = $this->getConfigTopics();
+                $baseTopic = $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/';
+                $subTopic = str_replace($baseTopic, "", $Buffer['Topic']);
 
                 if (in_array($Buffer['Topic'], $allConfiguredTopics)) {
 
-                    $baseTopic = $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/';
-                    $subTopic = str_replace($baseTopic, "", $Buffer['Topic']);
                     $config = $this->getConfigItemForTopic($subTopic);
                     $this->LogMessage('Extracted data','Fetching config for sub topic ' . $subTopic, 0);
 
@@ -54,6 +54,10 @@ trait Zwave2MQTTHelper
                         $this->LogMessage('Receive Data: Unable to get config item for topic ' . $Buffer['Topic'], KL_ERROR);
                         return;
                     }
+                }
+                else {
+
+                    $this->SendDebug('SEt Value','Topic ' . $subTopic . ' is not a configured topic',0);
                 }
             }
         }
