@@ -435,6 +435,14 @@ class Zwave2MQTTDevice extends IPSModule
                     return $currentConfigItem;
                 }
             }
+            else {
+            
+                if ($topic == 'lastActive') {
+        
+                    $this->SendDebug('FOUNDC',"But config is no array",0);
+                }
+    
+            }
         }
 
         return false;
