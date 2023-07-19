@@ -512,8 +512,7 @@ class Zwave2MQTTDevice extends IPSModule
                 $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
             }
 
-            $this->SendDebug('TOPIC PROCESSED', "Topic " . $subTopic . " is processed", 0);
-            
+            $this->LogMessage("Topic " . $subTopic . " is processed / " . $i, KL_ERROR);
         }
     }
 }
