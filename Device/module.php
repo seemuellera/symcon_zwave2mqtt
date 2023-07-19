@@ -495,7 +495,7 @@ class Zwave2MQTTDevice extends IPSModule
 
                     $this->SendDebug('MQTTDATA', $mqttData, 0);
 
-                    $data = json_decode($mqttData, true);
+                    // $data = json_decode($mqttData, true);
 
                     if (! is_array($data)) {
 
