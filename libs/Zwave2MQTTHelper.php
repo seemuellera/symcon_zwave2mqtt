@@ -31,6 +31,8 @@ trait Zwave2MQTTHelper
             $this->SendDebug('MQTT Topic', $Buffer['Topic'], 0);
             $this->SendDebug('MQTT Payload', $Buffer['Payload'], 0);
 
+            $this->SendDebug('Read data',$JSONString,0);
+
             $Payload = json_decode($Buffer['Payload'], true);
 
             if (is_array($Payload)) {
@@ -39,7 +41,6 @@ trait Zwave2MQTTHelper
 
                 if (in_array($Buffer['Topic'], $allConfiguredTopics)) {
 
-                    $this->SendDebug('Read data',$Buffer['Topic'],0);
                     $config = $this->getConfigItemForTopic($Buffer['Topic']);
 
                     if ($config) {
