@@ -418,11 +418,9 @@ class Zwave2MQTTDevice extends IPSModule
 
             if (in_array('topic', $currentConfigItem)) {
 
-                $this->SendDebug('Config resolver', "checking for config " . $currentConfigItem['topic'], 0);
-
                 if ($currentConfigItem['topic'] == $topic) {
 
-                    $this->SendDebug('Config resolver', "  config found", 0);
+                    $this->SendDebug('Config resolver', "Config found for topic " . $topic, 0);
 
                     return $currentConfigItem;
                 }
@@ -450,18 +448,14 @@ class Zwave2MQTTDevice extends IPSModule
             if (preg_match($filterRegex, $currentTopic) ) {
             
                 $deviceTopics[] = $currentTopic;
-                $this->SendDebug('Found Topic', $currentTopic,0);
             }
         }
         $this->SendDebug('DEVICE INFO', 'Number of retained topics: ' . count($deviceTopics), 0);
         
         foreach ($deviceTopics as $currentDeviceTopic) {
 
-            //$this->SendDebug('Topic',$currentDeviceTopic, 0);
-
             $subTopic = str_replace($baseTopic, "", $currentDeviceTopic);
             $topicConfiguration = $this->getConfigItemForTopic($subTopic);
-            //$this->SendDebug('Subtopic',$subTopic, 0);
 
             if ($topicConfiguration) {
 
