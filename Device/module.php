@@ -446,7 +446,7 @@ class Zwave2MQTTDevice extends IPSModule
         $deviceTopics = Array();
         foreach ($allTopics as $currentTopic) {
 
-            $filterRegex = '/^' . $this->ReadPropertyString('MQTTBaseTopic') . '\/' . $this->ReadPropertyString('MQTTTopic') . '\/*/';
+            $filterRegex = '/^' . $this->ReadPropertyString('MQTTBaseTopic') . '\/' . $this->ReadPropertyString('MQTTTopic') . '\/.+/';
             if (preg_match($filterRegex, $currentTopic) ) {
             
                 $deviceTopics[] = $currentTopic;
