@@ -349,10 +349,7 @@ class Zwave2MQTTDevice extends IPSModule
         $configTopics = Array();
         foreach ($this->zwaveConfig as $currentConfigItem) {
             
-            if (in_array('topic', $currentConfigItem)) {
-
-                $configTopics[] = $currentConfigItem['topic'];
-            }
+            $configTopics[] = $currentConfigItem['topic'];
         }
 
         $this->SendDebug('CONFIG',json_encode($configTopics),0);
@@ -403,10 +400,7 @@ class Zwave2MQTTDevice extends IPSModule
 
                 if ($currentConfigItem['topic'] == $topic) {
 
-                    if (in_array('ident', $currentConfigItem)) {
-
-                        return $currentConfigItem['ident'];
-                    }
+                    return $currentConfigItem['ident'];
                 }
             }
         }
