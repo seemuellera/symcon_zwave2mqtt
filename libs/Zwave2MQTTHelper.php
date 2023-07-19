@@ -162,10 +162,10 @@ trait Zwave2MQTTHelper
 
             case "protectionLocal":
                 if ($value) {
-                    $this->Z2MSet($topic, Array('value' => 0));    
+                    $this->Z2MSet($topic, Array('value' => 2));    
                 }
                 else {
-                    $this->Z2MSet($topic, Array('value' => 2));  
+                    $this->Z2MSet($topic, Array('value' => 0));  
                 }
                 break;
             
