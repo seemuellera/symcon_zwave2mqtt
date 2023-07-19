@@ -457,14 +457,9 @@ class Zwave2MQTTDevice extends IPSModule
             $subTopic = str_replace($baseTopic, "", $currentDeviceTopic);
             $topicConfiguration = $this->getConfigItemForTopic($subTopic);
 
-            if ($subTopic == 'lastActive') {
-
-                $this->SendDebug('FOUND','lastActive',0);
-            }
-
             if ($topicConfiguration) {
 
-                // $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " indicates support for " . $topicConfiguration['description'], 0);
+                $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " indicates support for " . $topicConfiguration['description'], 0);
 
                 // Configuration has been found. Proceeding with registering the variables
                 switch ($topicConfiguration['type']) {
@@ -493,10 +488,6 @@ class Zwave2MQTTDevice extends IPSModule
 
                 // read the retained data
                 $data = $this->fetchRetainedData($currentDeviceTopic);
-
-                $this->SendDebug('MQTTDATA', json_encode($data), 0);
-
-                // $data = json_decode($mqttData, true);
 
                 if (! is_array($data)) {
 
