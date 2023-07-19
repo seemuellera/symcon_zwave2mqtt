@@ -41,7 +41,7 @@ trait Zwave2MQTTHelper
 
                     $baseTopic = $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/';
                     $subTopic = str_replace($baseTopic, "", $Buffer['Topic']);
-                    $config = $this->getConfigItemForTopic($Buffer['Topic']);
+                    $config = $this->getConfigItemForTopic($subTopic);
 
                     if ($config) {
 
