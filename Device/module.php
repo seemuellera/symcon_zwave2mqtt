@@ -515,7 +515,7 @@ class Zwave2MQTTDevice extends IPSModule
             }
             else {
 
-                $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
+                // $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
             }
         }
     }
