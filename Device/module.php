@@ -352,7 +352,7 @@ class Zwave2MQTTDevice extends IPSModule
             $configTopics[] = $currentConfigItem['topic'];
         }
 
-        $this->SendDebug('CONFIG',json_encode($configTopics),0);
+        // $this->SendDebug('CONFIG',json_encode($configTopics),0);
 
         return $configTopics;
     }
