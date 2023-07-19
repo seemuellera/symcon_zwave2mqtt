@@ -457,6 +457,8 @@ class Zwave2MQTTDevice extends IPSModule
 
             if (in_array($subTopic, $allConfiguredTopics)) {
 
+                $this->SendDebug('DEVICE INFO','Topic configuration should exist for topic ' . $subTopic, 0);
+
                 if ($topicConfiguration) {
 
                     $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " indicates support for " . $topicConfiguration['description'], 0);
