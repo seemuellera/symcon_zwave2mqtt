@@ -355,6 +355,8 @@ class Zwave2MQTTDevice extends IPSModule
             }
         }
 
+        $this->SendDebug('CONFIG',json_encode($configTopics),0);
+
         return $configTopics;
     }
 
@@ -450,67 +452,73 @@ class Zwave2MQTTDevice extends IPSModule
             }
         }
         $this->SendDebug('DEVICE INFO', 'Number of retained topics: ' . count($deviceTopics), 0);
-        
-        $i=0;
+       
+        $allConfiguredTopics = $this->getConfigTopics();
+ 
+       
         foreach ($deviceTopics as $currentDeviceTopic) {
 
-            $i++;
-
             $subTopic = str_replace($baseTopic, "", $currentDeviceTopic);
-            // $this->SendDebug('Device Info', 'Processing Topic ' . $i . ' / ' . $subTopic,0);
             $topicConfiguration = $this->getConfigItemForTopic($subTopic);
 
-            if ($topicConfiguration) {
+            if (in_array($subTopic, $allConfiguredTopics)) {
 
-                $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " indicates support for " . $topicConfiguration['description'], 0);
+                if ($topicConfiguration) {
 
-                // Configuration has been found. Proceeding with registering the variables
-                switch ($topicConfiguration['type']) {
+                    $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " indicates support for " . $topicConfiguration['description'], 0);
 
-                    case "Boolean":
-                        $this->RegisterVariableBoolean($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
-                        break;
-                    case "Integer":
-                        $this->RegisterVariableInteger($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
-                        break;
-                    case "Float":
-                        $this->RegisterVariableFloat($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
-                        break;
-                    case "String":
-                        $this->RegisterVariableString($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
-                        break;
-                    default:
-                        $this->LogMessage('Unknown data type defined. Skipping variable', KL_ERROR);
+                    // Configuration has been found. Proceeding with registering the variables
+                    switch ($topicConfiguration['type']) {
+
+                        case "Boolean":
+                            $this->RegisterVariableBoolean($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
+                            break;
+                        case "Integer":
+                            $this->RegisterVariableInteger($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
+                            break;
+                        case "Float":
+                            $this->RegisterVariableFloat($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
+                            break;
+                        case "String":
+                            $this->RegisterVariableString($topicConfiguration['ident'], $this->Translate($topicConfiguration['caption']), $topicConfiguration['profile'], $topicConfiguration['sortOrder']);
+                            break;
+                        default:
+                            $this->LogMessage('Unknown data type defined. Skipping variable', KL_ERROR);
+                    }
+
+                    // set item active if needed
+                    if ($topicConfiguration['writeable']) {
+
+                        $this->EnableAction($topicConfiguration['ident']);
+                    }
+
+                    // read the retained data
+                    $data = $this->fetchRetainedData($currentDeviceTopic);
+
+                    if (! is_array($data)) {
+
+                        $this->LogMessage('retained data is not in the right format ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
+                        continue;
+                    }
+
+                    if (! array_key_exists('value', $data)) {
+
+                        $this->LogMessage('Unable to access value from  payload data for topic ' . $currentDeviceTopic . ' / ' . $data, KL_ERROR);
+                        continue;
+                    }
+
+                    $this->SetVariableContent($topicConfiguration['ident'], $topicConfiguration['transformation'], $data['value']);
+                
                 }
+                else {
 
-                // set item active if needed
-                if ($topicConfiguration['writeable']) {
-
-                    $this->EnableAction($topicConfiguration['ident']);
+                    // $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
                 }
-
-                // read the retained data
-                $data = $this->fetchRetainedData($currentDeviceTopic);
-
-                if (! is_array($data)) {
-
-                    $this->LogMessage('retained data is not in the right format ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
-                    continue;
-                }
-
-                if (! array_key_exists('value', $data)) {
-
-                    $this->LogMessage('Unable to access value from  payload data for topic ' . $currentDeviceTopic . ' / ' . $data, KL_ERROR);
-                    continue;
-                }
-
-                $this->SetVariableContent($topicConfiguration['ident'], $topicConfiguration['transformation'], $data['value']);
-            
             }
             else {
 
                 // $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
-            }
+            } 
         }
     }
 }
