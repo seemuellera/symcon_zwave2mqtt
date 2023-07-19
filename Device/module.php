@@ -114,7 +114,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Boolean", 	
                 "profile" => "~Lock", 			
                 "topic" => '117/0/rf', 			
-                "transformation" => "intToBoolean", 	
+                "transformation" => "protectionRemote", 	
                 "writeable" => true
             ),
             Array(  
@@ -125,7 +125,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Boolean", 	
                 "profile" => "~Lock", 			
                 "topic" => '117/0/local', 			
-                "transformation" => "intToBoolean", 	
+                "transformation" => "protectionLocal", 	
                 "writeable" => true
             ),
             Array(  

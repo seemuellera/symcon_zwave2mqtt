@@ -87,6 +87,25 @@ trait Zwave2MQTTHelper
                 else {
                     $this->SetValue($ident, $value);
                 }
+                break;
+            
+            case "protectionRemote":
+                if ($value == 0) {
+                    $this->SetValue($ident, false);    
+                }
+                if ($value == 1) {
+                    $this->SetValue($ident, true);  
+                }
+                break;
+
+            case "protectionLocal":
+                if ($value == 0) {
+                    $this->SetValue($ident, false);    
+                }
+                if ($value == 2) {
+                    $this->SetValue($ident, true);  
+                }
+                break;
         }
     }
 
@@ -123,6 +142,25 @@ trait Zwave2MQTTHelper
                     $this->Z2MSet($topic, Array('value' => $value));  
                 }
                 break;
+
+            case "protectionRemote":
+                if ($value) {
+                    $this->Z2MSet($topic, Array('value' => 1));    
+                }
+                else {
+                    $this->Z2MSet($topic, Array('value' => 0));  
+                }
+                break;
+
+            case "protectionLocal":
+                if ($value) {
+                    $this->Z2MSet($topic, Array('value' => 1));    
+                }
+                else {
+                    $this->Z2MSet($topic, Array('value' => 2));  
+                }
+                break;
+            
         }
     }
 
