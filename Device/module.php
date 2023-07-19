@@ -502,12 +502,13 @@ class Zwave2MQTTDevice extends IPSModule
                         $this->LogMessage('retained data is not in the right format ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
                         continue;
                     }
+                    /*
                     if (! array_key_exists('Payload', $data)) {
 
                         $this->LogMessage('Unable to fetch retained data for topic ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
                         continue;
                     }
-
+                    */
                     /*
                     $payload = json_decode($data['Payload'], true);
 
@@ -518,13 +519,13 @@ class Zwave2MQTTDevice extends IPSModule
                     }
                     */
 
-                    if (! array_key_exists('value', $data['Payload'])) {
+                    if (! array_key_exists('value', $data)) {
 
-                        $this->LogMessage('Unable to access value from  payload data for topic ' . $currentDeviceTopic . ' / ' . $data['Payload'], KL_ERROR);
+                        $this->LogMessage('Unable to access value from  payload data for topic ' . $currentDeviceTopic . ' / ' . $data, KL_ERROR);
                         continue;
                     }
 
-                    $this->SetVariableContentFromPayload($topicConfiguration['ident'], $topicConfiguration['transformation'], $data['Payload']['value']);
+                    $this->SetVariableContentFromPayload($topicConfiguration['ident'], $topicConfiguration['transformation'], $data['value']);
                 }
 
                 $this->LogMessage('Unable to fetch retained data for topic ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
