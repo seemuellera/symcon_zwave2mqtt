@@ -45,6 +45,7 @@ trait Zwave2MQTTHelper
 
                     if ($config) {
 
+                        $this->LogMessage('Set Value','Ident: ' . $config['ident'] . ' / ' . $config['transformation'] . ' / ' . $Payload['value'], 0);
                         $this->SetVariableContentFromPayload($config['ident'], $config['transformation'], $Payload['value']);
 
                     }
