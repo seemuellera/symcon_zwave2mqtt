@@ -418,9 +418,11 @@ class Zwave2MQTTDevice extends IPSModule
 
             if (in_array('topic', $currentConfigItem)) {
 
-                $this->SendDebug('Config resolver', $currenConfigItem('topic'), 0);
+                $this->SendDebug('Config resolver', "checking for config " . $currenConfigItem['topic'], 0);
 
                 if ($currentConfigItem['topic'] == $topic) {
+
+                    $this->SendDebug('Config resolver', "  config found", 0);
 
                     return $currentConfigItem;
                 }
