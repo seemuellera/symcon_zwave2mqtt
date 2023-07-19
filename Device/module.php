@@ -427,6 +427,7 @@ class Zwave2MQTTDevice extends IPSModule
             }
             else {
                 $this->LogMessage('Unable to find key topic in ' . json_encode($currentConfigItem), KL_ERROR);
+                return false;
             }
         }
 
