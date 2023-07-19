@@ -500,22 +500,6 @@ class Zwave2MQTTDevice extends IPSModule
                     $this->LogMessage('retained data is not in the right format ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
                     continue;
                 }
-                /*
-                if (! array_key_exists('Payload', $data)) {
-
-                    $this->LogMessage('Unable to fetch retained data for topic ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
-                    continue;
-                }
-                */
-                /*
-                $payload = json_decode($data['Payload'], true);
-
-                if (! is_array($payload)) {
-
-                    $this->LogMessage('Unable to decode payload data for topic ' . $currentDeviceTopic . ' / ' . $data['Payload'], KL_ERROR);
-                    continue;
-                }
-                */
 
                 if (! array_key_exists('value', $data)) {
 
