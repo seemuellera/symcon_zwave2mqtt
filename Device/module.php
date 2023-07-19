@@ -457,7 +457,7 @@ class Zwave2MQTTDevice extends IPSModule
             $i++;
 
             $subTopic = str_replace($baseTopic, "", $currentDeviceTopic);
-            $this->SendDebug('Device Info', 'Processing Topic ' . $i . ' / ' . $subTopic,0);
+            // $this->SendDebug('Device Info', 'Processing Topic ' . $i . ' / ' . $subTopic,0);
             $topicConfiguration = $this->getConfigItemForTopic($subTopic);
 
             if ($topicConfiguration) {
@@ -509,10 +509,8 @@ class Zwave2MQTTDevice extends IPSModule
             }
             else {
 
-                $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
+                // $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $subTopic . " has no configuration", 0);
             }
-
-            $this->LogMessage("Topic " . $subTopic . " is processed / " . $i, KL_ERROR);
         }
     }
 }
