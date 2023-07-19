@@ -499,7 +499,7 @@ class Zwave2MQTTDevice extends IPSModule
 
                     if (! is_array($data)) {
 
-                        $this->LogMessage('Unable to fetch retained data for topic ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
+                        $this->LogMessage('retained data is not in the right format ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
                         continue;
                     }
                     if (! array_key_exists('Payload', $data)) {
@@ -526,6 +526,9 @@ class Zwave2MQTTDevice extends IPSModule
 
                     $this->SetVariableContentFromPayload($topicConfiguration['ident'], $topicConfiguration['transformation'], $data['Payload']['value']);
                 }
+
+                $this->LogMessage('Unable to fetch retained data for topic ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
+                continue;
             }
             else {
 
