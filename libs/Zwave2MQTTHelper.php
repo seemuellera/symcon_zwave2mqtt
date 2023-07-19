@@ -37,7 +37,7 @@ trait Zwave2MQTTHelper
 
                 $allConfiguredTopics = $this->getConfigTopics();
 
-                if (in_array($Buffer['Topic'], $allConfiguredTopics, $true)) {
+                if (in_array($Buffer['Topic'], $allConfiguredTopics)) {
 
                     $config = $this->getConfigItemForTopic($Buffer['Topic']);
 
