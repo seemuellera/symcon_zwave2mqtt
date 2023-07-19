@@ -490,46 +490,41 @@ class Zwave2MQTTDevice extends IPSModule
 
                 // read the retained data
                 $data = $this->fetchRetainedData($currentDeviceTopic);
-                
-                if ($data) {
 
-                    $this->SendDebug('MQTTDATA', json_encode($data), 0);
+                $this->SendDebug('MQTTDATA', json_encode($data), 0);
 
-                    // $data = json_decode($mqttData, true);
+                // $data = json_decode($mqttData, true);
 
-                    if (! is_array($data)) {
+                if (! is_array($data)) {
 
-                        $this->LogMessage('retained data is not in the right format ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
-                        continue;
-                    }
-                    /*
-                    if (! array_key_exists('Payload', $data)) {
+                    $this->LogMessage('retained data is not in the right format ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
+                    continue;
+                }
+                /*
+                if (! array_key_exists('Payload', $data)) {
 
-                        $this->LogMessage('Unable to fetch retained data for topic ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
-                        continue;
-                    }
-                    */
-                    /*
-                    $payload = json_decode($data['Payload'], true);
+                    $this->LogMessage('Unable to fetch retained data for topic ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
+                    continue;
+                }
+                */
+                /*
+                $payload = json_decode($data['Payload'], true);
 
-                    if (! is_array($payload)) {
+                if (! is_array($payload)) {
 
-                        $this->LogMessage('Unable to decode payload data for topic ' . $currentDeviceTopic . ' / ' . $data['Payload'], KL_ERROR);
-                        continue;
-                    }
-                    */
+                    $this->LogMessage('Unable to decode payload data for topic ' . $currentDeviceTopic . ' / ' . $data['Payload'], KL_ERROR);
+                    continue;
+                }
+                */
 
-                    if (! array_key_exists('value', $data)) {
+                if (! array_key_exists('value', $data)) {
 
-                        $this->LogMessage('Unable to access value from  payload data for topic ' . $currentDeviceTopic . ' / ' . $data, KL_ERROR);
-                        continue;
-                    }
-
-                    $this->SetVariableContent($topicConfiguration['ident'], $topicConfiguration['transformation'], $data['value']);
+                    $this->LogMessage('Unable to access value from  payload data for topic ' . $currentDeviceTopic . ' / ' . $data, KL_ERROR);
+                    continue;
                 }
 
-                $this->LogMessage('Unable to fetch retained data for topic ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
-                continue;
+                $this->SetVariableContent($topicConfiguration['ident'], $topicConfiguration['transformation'], $data['value']);
+            
             }
             else {
 
