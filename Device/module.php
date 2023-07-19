@@ -422,11 +422,12 @@ class Zwave2MQTTDevice extends IPSModule
 
                     $this->SendDebug('Config resolver', "Config found for topic " . $topic, 0);
 
+                    $this->LogMessage('Unable to find key topic in ' . json_encode($currentConfigItem), KL_ERROR);
                     return $currentConfigItem;
                 }
             }
             else {
-                $this->LogMessage('Unable to find key topic in ' . json_encode($currentConfigItem), KL_ERROR);
+                //$this->LogMessage('Unable to find key topic in ' . json_encode($currentConfigItem), KL_ERROR);
                 return false;
             }
         }
