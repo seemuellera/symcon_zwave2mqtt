@@ -506,6 +506,7 @@ class Zwave2MQTTDevice extends IPSModule
                         continue;
                     }
 
+                    /*
                     $payload = json_decode($data['Payload'], true);
 
                     if (! is_array($payload)) {
@@ -513,14 +514,15 @@ class Zwave2MQTTDevice extends IPSModule
                         $this->LogMessage('Unable to decode payload data for topic ' . $currentDeviceTopic . ' / ' . $data['Payload'], KL_ERROR);
                         continue;
                     }
+                    */
 
-                    if (! array_key_exists('value', $payload)) {
+                    if (! array_key_exists('value', $data['Payload'])) {
 
                         $this->LogMessage('Unable to access value from  payload data for topic ' . $currentDeviceTopic . ' / ' . $data['Payload'], KL_ERROR);
                         continue;
                     }
 
-                    $this->SetVariableContentFromPayload($topicConfiguration['ident'], $topicConfiguration['transformation'], $payload['value']);
+                    $this->SetVariableContentFromPayload($topicConfiguration['ident'], $topicConfiguration['transformation'], $data['Payload']['value']);
                 }
             }
             else {
