@@ -464,7 +464,7 @@ class Zwave2MQTTDevice extends IPSModule
 
             if ($topicConfiguration) {
 
-                $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " indicates support for " . $topicConfiguration['description'], 0);
+                // $this->SendDebug('TOPIC CONFIGURATION', "Topic " . $topicConfiguration['topic'] . " indicates support for " . $topicConfiguration['description'], 0);
 
                 // Configuration has been found. Proceeding with registering the variables
                 switch ($topicConfiguration['type']) {
