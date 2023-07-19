@@ -42,11 +42,11 @@ trait Zwave2MQTTHelper
                 if (in_array($subTopic, $allConfiguredTopics)) {
 
                     $config = $this->getConfigItemForTopic($subTopic);
-                    $this->LogMessage('Extracted data','Fetching config for sub topic ' . $subTopic, 0);
+                    $this->SendDebug('Extracted data','Fetching config for sub topic ' . $subTopic, 0);
 
                     if ($config) {
 
-                        $this->LogMessage('Set Value','Ident: ' . $config['ident'] . ' / ' . $config['transformation'] . ' / ' . $Payload['value'], 0);
+                        $this->SendDebug('Set Value','Ident: ' . $config['ident'] . ' / ' . $config['transformation'] . ' / ' . $Payload['value'], 0);
                         $this->SetVariableContentFromPayload($config['ident'], $config['transformation'], $Payload['value']);
 
                     }
