@@ -303,6 +303,28 @@ class Zwave2MQTTDevice extends IPSModule
                 "topic" => '113/1/System/Hardware_status', 			
                 "transformation" => "copyValue", 	
                 "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_Power", 	
+                "caption" => "Power",
+                "description" => "Multilevel Sensor v4 Power measurement",
+                "sortOrder" => 23, 				
+                "type" => "Float", 	
+                "profile" => "~Watt",
+                "topic" => '202/49/1/Power', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_ElectricConsumption", 	
+                "caption" => "Electric Consumption",
+                "description" => "Meter v3 electric consumption measurement",
+                "sortOrder" => 23, 				
+                "type" => "Float", 	
+                "profile" => "~Electricity",
+                "topic" => '202/50/1/value/65537', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
             )
 		);
     }
@@ -334,13 +356,11 @@ class Zwave2MQTTDevice extends IPSModule
         $this->SendDebug('Filter ', '.*' . $Filter . '.*', 0);
         $this->SetReceiveDataFilter('.*' . $Filter . '.*');
         
-        /* Don't load data by default
         if (($this->HasActiveParent()) && (IPS_GetKernelRunlevel() == KR_READY)) {
             
             $this->getDeviceInfo();
         }
-        */
-
+        
         $this->SetStatus(102);
     }
 
