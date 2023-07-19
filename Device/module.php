@@ -311,7 +311,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "sortOrder" => 23, 				
                 "type" => "Float", 	
                 "profile" => "~Watt",
-                "topic" => '202/49/1/Power', 			
+                "topic" => '49/1/Power', 			
                 "transformation" => "copyValue", 	
                 "writeable" => false
             ),
@@ -322,7 +322,7 @@ class Zwave2MQTTDevice extends IPSModule
                 "sortOrder" => 23, 				
                 "type" => "Float", 	
                 "profile" => "~Electricity",
-                "topic" => '202/50/1/value/65537', 			
+                "topic" => '50/1/value/65537', 			
                 "transformation" => "copyValue", 	
                 "writeable" => false
             )
