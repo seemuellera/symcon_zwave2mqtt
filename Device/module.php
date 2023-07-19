@@ -489,8 +489,11 @@ class Zwave2MQTTDevice extends IPSModule
                 }
 
                 // read the retained data
-                $data = $this->fetchRetainedData($currentDeviceTopic);
+                $mqttData = $this->fetchRetainedData($currentDeviceTopic);
+                
                 if ($data) {
+
+                    $data = json_decode($mqttData, true);
 
                     if (! is_array($data)) {
 
