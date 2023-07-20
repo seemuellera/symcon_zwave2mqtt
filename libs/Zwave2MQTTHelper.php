@@ -114,6 +114,22 @@ trait Zwave2MQTTHelper
                     $this->SetValue($ident, true);  
                 }
                 break;
+
+            case "dimIntensityOnOff":
+                if ($ident == 'ZWAVE2M_IntensityOnOff_Channel1') {
+                    $channel = 1;
+                }
+                if ($ident == 'ZWAVE2M_IntensityOnOff_Channel2') {
+                    $channel = 2;
+                }
+                $intensity = $this->fetchRetainedData($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/38/' . $channel . '/currentValue');
+                if ($intensity['value'] == 0) {
+                    $this->SetValue($ident, false);    
+                }
+                else {
+                    $this->SetValue($ident, true);  
+                }
+                break;
         }
     }
 
