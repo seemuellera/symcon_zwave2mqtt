@@ -327,6 +327,28 @@ class Zwave2MQTTDevice extends IPSModule
                 "writeable" => false
             ),
             Array(
+                "ident" => "ZWAVE2M_SmokeAlarmSensorStatus", 	
+                "caption" => "Smoke Alarm Sensor Status",
+                "description" => "Notification v5 smoke alarm sensor status",
+                "sortOrder" => 22, 				
+                "type" => "Integer", 	
+                "profile" => "~ZWaveNotification01",
+                "topic" => '113/0/Smoke_Alarm/Sensor_status', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_SmokeAlarmAlarmStatus", 	
+                "caption" => "Smoke Alarm Alarm Status",
+                "description" => "Notification v5 smoke alarm alarm status",
+                "sortOrder" => 22, 				
+                "type" => "Integer", 	
+                "profile" => "~ZWaveNotification01",
+                "topic" => '113/0/Smoke_Alarm/Alarm_status', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
                 "ident" => "ZWAVE2M_Power", 	
                 "caption" => "Power",
                 "description" => "Multilevel Sensor v4 Power measurement",
