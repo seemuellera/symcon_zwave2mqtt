@@ -89,11 +89,26 @@ trait Zwave2MQTTHelper
                 break;
 
             case "dimIntensity":
+                // updating the regular var
                 if ($value >= 99) {
                     $this->SetValue($ident, 100);
                 }
                 else {
                     $this->SetValue($ident, $value);
+                }
+
+                // updating the virtual switch var
+                if ($ident == 'ZWAVE2M_Intensity_Channel1') {
+                    $identSwitch = 'ZWAVE2M_IntensityOnOff_Channel1';
+                }
+                if ($ident == 'ZWAVE2M_Intensity_Channel2') {
+                    $identSwitch = 'ZWAVE2M_IntensityOnOff_Channel2';
+                }
+                if ($value == 0) {
+                    $this->SetValue($identSwitch, false);
+                }
+                else {
+                    $this->SetValue($identSwitch, true);
                 }
                 break;
 
@@ -116,19 +131,7 @@ trait Zwave2MQTTHelper
                 break;
 
             case "dimIntensityOnOff":
-                if ($ident == 'ZWAVE2M_IntensityOnOff_Channel1') {
-                    $channel = 1;
-                }
-                if ($ident == 'ZWAVE2M_IntensityOnOff_Channel2') {
-                    $channel = 2;
-                }
-                $intensity = $this->fetchRetainedData($this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/38/' . $channel . '/currentValue');
-                if ($intensity['value'] == 0) {
-                    $this->SetValue($ident, false);    
-                }
-                else {
-                    $this->SetValue($ident, true);  
-                }
+                // nothing to do, this will never get called
                 break;
         }
     }
