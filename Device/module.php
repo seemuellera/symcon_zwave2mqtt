@@ -96,6 +96,28 @@ class Zwave2MQTTDevice extends IPSModule
                 "writeable" => true
             ),
             Array(  
+                "ident" => "ZWAVE2M_Switch_Channel1", 	
+                "caption" => "Status",
+                "description" => "Binary Switch v1",
+                "sortOrder" => 3, 				
+                "type" => "Boolean", 	
+                "profile" => "~Switch", 			
+                "topic" => '37/1/currentValue', 			
+                "transformation" => "copyValue", 	
+                "writeable" => true
+            ),
+            Array(  
+                "ident" => "ZWAVE2M_Switch_Channel2", 	
+                "caption" => "Status",
+                "description" => "Binary Switch v1",
+                "sortOrder" => 3, 				
+                "type" => "Boolean", 	
+                "profile" => "~Switch", 			
+                "topic" => '37/2/currentValue', 			
+                "transformation" => "copyValue", 	
+                "writeable" => true
+            ),
+            Array(  
                 "ident" => "ZWAVE2M_Color", 	
                 "caption" => "Color RGB",
                 "description" => "Color Switch v1",
