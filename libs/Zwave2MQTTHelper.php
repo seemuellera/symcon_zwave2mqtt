@@ -169,6 +169,14 @@ trait Zwave2MQTTHelper
                 }
                 break;
             
+            case "dimIntensityOnOff":
+                if ($value) {
+                    $this->Z2MSet($topic, Array('value' => true));    
+                }
+                else {
+                    $this->Z2MSet("38/1/targetValue", Array('value' => 0));  
+                }
+                break;
         }
     }
 
