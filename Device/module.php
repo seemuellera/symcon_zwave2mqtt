@@ -97,7 +97,7 @@ class Zwave2MQTTDevice extends IPSModule
             ),
             Array(  
                 "ident" => "ZWAVE2M_Switch_Channel1", 	
-                "caption" => "Status",
+                "caption" => "Status (Channel 1)",
                 "description" => "Binary Switch v1",
                 "sortOrder" => 3, 				
                 "type" => "Boolean", 	
@@ -108,7 +108,7 @@ class Zwave2MQTTDevice extends IPSModule
             ),
             Array(  
                 "ident" => "ZWAVE2M_Switch_Channel2", 	
-                "caption" => "Status",
+                "caption" => "Status (Channel 2)",
                 "description" => "Binary Switch v1",
                 "sortOrder" => 3, 				
                 "type" => "Boolean", 	
