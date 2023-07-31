@@ -582,7 +582,7 @@ class Zwave2MQTTDevice extends IPSModule
 
                     if (! array_key_exists('value', $data)) {
 
-                        $this->LogMessage('Unable to access value from  payload data for topic ' . $currentDeviceTopic . ' / ' . $data, KL_ERROR);
+                        $this->LogMessage('Unable to access value from  payload data for topic ' . $currentDeviceTopic . ' / ' . json_encode($data), KL_ERROR);
                         continue;
                     }
 
