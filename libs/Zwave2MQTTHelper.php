@@ -57,7 +57,7 @@ trait Zwave2MQTTHelper
                 }
                 else {
 
-                    $this->SendDebug('SEt Value','Topic ' . $subTopic . ' is not a configured topic',0);
+                    $this->SendDebug('Set Value','Topic ' . $subTopic . ' is not a configured topic',0);
                 }
             }
         }
@@ -133,6 +133,10 @@ trait Zwave2MQTTHelper
             case "dimIntensityOnOff":
                 // nothing to do, this will never get called
                 break;
+
+            case "ignore":
+                // nothing to do
+                break;
         }
     }
 
@@ -195,6 +199,9 @@ trait Zwave2MQTTHelper
                 else {
                     $this->Z2MSet("38/1/targetValue", Array('value' => 0));  
                 }
+                break;
+
+            case "ignore":
                 break;
         }
     }

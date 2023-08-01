@@ -157,6 +157,17 @@ class Zwave2MQTTDevice extends IPSModule
                 "sortOrder" => 12, 				
                 "type" => "Integer", 	
                 "profile" => "", 			
+                "topic" => '43/0/dimmingDuration', 			
+                "transformation" => "ignore", 	
+                "writeable" => false
+            ),
+            Array(  
+                "ident" => "ZWAVE2M_SceneID", 	
+                "caption" => "Scene ID",
+                "description" => "Scene Activation v0",
+                "sortOrder" => 12, 				
+                "type" => "Integer", 	
+                "profile" => "", 			
                 "topic" => '43/0/sceneId', 			
                 "transformation" => "copyValue", 	
                 "writeable" => false
