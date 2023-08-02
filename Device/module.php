@@ -41,6 +41,17 @@ class Zwave2MQTTDevice extends IPSModule
                 "writeable" => false
             ),
             Array(  
+                "ident" => "ZWAVE2M_Intensity", 	
+                "caption" => "Intensity",
+                "description" => "Multivelvel Switch v4",
+                "sortOrder" => 1, 				
+                "type" => "Integer", 	
+                "profile" => "~Intensity.100", 			
+                "topic" => '38/0/currentValue', 			
+                "transformation" => "dimIntensity", 	
+                "writeable" => true
+            ),
+            Array(  
                 "ident" => "ZWAVE2M_Intensity_Channel1", 	
                 "caption" => "Intensity (Channel 1)",
                 "description" => "Multivelvel Switch v4",
@@ -60,6 +71,17 @@ class Zwave2MQTTDevice extends IPSModule
                 "profile" => "~Intensity.100", 			
                 "topic" => '38/2/currentValue', 			
                 "transformation" => "dimIntensity", 	
+                "writeable" => true
+            ),
+            Array(  
+                "ident" => "ZWAVE2M_IntensityOnOff", 	
+                "caption" => "Status",
+                "description" => "Multivelvel Switch v4 Dummy Switch",
+                "sortOrder" => 2, 				
+                "type" => "Boolean", 	
+                "profile" => "~Switch", 			
+                "topic" => '38/0/restorePrevious', 			
+                "transformation" => "dimIntensityOnOff", 	
                 "writeable" => true
             ),
             Array(  
