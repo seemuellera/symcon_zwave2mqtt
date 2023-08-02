@@ -228,6 +228,39 @@ class Zwave2MQTTDevice extends IPSModule
                 "writeable" => false
             ),
             Array(
+                "ident" => "ZWAVE2M_BinarySensor_DoorWindow", 	
+                "caption" => "Binary Sensor Door/Window",
+                "description" => "Binary Sensor v2 Door/Window sensor",
+                "sortOrder" => 14, 				
+                "type" => "Boolean", 	
+                "profile" => "~Window", 			
+                "topic" => '48/0/Door-Window', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_BinarySensor_Motion", 	
+                "caption" => "Binary Sensor Motion",
+                "description" => "Binary Sensor v2 Motion sensor",
+                "sortOrder" => 14, 				
+                "type" => "Boolean", 	
+                "profile" => "~Motion", 			
+                "topic" => '48/0/Motion', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_BinarySensor_Tamper", 	
+                "caption" => "Binary Sensor Tamper",
+                "description" => "Binary Sensor v2 Tamper sensor",
+                "sortOrder" => 14, 				
+                "type" => "Boolean", 	
+                "profile" => "~Alert", 			
+                "topic" => '48/0/Tamper', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
                 "ident" => "ZWAVE2M_Illuminance", 	
                 "caption" => "Illumination",
                 "description" => "Multilevel Sensor v8 Illuminance",
