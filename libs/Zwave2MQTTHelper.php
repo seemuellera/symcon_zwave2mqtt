@@ -197,7 +197,15 @@ trait Zwave2MQTTHelper
                     $this->Z2MSet($topic, Array('value' => true));    
                 }
                 else {
-                    $this->Z2MSet("38/1/targetValue", Array('value' => 0));  
+                    if ($topic == "38/0/restorePrevious") {
+                        $this->Z2MSet("38/0/targetValue", Array('value' => 0));      
+                    }
+                    if ($topic == "38/1/restorePrevious") {
+                        $this->Z2MSet("38/1/targetValue", Array('value' => 0));      
+                    }
+                    if ($topic == "38/2/restorePrevious") {
+                        $this->Z2MSet("38/2/targetValue", Array('value' => 0));      
+                    }
                 }
                 break;
 
