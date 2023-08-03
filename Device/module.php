@@ -294,6 +294,28 @@ class Zwave2MQTTDevice extends IPSModule
                 "writeable" => false
             ),
             Array(
+                "ident" => "ZWAVE2M_Humidity", 	
+                "caption" => "Humidity",
+                "description" => "Multilevel Sensor v8 Humidity",
+                "sortOrder" => 15, 				
+                "type" => "Integer", 	
+                "profile" => "~Humidity",
+                "topic" => '49/0/Humidity', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_Ultraviolet", 	
+                "caption" => "UV Index",
+                "description" => "Multilevel Sensor v8 Ultraviolet",
+                "sortOrder" => 15, 				
+                "type" => "Integer", 	
+                "profile" => "~UVIndex",
+                "topic" => '49/0/Ultraviolet', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
                 "ident" => "ZWAVE2M_MotionSensor", 	
                 "caption" => "Motion Sensor",
                 "description" => "Notificaton v5 Motion sensor",
