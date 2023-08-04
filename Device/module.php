@@ -481,6 +481,17 @@ class Zwave2MQTTDevice extends IPSModule
                 "writeable" => false
             ),
             Array(
+                "ident" => "ZWAVE2M_Power_MV2", 	
+                "caption" => "Power Single Level",
+                "description" => "Meter v2 Power measurement",
+                "sortOrder" => 24, 				
+                "type" => "Float", 	
+                "profile" => "~Watt",
+                "topic" => '50/0/value/66049', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
                 "ident" => "ZWAVE2M_ElectricConsumption", 	
                 "caption" => "Electric Consumption",
                 "description" => "Meter v2 electric consumption measurement",
