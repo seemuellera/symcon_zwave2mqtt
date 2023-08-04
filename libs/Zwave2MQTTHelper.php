@@ -47,8 +47,10 @@ trait Zwave2MQTTHelper
                     if ($config) {
 
                         //$this->SendDebug('Set Value','Ident: ' . $config['ident'] . ' / ' . $config['transformation'] . ' / ' . $Payload['value'], 0);
-                        $this->SetVariableContent($config['ident'], $config['transformation'], $Payload['value']);
-
+                        if (array_key_exists('value', $Payload)) {
+                        
+                            $this->SetVariableContent($config['ident'], $config['transformation'], $Payload['value']);
+                        }
                     }
                     else {
                         $this->LogMessage('Receive Data: Unable to get config item for topic ' . $Buffer['Topic'], KL_ERROR);
