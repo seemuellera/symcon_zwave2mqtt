@@ -377,6 +377,17 @@ class Zwave2MQTTDevice extends IPSModule
                 "sortOrder" => 18, 				
                 "type" => "Integer", 	
                 "profile" => "~ZWaveNotification04",
+                "topic" => '113/0/Heat_Alarm/Heat_sensor_status', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_AlertOverHeat_Ch1", 	
+                "caption" => "Overheat Alert Channel 1",
+                "description" => "Notification v5 heat alert",
+                "sortOrder" => 18, 				
+                "type" => "Integer", 	
+                "profile" => "~ZWaveNotification04",
                 "topic" => '113/1/Heat_Alarm/Heat_sensor_status', 			
                 "transformation" => "copyValue", 	
                 "writeable" => false
@@ -444,6 +455,39 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "~ZWaveNotification01",
                 "topic" => '113/0/Smoke_Alarm/Alarm_status', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_WaterAlarm", 	
+                "caption" => "Water Alarm Status",
+                "description" => "Notification v5 water alarm status",
+                "sortOrder" => 22, 				
+                "type" => "Integer", 	
+                "profile" => "~ZWaveNotification05",
+                "topic" => '113/0/Water_Alarm/Sensor_status', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_WaterAlarm_Ch1", 	
+                "caption" => "Water Alarm Status - Channel 1",
+                "description" => "Notification v5 water alarm status",
+                "sortOrder" => 22, 				
+                "type" => "Integer", 	
+                "profile" => "~ZWaveNotification05",
+                "topic" => '113/1/Water_Alarm/Sensor_status', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_WaterAlarm_Ch2", 	
+                "caption" => "Water Alarm Status - Channel 2",
+                "description" => "Notification v5 water alarm status",
+                "sortOrder" => 22, 				
+                "type" => "Integer", 	
+                "profile" => "~ZWaveNotification05",
+                "topic" => '113/2/Water_Alarm/Sensor_status', 			
                 "transformation" => "copyValue", 	
                 "writeable" => false
             ),
