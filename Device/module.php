@@ -490,6 +490,17 @@ class Zwave2MQTTDevice extends IPSModule
                 "topic" => '50/0/value/65537', 			
                 "transformation" => "copyValue", 	
                 "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_Config_SwitchOnBrightness", 	
+                "caption" => "Config - Switch on Brightness",
+                "description" => "Configuration v1 -  Forced Switch On Brightness",
+                "sortOrder" => 50, 				
+                "type" => "Integer", 	
+                "profile" => "",
+                "topic" => '112/0/19', 			
+                "transformation" => "copyValue", 	
+                "writeable" => true
             )
 		);
     }
