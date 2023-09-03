@@ -201,17 +201,6 @@ class Zwave2MQTTDevice extends IPSModule
                 "sortOrder" => 12, 				
                 "type" => "Integer", 	
                 "profile" => "", 			
-                "topic" => '91/0/slowRefresh', 			
-                "transformation" => "ignore", 	
-                "writeable" => false
-            ),
-            Array(  
-                "ident" => "ZWAVE2M_SceneID1", 	
-                "caption" => "Scene ID 1",
-                "description" => "Central Scene v2 ch 1",
-                "sortOrder" => 12, 				
-                "type" => "Integer", 	
-                "profile" => "", 			
                 "topic" => '91/0/scene/001', 			
                 "transformation" => "copyValue", 	
                 "writeable" => false
@@ -224,6 +213,28 @@ class Zwave2MQTTDevice extends IPSModule
                 "type" => "Integer", 	
                 "profile" => "", 			
                 "topic" => '91/0/scene/002', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_SceneID3", 	
+                "caption" => "Scene ID 3",
+                "description" => "Central Scene v2 ch 3",
+                "sortOrder" => 13, 				
+                "type" => "Integer", 	
+                "profile" => "", 			
+                "topic" => '91/0/scene/003', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
+                "ident" => "ZWAVE2M_SceneID4", 	
+                "caption" => "Scene ID 4",
+                "description" => "Central Scene v2 ch 4",
+                "sortOrder" => 13, 				
+                "type" => "Integer", 	
+                "profile" => "", 			
+                "topic" => '91/0/scene/004', 			
                 "transformation" => "copyValue", 	
                 "writeable" => false
             ),
