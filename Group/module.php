@@ -23,8 +23,8 @@ class Zwave2MQTTGroup extends IPSModule
         $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
         $this->RegisterPropertyString('MQTTTopic', '_CLIENTS/ZWAVE_GATEWAY-zwave-js-ui');
         $this->RegisterPropertyString('NodeList', '');
-        $this->RegisterPropertyString('CommandClass', '');
-        $this->RegisterPropertyString('Endpoint', '');
+        $this->RegisterPropertyInteger('CommandClass', '');
+        $this->RegisterPropertyInteger('Endpoint', '');
         $this->RegisterPropertyString('Property', '');
 
         $this->RegisterVariableInteger('Intensity','Intensity','~Intensity.100');
@@ -42,9 +42,14 @@ class Zwave2MQTTGroup extends IPSModule
         if ($Ident == 'Intensity') {
 
             $payload = Array();
+            $arrayNodesString = str_getcsv($this->ReadPropertyString('NodeList'));
+            $arrayNodes = Array();
+            foreach ($arrayNodesString as $currentNode) {
+                array_push($arrayNodes, intval($currentNode));
+            }
             $payload['nodes'] = str_getcsv($this->ReadPropertyString('NodeList'));
-            $payload['commandClass'] = $this->ReadPropertyString('CommandClass');
-            $payload['endpoint'] = $this->ReadPropertyString('Endpoint');
+            $payload['commandClass'] = $this->ReadPropertyInteger('CommandClass');
+            $payload['endpoint'] = $this->ReadPropertyInteger('Endpoint');
             $payload['property'] = $this->ReadPropertyString('Property');
             $payload['value'] = $Value;
 
