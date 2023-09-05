@@ -8,9 +8,7 @@ class Zwave2MQTTGroup extends IPSModule
 {
     use ColorHelper;
     use MQTTHelper;
-    use VariableProfileHelper;
-    use Zwave2MQTTHelper;
-
+    
     public function __construct($InstanceID) {
 		// Diese Zeile nicht löschen
 		parent::__construct($InstanceID); 
