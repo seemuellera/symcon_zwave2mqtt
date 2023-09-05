@@ -47,7 +47,7 @@ class Zwave2MQTTGroup extends IPSModule
             foreach ($arrayNodesString as $currentNode) {
                 array_push($arrayNodes, intval($currentNode));
             }
-            $payload['nodes'] = str_getcsv($this->ReadPropertyString('NodeList'));
+            $payload['nodes'] = $arrayNodes;
             $payload['commandClass'] = $this->ReadPropertyInteger('CommandClass');
             $payload['endpoint'] = $this->ReadPropertyInteger('Endpoint');
             $payload['property'] = $this->ReadPropertyString('Property');
@@ -55,6 +55,8 @@ class Zwave2MQTTGroup extends IPSModule
 
             $payloadJson = json_encode($payload);
             $this->Z2MSet('multicast', $payloadJson);
+
+            SetValue($this->GetIDForIdent('Intensity'), $Value);
         }
     }
 }
