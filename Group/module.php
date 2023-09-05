@@ -53,8 +53,7 @@ class Zwave2MQTTGroup extends IPSModule
             $payload['property'] = $this->ReadPropertyString('Property');
             $payload['value'] = $Value;
 
-            $payloadJson = json_encode($payload);
-            $this->Z2MSet('multicast', $payloadJson);
+           $this->Z2MSet('multicast', $payload);
 
             SetValue($this->GetIDForIdent('Intensity'), $Value);
         }
