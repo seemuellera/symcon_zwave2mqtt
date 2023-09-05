@@ -23,8 +23,8 @@ class Zwave2MQTTGroup extends IPSModule
         $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
         $this->RegisterPropertyString('MQTTTopic', '_CLIENTS/ZWAVE_GATEWAY-zwave-js-ui');
         $this->RegisterPropertyString('NodeList', '');
-        $this->RegisterPropertyInteger('CommandClass', '');
-        $this->RegisterPropertyInteger('Endpoint', '');
+        $this->RegisterPropertyInteger('CommandClass', 38);
+        $this->RegisterPropertyInteger('Endpoint', 1);
         $this->RegisterPropertyString('Property', '');
 
         $this->RegisterVariableInteger('Intensity','Intensity','~Intensity.100');
