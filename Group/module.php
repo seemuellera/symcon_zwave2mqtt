@@ -23,7 +23,7 @@ class Zwave2MQTTGroup extends IPSModule
     {
         //Never delete this line!
         parent::Create();
-        $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
+        // $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
         $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
         $this->RegisterPropertyString('MQTTTopic', '_CLIENTS/ZWAVE_GATEWAY-zwave-js-ui');
         $this->RegisterPropertyString('NodeList', '');
