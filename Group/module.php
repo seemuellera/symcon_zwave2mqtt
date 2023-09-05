@@ -42,7 +42,7 @@ class Zwave2MQTTGroup extends IPSModule
         if ($Ident == 'Intensity') {
 
             $payload = Array();
-            $payload['nodes'] = str_getcsv($this->ReadProperyString('NodeList'));
+            $payload['nodes'] = str_getcsv($this->ReadPropertyString('NodeList'));
             $payload['commandClass'] = $this->ReadPropertyString('CommandClass');
             $payload['endpoint'] = $this->ReadPropertyString('Endpoint');
             $payload['property'] = $this->ReadPropertyString('Property');
