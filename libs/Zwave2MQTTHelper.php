@@ -216,22 +216,6 @@ trait Zwave2MQTTHelper
         }
     }
 
-    public function Z2MSet($topic, $payload)
-    {
-        $payloadJson = json_encode($payload, JSON_UNESCAPED_SLASHES);
-
-        $Data['DataID'] = '{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}';
-        $Data['PacketType'] = 3;
-        $Data['QualityOfService'] = 0;
-        $Data['Retain'] = false;
-        $Data['Topic'] = $this->ReadPropertyString('MQTTBaseTopic') . '/' . $this->ReadPropertyString('MQTTTopic') . '/' . $topic . '/set';
-        $Data['Payload'] = $payloadJson;
-        $DataJSON = json_encode($Data, JSON_UNESCAPED_SLASHES);
-        $this->SendDebug(__FUNCTION__ . ' Topic', $Data['Topic'], 0);
-        $this->SendDebug(__FUNCTION__ . ' Payload', $Data['Payload'], 0);
-        $this->SendDataToParent($DataJSON);
-    }
-
     public function ZWAVE2M_Set($topic, $payload)
     {
         $Data['DataID'] = '{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}';

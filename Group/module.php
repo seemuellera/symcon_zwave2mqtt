@@ -3,8 +3,6 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../libs/ColorHelper.php';
 require_once __DIR__ . '/../libs/MQTTHelper.php';
-require_once __DIR__ . '/../libs/VariableProfileHelper.php';
-require_once __DIR__ . '/../libs/Zwave2MQTTHelper.php';
 
 class Zwave2MQTTGroup extends IPSModule
 {
@@ -23,7 +21,7 @@ class Zwave2MQTTGroup extends IPSModule
     {
         //Never delete this line!
         parent::Create();
-        // $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
+        $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
         $this->RegisterPropertyString('MQTTBaseTopic', 'zwave');
         $this->RegisterPropertyString('MQTTTopic', '_CLIENTS/ZWAVE_GATEWAY-zwave-js-ui');
         $this->RegisterPropertyString('NodeList', '');
