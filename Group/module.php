@@ -31,8 +31,8 @@ class Zwave2MQTTGroup extends IPSModule
         $this->RegisterPropertyString('Endpoint', '');
         $this->RegisterPropertyString('Property', '');
 
-        $this->RegisterVariableBoolean('Status','Status','~Switch');
-        $this->EnableAction('Status');
+        $this->RegisterVariableInteger('Intensity','Intensity','~Intensity.100');
+        $this->EnableAction('Intensity');
     }
 
     public function ApplyChanges()
@@ -43,7 +43,7 @@ class Zwave2MQTTGroup extends IPSModule
 
     public function RequestAction($Ident, $Value) {
 
-        if ($Ident == 'Status') {
+        if ($Ident == 'Intensity') {
 
             $payload = Array();
             $payload['nodes'] = str_getcsv($this->ReadProperyString('NodeList'));
