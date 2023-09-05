@@ -1,0 +1,34 @@
+{
+    "elements": [
+        {
+            "type": "ValidationTextBox",
+            "name": "MQTTBaseTopic",
+            "caption": "MQTT Base Topic"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "MQTTTopic",
+            "caption": "MQTT Topic"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "NodeList",
+            "caption": "List of nodes"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "CommandClass",
+            "caption": "Command class"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "Endpoint",
+            "caption": "endpoint"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "Property",
+            "caption": "Property"
+        }
+    ]
+}
