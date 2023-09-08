@@ -51,7 +51,12 @@ class Zwave2MQTTGroup extends IPSModule
             $payload['commandClass'] = $this->ReadPropertyInteger('CommandClass');
             $payload['endpoint'] = $this->ReadPropertyInteger('Endpoint');
             $payload['property'] = $this->ReadPropertyString('Property');
-            $payload['value'] = $Value;
+            if ($Value == 100) {
+                $payload['value'] = 99;    
+            }
+            else {
+                $payload['value'] = $Value;
+            }
 
            $this->Z2MSet('multicast', $payload);
 
