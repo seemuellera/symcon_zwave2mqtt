@@ -100,6 +100,9 @@ trait Zwave2MQTTHelper
                 }
 
                 // updating the virtual switch var
+                if ($ident == 'ZWAVE2M_Intensity') {
+                    $identSwitch = 'ZWAVE2M_IntensityOnOff';
+                }
                 if ($ident == 'ZWAVE2M_Intensity_Channel1') {
                     $identSwitch = 'ZWAVE2M_IntensityOnOff_Channel1';
                 }
