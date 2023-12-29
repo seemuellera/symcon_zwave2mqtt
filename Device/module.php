@@ -283,6 +283,17 @@ class Zwave2MQTTDevice extends IPSModule
                 "writeable" => false
             ),
             Array(
+                "ident" => "ZWAVE2M_BinarySensor_Water", 	
+                "caption" => "Binary Sensor Water",
+                "description" => "Binary Sensor v2 Water sensor",
+                "sortOrder" => 14, 				
+                "type" => "Boolean", 	
+                "profile" => "~Alert", 			
+                "topic" => '48/0/Water', 			
+                "transformation" => "copyValue", 	
+                "writeable" => false
+            ),
+            Array(
                 "ident" => "ZWAVE2M_Illuminance", 	
                 "caption" => "Illumination",
                 "description" => "Multilevel Sensor v8 Illuminance",
